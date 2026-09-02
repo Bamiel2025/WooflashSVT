@@ -36,6 +36,9 @@ function doPost(e) {
 }
 /* Test navigateur : GET ?d=<json> ou GET simple (ping) */
 function doGet(e) {
+  if (e && e.parameter && e.parameter.json === "1") {
+    return getSubmissionsJson();
+  }
   if (!e || !e.parameter || !e.parameter.d) {
     return ContentService.createTextOutput("OK — base quizz SVT en ligne.")
       .setMimeType(ContentService.MimeType.TEXT);
@@ -45,8 +48,8 @@ function doGet(e) {
 
 function handle(raw) {
   try {
-    const o = JSON.parse(raw || "{}");
-    const sheet = getSheet();
+var o = JSON.parse(raw || "{}");
+  var sheet = getSheet();
     var q = QUIZ_INFO[o.quiz] || { n: "?", total: 10 };
   var score = computeScore(o.a, o.quiz);
   var key = ((o.p || "") + "|" + (o.n || "") + "|" + (o.c || "")).trim().toUpperCase();
@@ -105,6 +108,24 @@ function getSheet() {
     }
   }
   return sh;
+}
+
+/* Endpoint GET ?json=1 pour récupérer toutes les réponses (NDJSON) */
+function getSubmissionsJson() {
+  try {
+    var sheet = getSheet();
+    var data = sheet.getDataRange().getValues();
+    var lines = [];
+    for (var i = 1; i < data.length; i++) {
+      if (data[i] && data[i][10]) lines.push(data[i][10]); // colonne Code NDJSON
+    }
+    var out = ContentService.createTextOutput(lines.join("\n"))
+      .setMimeType(ContentService.MimeType.TEXT);
+    return out;
+  } catch (err) {
+    return ContentService.createTextOutput("ERREUR: " + err)
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
 }
 
 /* Corrigé minimal (id quiz → n° affiché, nb questions, bonnes réponses en index 0-3) */

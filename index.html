@@ -993,9 +993,11 @@ function tData() {
   }).join("");
   return '<div class="tpanel"><h3>Importer les réponses des élèves</h3>' +
     '<div class="drop" id="dropzone">' + IC.db + '<p><b>Glissez ici</b> les fichiers <code>.ndjson</code> reçus (ou cliquez pour choisir).<br>Vous pouvez en déposer plusieurs à la fois : les fichiers cumulent les réponses d\'une classe entière.<br>Un élève qui redépose son quiz remplace sa ligne précédente : le compteur de dépôts s\'incrémente et la progression s\'affiche.</p><input type="file" id="fileinput" accept=".ndjson,.txt,.json" multiple style="display:none"></div>' +
-    '<div class="actions"><button class="btn ghost sm" data-act="pastemodal">' + IC.code + ' Coller un code élève</button>' +
-    (SHEETS_URL ? '<a class="btn sm" href="' + esc(SHEETS_URL) + '" target="_blank" rel="noopener">' + IC.db + " Ouvrir la base (Google Sheets)</a>" : "") + "</div>" +
-    '<p class="note">Les envois directs des élèves arrivent dans la feuille Google Sheets liée à l\'application web (bouton ci-dessus). Pour un import local dans cet espace enseignant, glissez les fichiers <code>.ndjson</code> ou collez un code élève.</p></div>' +
+    '<div class="actions">' +
+    (SHEETS_URL ? '<button class="btn sm" data-act="ghload">' + IC.db + " Charger depuis Google Sheets</button>" : "") +
+    '<button class="btn ghost sm" data-act="pastemodal">' + IC.code + ' Coller un code élève</button>' +
+    "</div>" +
+    '<p class="note">Les envois directs des élèves arrivent dans la feuille Google Sheets liée à l\'application web (bouton ci-dessus). Utilisez « Charger depuis Google Sheets » pour importer les réponses dans cet espace enseignant et obtenir les statistiques.</p></div>' +
     '<div class="tpanel"><h3>Réponses enregistrées (' + R.length + ')</h3>' +
     (R.length ? '<div class="actions no-print"><button class="btn sm" data-act="exportall">' + IC.dl + " Export NDJSON</button>" +
     '<button class="btn ghost sm" data-act="exportcsvdata">' + IC.dl + " Export CSV (base)</button>" +
@@ -1054,6 +1056,7 @@ function installTeacherEvents() {
     else if (act === "del") { T.results.splice(+val, 1); saveResults(T.results); renderTPanel(); }
     else if (act === "clearall") { if (confirm("Effacer TOUTES les réponses enregistrées dans ce navigateur ?")) { T.results = []; saveResults([]); renderTPanel(); } }
     else if (act === "pastemodal") { openPasteModal(); }
+    else if (act === "ghload") { loadFromGoogleSheets(); }
   });
   document.addEventListener("change", function (e) {
     if (sessionStorage.getItem("svtq_t") !== "1") return;
@@ -1067,6 +1070,30 @@ function installTeacherEvents() {
 
 function filterSel() {
   return T.results.filter((r) => (T.selQuiz === "all" || r.quiz === T.selQuiz) && (T.selClass === "all" || normClass(r.c) === T.selClass));
+}
+
+function loadFromGoogleSheets() {
+  if (!SHEETS_URL) { toast("SHEETS_URL non configuré dans index.html."); return; }
+  toast("Chargement depuis Google Sheets…");
+  fetch(SHEETS_URL + "?json=1")
+    .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+    .then(function (txt) {
+      const list = loadResults();
+      let added = 0, merged = 0;
+      txt.split(/\r?\n/).forEach(function (l) {
+        if (!l.trim()) return;
+        const o = (function () { try { return JSON.parse(l.trim()); } catch (e) { return null; } })();
+        const key = (function () { try { return resultKey(o); } catch (e) { return null; } })();
+        const prevIdx = key ? list.findIndex(function (r) { return resultKey(r) === key; }) : -1;
+        const prevLen = list.length;
+        importResultLine(l.trim(), list);
+        if (list.length > prevLen) added++;
+        else if (prevIdx >= 0) merged++;
+      });
+      if (added || merged) { T.results = list; saveResults(list); renderTPanel(); toast((added ? added + " ajout(s)" : "") + (merged ? (added ? " + " : "") + merged + " redépôt(s)" : "") + " depuis Google Sheets."); }
+      else toast("Aucune nouvelle réponse depuis Google Sheets.");
+    })
+    .catch(function () { toast("Impossible de charger Google Sheets (vérifie SHEETS_URL)."); });
 }
 
 function importFiles(files) {
