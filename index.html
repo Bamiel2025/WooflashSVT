@@ -186,19 +186,33 @@ table.dt tr:last-child td{border-bottom:none}
                        « Envoyer par mail » de l'élève
                        (laisser "" pour masquer ce bouton)
    - SHOW_CORRECTION : true = l'élève voit la correction
+   - GH_REPO         : dépôt GitHub qui reçoit les envois des
+                        élèves (dossier results/)
+   - GH_TOKEN        : jeton d'accès GitHub « fine-grained »
+                        (permission « Contents : Read and write »
+                        sur CE dépôt uniquement) qui alimente le
+                        bouton « Envoyer mes réponses au
+                        professeur ». Laisser "" pour un repli
+                        téléchargement/copie du code.
    ------------------------------------------------------------
+   PARCOURS ÉLÈVE : quiz → « Terminer » (réponses verrouillées)
+   → « Envoyer mes réponses au professeur » (écrit results/*.json
+   dans le dépôt GitHub). L'enseignant charge ces dépôts dans
+   l'onglet « Données » → « Charger les dépôts depuis GitHub ».
    FORMAT DES RÉPONSES (NDJSON, 1 ligne JSON, ~150 octets) :
    {"v":1,"quiz":"eb01","s":"Nom","c":"Classe","a":[0,1,2,...],"t":"date"}
    Les réponses « a » sont les numéros (0-3) des propositions
    dans l'ordre ORIGINEL du corrigé (indépendant du mélange
    affiché à l'élève) : directement exploitables en base.
-   GitHub Pages : déposer ce fichier (quizz.html) à la racine,
-   lien direct vers un quiz : quizz.html?quiz=eb05
-   Espace enseignant : bouton en bas de page ou quizz.html?prof=1
+   GitHub Pages : déposer ce fichier (index.html) à la racine,
+   lien direct vers un quiz : index.html?quiz=eb05
+   Espace enseignant : bouton en bas de page ou index.html?prof=1
    ============================================================ */
 const TEACHER_CODE = "quizzsvt2027";
 const TEACHER_EMAIL = "";
 const SHOW_CORRECTION = true;
+const GH_REPO = "Bamiel2025/WooflashSVT";
+const GH_TOKEN = "";
 /* ================= QUESTIONS — 10 QCM par ebook ================= */
 /* q: question · o: propositions · a: index de la bonne réponse · e: explication */
 
@@ -445,6 +459,51 @@ function shuffle(arr) {
 function slug(s) {
   return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase() || "eleve";
 }
+/* === ENVOI ÉLÈVE → GITHUB (dossier results/ du dépôt) ===
+   Écrit un fichier results/<quiz>-<classe>-<prénom>-<nom>-<ts>.json
+   via l'API GitHub Contents. Nécessite GH_TOKEN (jeton fine-grained,
+   Contents: RW, limité à CE dépôt) sinon renvoie false (repli secours). */
+function sendToGitHub(jsonLine, quiz, cb) {
+  cb = cb || function () {};
+  if (!GH_TOKEN) { cb(false); return; }
+  const o = JSON.parse(jsonLine);
+  const ts = new Date().toISOString().replace(/[:.]/g, "-");
+  const path = "results/" + quiz.id + "-" + slug(o.c || "classe") + "-" + slug(o.p + "-" + o.n) + "-" + ts + ".json";
+  fetch("https://api.github.com/repos/" + GH_REPO + "/contents/" + path, {
+    method: "PUT",
+    headers: { "Authorization": "Bearer " + GH_TOKEN, "Accept": "application/vnd.github+json" },
+    body: JSON.stringify({
+      message: "Réponse " + quiz.id + " — " + (o.p || "?") + " " + (o.n || "") + " (" + (o.c || "?") + ")",
+      content: btoa(unescape(encodeURIComponent(jsonLine)))
+    })
+  }).then(function (r) {
+    if (r.ok) cb(true);
+    else r.json().then(function (j) { console.error("GitHub", j); cb(false); }).catch(function () { cb(false); });
+  }).catch(function () { cb(false); });
+}
+/* === CHARGEMENT ENSEIGNANT : lit tout results/ via l'API GitHub (public) === */
+function fetchGitHubResults(cb) {
+  cb = cb || function () {};
+  fetch("https://api.github.com/repos/" + GH_REPO + "/contents/results", { headers: { "Accept": "application/vnd.github+json" } })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (files) {
+      const items = (files || []).filter(function (f) { return f.type === "file" && /\.json$/i.test(f.name); });
+      let done = 0, acc = [];
+      if (!items.length) { cb([]); return; }
+      items.forEach(function (f) {
+        fetch(f.download_url)
+          .then(function (r) { return r.text(); })
+          .then(function (txt) {
+            txt.split(/\r?\n/).forEach(function (l) {
+              if (l.trim()) { try { acc.push(JSON.parse(l.trim())); } catch (e) {} }
+            });
+          })
+          .catch(function () {})
+          .then(function () { done++; if (done === items.length) cb(acc); });
+      });
+    })
+    .catch(function (st) { cb(st === 404 ? [] : null); });
+}
 const SVGW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
 const IC = {
   play: SVGW + '<path d="M8 5.14v13.72L19 12 8 5.14z"/></svg>',
@@ -475,7 +534,7 @@ function runStudentApp(root, quiz, opts) {
   let first = "", last = "", cls = "";
   let ord = M.map((m) => shuffle(m.o.map((_, i) => i))); // ordre affiché (mélangé), distinct par question
   let ans = M.map(() => null); // réponse en index ORIGINEL
-  let idx = 0, phase = "start", score = 0, line = "", saved = null, prevTry = null;
+  let idx = 0, phase = "start", score = 0, line = "", sent = false, sending = false, sendFailed = false, saved = null, prevTry = null;
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) || "null");
     if (raw && Array.isArray(raw.a) && raw.a.length === M.length && Array.isArray(raw.ord) && raw.ord.every((o, i) => o.length === M[i].o.length) && raw.ts && Date.now() - raw.ts < 172800000) saved = raw;
@@ -508,8 +567,8 @@ function runStudentApp(root, quiz, opts) {
       '<p class="sub" style="margin:6px 0 0">' + M.length + " questions · " + esc(quiz.theme) + "</p></div>" +
       '<div class="steps">' +
       '<div class="st"><b>1.</b> Je réponds aux questions</div>' +
-      '<div class="st"><b>2.</b> Je télécharge mon fichier de réponses</div>' +
-      '<div class="st"><b>3.</b> Je dépose mon fichier dans la zone de dépôt</div>' +
+      '<div class="st"><b>2.</b> Je clique sur « Terminer » : mes réponses sont verrouillées</div>' +
+      '<div class="st"><b>3.</b> J\'envoie mes réponses au professeur</div>' +
       "</div>" +
       '<div class="formcard">' +
       '<div class="field"><label for="s-first">Ton prénom</label><input id="s-first" autocomplete="given-name" placeholder="ex : Léa" maxlength="40"></div>' +
@@ -541,7 +600,7 @@ function runStudentApp(root, quiz, opts) {
       '<p class="qtext">' + esc(m.q) + '</p><div class="opts">' + rows + "</div>" +
       '<div class="nav">' +
       '<button class="btn ghost" data-act="prev"' + (idx === 0 ? " disabled" : "") + ">" + prevSvg + " Précédent</button>" +
-      '<button class="btn" data-act="next">' + (last ? "Terminer le quiz" : "Suivant") + nextSvg + "</button>" +
+      '<button class="btn" data-act="next">' + (last ? "Terminer" : "Suivant") + nextSvg + "</button>" +
       "</div></div>" +
       '<p class="hint" style="text-align:center;margin-top:12px">' + esc(fullDisplay()) + " · " + esc(cls) + "</p></div>";
   }
@@ -568,6 +627,29 @@ function runStudentApp(root, quiz, opts) {
     const prevBox = prevTry
       ? '<div class="tryline"><span class="who">Dépôt précédent</span><span class="meta">tentative n°' + (prevTry.k || 1) + " · " + scoreOf(prevTry) + "/" + M.length + "</span><span class=\"meta\">Le nouveau dépôt remplacera cette ligne.</span></div>"
       : "";
+    /* Bouton d'envoi selon l'état : envoyé / envoi en cours / prêt */
+    let sendBtn;
+    if (sent) sendBtn = '<button class="btn ok" disabled>' + IC.check + " Réponses envoyées au professeur</button>";
+    else if (sending) sendBtn = '<button class="btn ok" disabled>Envoi en cours…</button>';
+    else {
+      sendBtn = '<button class="btn ok" data-act="send">' + IC.up + " Envoyer mes réponses au professeur</button>" +
+        (sendFailed ? '<p class="hint" style="margin:6px 0 0;width:100%;color:#dc2626">Échec de l\'envoi. Vérifie ta connexion puis réessaie, ou transmets le code ci-dessous à ton professeur.</p>' : "");
+    }
+    const sendControls = opts.standalone
+      ? '<div class="sendbox"><h4>Envoie tes réponses à ton professeur</h4>' +
+        '<div class="actions">' +
+        '<button class="btn ok" data-act="dl">' + IC.dl + " Télécharger mes réponses</button>" +
+        '<button class="btn ghost" data-act="copy">' + IC.copy + " Copier le code</button>" +
+        (opts.mail ? '<a class="btn" href="' + mailHref + '">' + IC.mail + " Envoyer par mail</a>" : "") +
+        "</div>" +
+        '<textarea id="r-code" class="codebox" readonly rows="3">' + esc(line) + "</textarea></div>"
+      : '<div class="sendbox"><h4>Envoie tes réponses au professeur</h4>' +
+        '<p class="hint" style="margin:0 0 10px">Tes réponses sont verrouillées : elles ne peuvent plus être modifiées.</p>' +
+        '<div class="actions">' + sendBtn +
+        '<button class="btn ghost" data-act="dl">' + IC.dl + " Télécharger (secours)</button>" +
+        "</div>" +
+        '<p class="hint" style="margin:10px 0 0">Si l\'envoi échoue, transmets ce code à ton professeur :</p>' +
+        '<textarea id="r-code" class="codebox" readonly rows="3">' + esc(line) + "</textarea></div>";
     return '<div class="quizpage"><div class="reshead">' +
       '<div class="ringwrap"><svg width="150" height="150" viewBox="0 0 120 120">' +
       '<circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="11"/>' +
@@ -575,26 +657,10 @@ function runStudentApp(root, quiz, opts) {
       '<div class="ringtxt"><span class="big">' + score + "/" + M.length + '</span><span class="sm">' + pct + "% de réussite</span></div></div>" +
       '<div class="verdict" style="color:' + col + '">' + verdict + "</div>" +
       '<p class="hint">' + esc(fullDisplay()) + " · " + esc(cls) + " · " + esc(quiz.title) + "</p></div>" +
-      recap + prevBox +
-      '<div class="sendbox"><h4>Enregistre et dépose tes réponses</h4><ol>' +
-      "<li><b>Télécharge mes réponses</b> : un petit fichier <code>.ndjson</code> est enregistré sur ton appareil.</li>" +
-      "<li><b>Dépose ce fichier</b> dans la zone ci-dessous : tes réponses partent directement dans la base du professeur.</li>" +
-      "<li>Si la zone ne fonctionne pas (hors connexion, ENT...) : envoie le fichier ou le <b>code copié</b> à ton professeur.</li></ol>" +
-      '<div class="actions">' +
-      '<button class="btn ok" data-act="dl">' + IC.dl + " Télécharger mes réponses</button>" +
-      '<button class="btn ghost" data-act="copy">' + IC.copy + " Copier le code</button>" +
-      (opts.mail ? '<a class="btn" href="' + mailHref + '">' + IC.mail + " Envoyer par mail</a>" : "") +
-      "</div>" +
-      '<textarea id="r-code" class="codebox" readonly rows="3">' + esc(line) + "</textarea>" +
-      '<p class="hint" style="margin:8px 0 0">Fichier : <code>' + esc(fname()) + "</code> (1 ligne JSON, ~150 octets)</p>" +
-      (opts.standalone
-        ? '<p class="hint">Version hors-ligne : envoie ce fichier ou le code copié à ton professeur (ENT, mail...).</p>'
-        : '<div class="drop" id="dropzone" style="margin-top:14px">' + IC.up + "<p><b>Dépose ici</b> ton fichier de réponses <code>.ndjson</code><br>(glisser-déposer ou clic pour choisir le fichier)</p><input type=\"file\" id=\"fileinput\" accept=\".ndjson,.txt,.json\" style=\"display:none\"></div>") +
-      '<p class="hint" id="drop-ok" style="display:none;color:#059669;font-weight:700;margin-top:8px">Dépôt enregistré — merci !</p></div>' +
+      recap + prevBox + sendControls +
       '<div class="actions" style="justify-content:center;margin-top:16px">' +
       '<button class="btn ghost" data-act="again">' + IC.redo + ' Recommencer</button>' +
-      (!opts.standalone ? '<button class="btn" data-act="goto-depot">' + IC.up + ' Déposer mon fichier</button>' +
-        '<button class="btn ghost" data-act="home">' + IC.home + " Retour à l'accueil</button>" : "") +
+      (!opts.standalone ? '<button class="btn ghost" data-act="home">' + IC.home + " Retour à l\'accueil</button>" : "") +
       "</div></div>";
   }
 
@@ -627,7 +693,16 @@ function runStudentApp(root, quiz, opts) {
             function () { toast("Code copié ! Colle-le dans un message pour ton professeur."); },
             function () { const ta = root.querySelector("#r-code"); ta.focus(); ta.select(); document.execCommand("copy"); toast("Code copié !"); }
           );
-        } else if (act === "again") { phase = "start"; try { localStorage.removeItem(KEY); } catch (e) {} saved = null; render(); }
+        } else if (act === "again") { phase = "start"; try { localStorage.removeItem(KEY); } catch (e) {} saved = null; sent = false; sendFailed = false; render(); }
+        else if (act === "send" && !sent) {
+          sending = true; render();
+          sendToGitHub(line, quiz, function (ok) {
+            sending = false; sent = ok; if (!ok) sendFailed = true;
+            if (ok) { try { localStorage.setItem("svtq_sent_" + quiz.id + "_" + slug(fullDisplay()) + "_" + normClass(cls), new Date().toISOString()); } catch (e) {} toast("Réponses envoyées au professeur — merci !"); }
+            else toast("Échec de l'envoi. Réessaie ou utilise le téléchargement.");
+            render();
+          });
+        }
         else if (act === "home") { renderHome(); }
       });
     });
@@ -715,10 +790,10 @@ function renderDepot() {
   }).join("");
   app.innerHTML = '<div class="wrap">' +
     '<div class="hero" style="padding:24px 22px"><h1 style="font-size:1.6rem">Déposer mes réponses</h1>' +
-    '<p class="sub">Dépose ici le fichier <code>.ndjson</code> téléchargé à la fin de ton quiz : il part directement dans la base du professeur, classé avec ton prénom, ton nom et ta classe.</p></div>' +
+    '<p class="sub">Tes réponses sont envoyées automatiquement à la fin du quiz avec le bouton « Envoyer mes réponses au professeur ». Cette page sert uniquement au fichiers de secours (<code>.ndjson</code>) si l\'envoi automatique a échoué.</p></div>' +
     '<div class="depbox">' +
-    '<div class="drop" id="dropzone">' + IC.up + "<p><b>Glisse ton fichier</b> <code>.ndjson</code> ici<br>(ou clique pour choisir le fichier sur ton appareil)</p><input type=\"file\" id=\"fileinput\" accept=\".ndjson,.txt,.json\" multiple style=\"display:none\"></div>" +
-    '<p class="hint">' + IC.check + " Tu peux redéposer ton quiz autant de fois que tu veux pour t'améliorer : seul ton dernier dépôt compte, et le professeur voit le nombre de dépôts et ta progression.</p>" +
+    '<div class="drop" id="dropzone">' + IC.up + "<p><b>Glisse ton fichier</b> <code>.ndjson</code> de secours ici<br>(ou clique pour choisir le fichier sur ton appareil)</p><input type=\"file\" id=\"fileinput\" accept=\".ndjson,.txt,.json\" multiple style=\"display:none\"></div>" +
+    '<p class="hint">' + IC.check + " Sur l'appareil du professeur uniquement, ce dépôt alimente sa base locale.</p>" +
     "</div>" +
     (depotSession.length ? '<div class="tpanel"><h3>Dépôts de cette session</h3>' + lines + "</div>" : "") +
     '<div class="site-foot"><button class="lnk" data-act="gohome">' + IC.home + " Retour aux quiz</button></div></div>";
@@ -944,8 +1019,9 @@ function tData() {
   }).join("");
   return '<div class="tpanel"><h3>Importer les réponses des élèves</h3>' +
     '<div class="drop" id="dropzone">' + IC.db + '<p><b>Glissez ici</b> les fichiers <code>.ndjson</code> reçus (ou cliquez pour choisir).<br>Vous pouvez en déposer plusieurs à la fois : les fichiers cumulent les réponses d\'une classe entière.<br>Un élève qui redépose son quiz remplace sa ligne précédente : le compteur de dépôts s\'incrémente et la progression s\'affiche.</p><input type="file" id="fileinput" accept=".ndjson,.txt,.json" multiple style="display:none"></div>' +
-    '<div class="actions"><button class="btn ghost sm" data-act="pastemodal">' + IC.code + ' Coller un code élève</button></div>' +
-    '<p class="note">Les résultats sont enregistrés dans ce navigateur. Pour une sauvegarde ou un transfert vers votre base, utilisez l\'export ci-dessous.</p></div>' +
+    '<div class="actions"><button class="btn ghost sm" data-act="pastemodal">' + IC.code + ' Coller un code élève</button>' +
+    '<button class="btn sm" data-act="pullgh">' + IC.db + " Charger les dépôts depuis GitHub</button></div>" +
+    '<p class="note">« Charger les dépôts depuis GitHub » importe tous les fichiers du dossier <code>results/</code> du dépôt (envois directs des élèves). Les résultats sont ensuite enregistrés dans ce navigateur.</p></div>' +
     '<div class="tpanel"><h3>Réponses enregistrées (' + R.length + ')</h3>' +
     (R.length ? '<div class="actions no-print"><button class="btn sm" data-act="exportall">' + IC.dl + " Export NDJSON</button>" +
     '<button class="btn ghost sm" data-act="exportcsvdata">' + IC.dl + " Export CSV (base)</button>" +
@@ -1004,6 +1080,25 @@ function installTeacherEvents() {
     else if (act === "del") { T.results.splice(+val, 1); saveResults(T.results); renderTPanel(); }
     else if (act === "clearall") { if (confirm("Effacer TOUTES les réponses enregistrées dans ce navigateur ?")) { T.results = []; saveResults([]); renderTPanel(); } }
     else if (act === "pastemodal") { openPasteModal(); }
+    else if (act === "pullgh") {
+      toast("Chargement des dépôts depuis GitHub…");
+      fetchGitHubResults(function (items) {
+        if (items === null) { toast("Impossible de lire results/ sur GitHub (dépôt ou dossier introuvable ?)."); return; }
+        if (!items || !items.length) { toast("Aucun dépôt élève trouvé dans results/."); return; }
+        const list = loadResults();
+        let added = 0, merged = 0;
+        items.forEach(function (o) {
+          const l = JSON.stringify(o);
+          const prevIdx = (function () { try { return list.findIndex(function (r) { return resultKey(r) === resultKey(o); }); } catch (e) { return -1; } })();
+          const prevLen = list.length;
+          importResultLine(l, list);
+          if (list.length > prevLen) added++;
+          else if (prevIdx >= 0) merged++;
+        });
+        if (added || merged) { T.results = list; saveResults(list); renderTPanel(); toast((added ? added + " ajout(s)" : "") + (merged ? (added ? " + " : "") + merged + " redépôt(s)" : "") + "."); }
+        else toast("Aucun nouveau dépôt (déjà enregistrés).");
+      });
+    }
   });
   document.addEventListener("change", function (e) {
     if (sessionStorage.getItem("svtq_t") !== "1") return;
