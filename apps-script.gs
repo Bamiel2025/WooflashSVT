@@ -77,16 +77,32 @@ function handle(raw) {
 }
 
 function getSheet() {
-  var ss = SPREADSHEET_ID
-    ? SpreadsheetApp.openById(SPREADSHEET_ID)
-    : SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) ss = SpreadsheetApp.create("Base de réponses quizz SVT");
+  var props = PropertiesService.getScriptProperties();
+  var ssId = props.getProperty("SS_ID");
+  var ss = null;
+  if (ssId) {
+    try { ss = SpreadsheetApp.openById(ssId); } catch (e) { ss = null; }
+  }
+  if (!ss) {
+    ss = SPREADSHEET_ID
+      ? SpreadsheetApp.openById(SPREADSHEET_ID)
+      : SpreadsheetApp.getActiveSpreadsheet();
+  }
+  if (!ss) {
+    ss = SpreadsheetApp.create("Base de réponses quizz SVT");
+    props.setProperty("SS_ID", ss.getId());
+  } else if (!ssId && SPREADSHEET_ID) {
+    props.setProperty("SS_ID", ss.getId());
+  }
   var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
-    sh.appendRow(["Date", "Prénom", "Nom", "Classe", "Quiz", "ID quiz", "Dépôts", "Clé élève", "Score", "Réponses (numéros)", "Code NDJSON"]);
-    sh.setFrozenRows(1);
-    sh.getRange(1, 1, 1, 11).setFontWeight("bold");
+    var sheets = ss.getSheets();
+    for (var i = 0; i < sheets.length; i++) {
+      if (sheets[i].getName() !== SHEET_NAME && sheets[i].getLastRow() === 0) {
+        ss.deleteSheet(sheets[i]);
+      }
+    }
   }
   return sh;
 }
