@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quizz SVT — Cycle 3 &amp; Cycle 4</title>
+<link rel="icon" href="data:,">
+<style id="appcss">
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#f2f4fa;color:#1e293b;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+h1,h2,h3,h4{line-height:1.25;margin:0}
+p{margin:.4em 0}
+button{font-family:inherit}
+input,select,textarea{font-family:inherit;font-size:1rem}
+a{color:#6d28d9}
+.hero{background:linear-gradient(135deg,#312e81,#6d28d9 60%,#7c3aed);color:#fff;border-radius:22px;padding:30px 26px;margin:18px 0 22px;box-shadow:0 10px 30px rgba(79,70,229,.25)}
+.hero h1{font-size:clamp(1.6rem,4vw,2.3rem);letter-spacing:-.02em}
+.hero .sub{opacity:.92;font-size:1.02rem;max-width:640px}
+.hero .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.hero .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:4px 12px;border-radius:999px;font-size:.82rem;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.chip{border:1.5px solid #dbe1ec;background:#fff;color:#475569;border-radius:999px;padding:6px 14px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .15s}
+.chip:hover{border-color:#a78bfa}
+.chip.on{background:linear-gradient(135deg,#6d28d9,#7c3aed);border-color:transparent;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;padding-bottom:8px}
+.qcard{background:#fff;border-radius:16px;padding:18px;box-shadow:0 3px 14px rgba(30,41,59,.07);cursor:pointer;transition:transform .16s,box-shadow .16s;border-top:4px solid #7c3aed;display:flex;flex-direction:column;gap:10px}
+.qcard.c3{border-top-color:#0d9488}
+.qcard:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(30,41,59,.13)}
+.qcard .toprow{display:flex;align-items:center;gap:8px}
+.numbadge{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#6d28d9,#a78bfa);color:#fff;font-weight:800;display:inline-flex;align-items:center;justify-content:center;font-size:.95rem;flex:none}
+.c3 .numbadge{background:linear-gradient(135deg,#0f766e,#2dd4bf)}
+.lvl{background:#ede9fe;color:#6d28d9;font-weight:700;font-size:.78rem;padding:3px 10px;border-radius:999px}
+.cyc{background:#f1f5f9;color:#64748b;font-weight:600;font-size:.78rem;padding:3px 10px;border-radius:999px;margin-left:auto}
+.qcard h3{font-size:1.02rem;color:#0f172a}
+.qcard .theme{font-size:.8rem;color:#64748b;margin:0}
+.qcard .meta{font-size:.82rem;color:#475569;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:999px;padding:11px 20px;font-size:.95rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#fff;transition:filter .15s,transform .15s;text-decoration:none}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ghost{background:#fff;color:#334155;border:1.5px solid #cbd5e1}
+.btn.ok{background:linear-gradient(135deg,#059669,#10b981)}
+.btn.warn{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.btn.sm{padding:7px 14px;font-size:.85rem}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn svg{width:17px;height:17px;flex:none}
+.site-foot{margin:26px 0 30px;text-align:center}
+.site-foot .lnk{background:none;border:none;color:#64748b;font-size:.85rem;cursor:pointer;text-decoration:underline;padding:8px}
+.quizpage{max-width:760px;margin:0 auto;padding:14px 16px 40px}
+.qhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 4px}
+.prog{height:9px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:10px 0 18px}
+.prog>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#6d28d9,#a78bfa);transition:width .3s}
+.qbox{background:#fff;border-radius:18px;box-shadow:0 4px 18px rgba(30,41,59,.08);padding:22px}
+.qnum{display:inline-flex;align-items:center;gap:6px;background:#ede9fe;color:#6d28d9;font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:999px}
+.qtext{font-size:1.12rem;font-weight:700;color:#0f172a;margin:12px 0 18px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;border:1.5px solid #e2e8f0;border-radius:13px;padding:12px 14px;cursor:pointer;transition:all .13s;background:#fff}
+.opt:hover{border-color:#a78bfa}
+.opt.sel{border-color:#7c3aed;background:#f5f3ff}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.ball{width:28px;height:28px;border-radius:50%;background:#eef2f7;color:#475569;font-weight:800;font-size:.85rem;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.opt.sel .ball{background:#7c3aed;color:#fff}
+.opt .txt{font-size:.97rem}
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav .btn:first-child{margin-right:auto}
+.field{margin:14px 0}
+.field label{display:block;font-weight:700;font-size:.9rem;margin-bottom:6px;color:#334155}
+.field input{width:100%;padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:11px;outline:none;transition:border .13s}
+.field input:focus{border-color:#7c3aed}
+.formcard{background:#fff;border-radius:18px;box-shadow:0 4px 18px rgba(30,41,59,.08);padding:24px;margin-top:16px}
+.hint{font-size:.85rem;color:#64748b}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.steps .st{flex:1;min-width:150px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;font-size:.85rem;color:#475569}
+.steps .st b{color:#0f172a}
+.reshead{text-align:center;padding:8px 0 4px}
+.ringwrap{position:relative;width:150px;height:150px;margin:10px auto}
+.ringwrap svg{transform:rotate(-90deg)}
+.ringtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;color:#0f172a}
+.ringtxt .big{font-size:2rem;line-height:1}
+.ringtxt .sm{font-size:.8rem;color:#64748b;font-weight:600}
+.verdict{font-size:1.15rem;font-weight:800;margin:6px 0 2px}
+.recap{text-align:left;margin-top:18px}
+.rline{border:1px solid #e2e8f0;border-radius:13px;padding:12px 14px;margin:10px 0;background:#fff}
+.rline.ok{border-left:5px solid #16a34a}
+.rline.ko{border-left:5px solid #dc2626}
+.rline .rq{font-weight:700;color:#0f172a;font-size:.93rem;display:flex;gap:8px;align-items:baseline}
+.rline .rq .ic{flex:none;display:inline-flex}
+.rline .rq .ic svg{width:16px;height:16px}
+.rline .rr{font-size:.85rem;margin-top:5px;color:#475569}
+.rline .rr b.okc{color:#16a34a}
+.rline .rr b.koc{color:#dc2626}
+.expl{background:#f8fafc;border-radius:9px;padding:8px 11px;margin-top:7px;font-size:.83rem;color:#475569}
+.sendbox{background:#eef2ff;border:1px solid #c7d2fe;border-radius:15px;padding:16px;margin-top:20px;text-align:left}
+.sendbox h4{margin:0 0 6px;font-size:.95rem;color:#312e81}
+.sendbox ol{margin:6px 0 10px;padding-left:20px;font-size:.86rem;color:#475569}
+.codebox{width:100%;border:1px solid #c7d2fe;border-radius:9px;padding:9px;font-size:.75rem;font-family:ui-monospace,Consolas,monospace;background:#fff;resize:vertical;min-height:64px;color:#334155}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 4px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:11px 20px;border-radius:999px;font-size:.88rem;font-weight:600;opacity:0;pointer-events:none;transition:all .25s;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal{background:#fff;border-radius:20px;padding:26px;width:min(94%,430px);box-shadow:0 20px 60px rgba(0,0,0,.35);animation:pop .18s ease-out}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{font-size:1.15rem;margin-bottom:4px}
+.modal .sub{color:#64748b;font-size:.86rem;margin-bottom:14px}
+.modal.shake{animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.err{color:#dc2626;font-size:.83rem;font-weight:600;min-height:1.2em;margin-top:6px}
+.thead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 14px}
+.thead h2{font-size:1.3rem;color:#0f172a}
+.thead .sp{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.tab{border:1.5px solid #dbe1ec;background:#fff;color:#475569;border-radius:999px;padding:8px 16px;font-size:.88rem;font-weight:700;cursor:pointer}
+.tab.on{background:#0f172a;color:#fff;border-color:transparent}
+.tpanel{background:#fff;border-radius:18px;box-shadow:0 4px 18px rgba(30,41,59,.08);padding:20px;margin-bottom:18px}
+.tpanel h3{font-size:1rem;margin-bottom:10px;color:#0f172a}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.controls select{padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;font-weight:600;color:#334155}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:13px;padding:12px;text-align:center}
+.stat .v{font-size:1.45rem;font-weight:800;color:#0f172a}
+.stat .l{font-size:.78rem;color:#64748b;font-weight:600}
+.qbars{display:flex;flex-direction:column;gap:11px;margin-top:6px}
+.qbar .lbl{display:flex;gap:8px;align-items:baseline;font-size:.83rem;margin-bottom:3px}
+.qbar .lbl b{color:#6d28d9;font-size:.8rem}
+.qbar .lbl span{color:#475569;font-size:.78rem}
+.track{height:10px;background:#eef2f7;border-radius:999px;overflow:hidden;display:flex}
+.fill{height:100%;border-radius:999px;transition:width .4s}
+.fill.f-ok{background:linear-gradient(90deg,#059669,#34d399)}
+.fill.f-mid{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.fill.f-ko{background:linear-gradient(90deg,#dc2626,#f87171)}
+.qbar .pct{font-size:.78rem;font-weight:700;color:#475569;margin-top:2px}
+.tblwrap{overflow-x:auto;margin-top:8px}
+table.dt{width:100%;border-collapse:collapse;font-size:.86rem}
+table.dt th{background:#f1f5f9;text-align:left;padding:9px 10px;font-size:.78rem;color:#475569;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+table.dt td{padding:9px 10px;border-bottom:1px solid #eef2f7;vertical-align:middle}
+table.dt tr:last-child td{border-bottom:none}
+.iconbtn{background:none;border:none;cursor:pointer;color:#94a3b8;padding:4px;border-radius:8px;display:inline-flex}
+.iconbtn:hover{color:#dc2626;background:#fee2e2}
+.iconbtn svg{width:16px;height:16px}
+.drop{border:2px dashed #c7d2fe;border-radius:15px;padding:26px;text-align:center;color:#475569;background:#f8faff;transition:all .15s}
+.drop.over{background:#ede9fe;border-color:#7c3aed}
+.kline{border:1px solid #e2e8f0;border-radius:13px;padding:13px 15px;margin:10px 0}
+.kline .kq{font-weight:700;color:#0f172a;font-size:.93rem;display:flex;gap:8px;align-items:baseline}
+.kline .kq b{color:#6d28d9;font-size:.8rem;flex:none}
+.kopts{margin:8px 0 0;padding:0;list-style:none}
+.kopts li{padding:7px 11px;border-radius:9px;font-size:.87rem;color:#475569;margin:4px 0;border:1px solid transparent}
+.kopts li.good{background:#ecfdf5;border-color:#a7f3d0;color:#065f46;font-weight:700}
+.kexpl{background:#f8fafc;border-radius:9px;padding:8px 11px;font-size:.82rem;color:#475569;margin-top:7px}
+.xrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid #e2e8f0;border-radius:13px;padding:11px 14px;margin:8px 0}
+.xrow .idb{background:#ede9fe;color:#6d28d9;font-weight:800;font-size:.78rem;padding:3px 9px;border-radius:8px;flex:none}
+.xrow .t{flex:1;min-width:180px;font-size:.9rem;font-weight:600;color:#0f172a}
+.xrow .acts{display:flex;gap:8px;flex-wrap:wrap}
+.note{font-size:.83rem;color:#64748b;background:#f8fafc;border-radius:10px;padding:10px 13px;margin:10px 0}
+.depbox{background:linear-gradient(135deg,#eef2ff,#f5f3ff);border:1.5px solid #c7d2fe;border-radius:15px;padding:16px;margin:6px 0 18px}
+.depbox h3{font-size:1rem;color:#312e81;margin-bottom:4px}
+.depbox .hint{margin-top:6px}
+.tryline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid #e2e8f0;border-left:4px solid #7c3aed;border-radius:11px;padding:10px 13px;margin:8px 0;background:#fff;font-size:.88rem}
+.tryline .who{font-weight:800;color:#0f172a}
+.tryline .meta{color:#64748b;font-size:.8rem}
+.tryline .delta{font-weight:700}
+.tryline .delta.up{color:#059669}
+.tryline .delta.dn{color:#dc2626}
+.tryline .delta.eq{color:#64748b}
+.badge2{display:inline-block;background:#ede9fe;color:#6d28d9;font-weight:700;font-size:.72rem;border-radius:999px;padding:2px 9px}
+.empty{color:#94a3b8;text-align:center;padding:26px 10px;font-size:.9rem}
+:focus-visible{outline:3px solid #a78bfa;outline-offset:2px}
+@media (max-width:640px){.hero{padding:22px 18px;border-radius:16px}.qbox,.formcard,.tpanel{padding:16px}.nav{flex-wrap:wrap}.nav .btn{flex:1}}
+@media print{.no-print{display:none!important}body{background:#fff}.hero,.tpanel{box-shadow:none}}
+</style>
+<noscript><p style="padding:20px;text-align:center">Ce quiz nécessite JavaScript. Active-le dans ton navigateur.</p></noscript>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast"></div>
+<script id="appjs">
+"use strict";
+/* ============================================================
+   QUIZZ SVT — fichier 100% autonome (aucune dépendance)
+   ------------------------------------------------------------
+   CONFIGURATION ENSEIGNANT (modifiable ci-dessous) :
+   - TEACHER_CODE    : code d'accès à l'espace enseignant
+   - TEACHER_EMAIL   : adresse mail pré-remplie pour le bouton
+                       « Envoyer par mail » de l'élève
+                       (laisser "" pour masquer ce bouton)
+   - SHOW_CORRECTION : true = l'élève voit la correction
+   ------------------------------------------------------------
+   FORMAT DES RÉPONSES (NDJSON, 1 ligne JSON, ~150 octets) :
+   {"v":1,"quiz":"eb01","s":"Nom","c":"Classe","a":[0,1,2,...],"t":"date"}
+   Les réponses « a » sont les numéros (0-3) des propositions
+   dans l'ordre ORIGINEL du corrigé (indépendant du mélange
+   affiché à l'élève) : directement exploitables en base.
+   GitHub Pages : déposer ce fichier (quizz.html) à la racine,
+   lien direct vers un quiz : quizz.html?quiz=eb05
+   Espace enseignant : bouton en bas de page ou quizz.html?prof=1
+   ============================================================ */
+const TEACHER_CODE = "quizzsvt2027";
+const TEACHER_EMAIL = "";
+const SHOW_CORRECTION = true;
+/* ================= QUESTIONS — 10 QCM par ebook ================= */
+/* q: question · o: propositions · a: index de la bonne réponse · e: explication */
+
+const Q01 = [
+{q:"Quelle est la différence entre la lithosphère et l'asthénosphère ?",o:["La lithosphère est une enveloppe rigide et cassante, alors que l'asthénosphère est solide mais ductile (déformable)","La lithosphère est liquide et l'asthénosphère est gazeuse","La lithosphère est située sous l'asthénosphère","L'asthénosphère est la couche la plus externe de la Terre"],a:0,e:"La lithosphère (environ 100 km d'épaisseur) est rigide et découpée en plaques ; l'asthénosphère, située dessous, est plus chaude et ductile, ce qui permet le déplacement des plaques."},
+{q:"À quelle vitesse les plaques tectoniques se déplacent-elles ?",o:["De 1 à 10 m par an","De 1 à 10 cm par an","De quelques micromètres par siècle","Les plaques sont immobiles depuis des millions d'années"],a:1,e:"Les plaques se déplacent de 1 à 10 cm par an, ce que l'on mesure aujourd'hui grâce au GPS."},
+{q:"Que se passe-t-il au niveau des dorsales océaniques ?",o:["Les plaques entrent en collision et forment des montagnes","Une plaque s'enfonce sous une autre","Les plaques s'écartent (divergence) et un nouveau plancher océanique est créé","Il ne se passe rien : c'est une zone inactive"],a:2,e:"À l'écartement des plaques, au niveau des dorsales, la lave sous-marine refroidit et forme un nouveau plancher océanique."},
+{q:"Comment appelle-t-on l'enfoncement d'une plaque océanique dense sous une autre plaque ?",o:["La divergence","La collision","La sédimentation","La subduction"],a:3,e:"La subduction se produit au niveau des fosses sous-marines : une plaque océanique dense plonge sous une autre plaque, formant fosses, séismes et volcans explosifs."},
+{q:"Les Alpes et l'Himalaya sont des chaînes de montagnes formées par...",o:["La collision de deux continents","L'écartement de deux plaques au niveau d'une dorsale","L'érosion par les glaciers","Des éruptions volcaniques explosives"],a:0,e:"La convergence de deux plaques continentales empile les roches : c'est la collision, à l'origine des grandes chaînes comme les Alpes et l'Himalaya."},
+{q:"Le point situé à la surface du sol, à la verticale du foyer d'un séisme, s'appelle...",o:["Le foyer","L'épicentre","La faille","L'hypocentre"],a:1,e:"Le foyer (ou hypocentre) est le lieu de la rupture en profondeur ; l'épicentre est le point en surface à sa verticale, où les secousses sont maximales."},
+{q:"Le Piton de la Fournaise (La Réunion) est un volcan...",o:["Explosif : il projette des nuées ardentes","Éteint depuis 10 000 ans","Effusif : ses laves fluides forment des coulées","Qui ne produit que du gaz, sans lave"],a:2,e:"Les volcans effusifs, comme le Piton de la Fournaise, émettent des laves fluides qui s'écoulent en coulées, sans explosion majeure."},
+{q:"Où trouve-t-on surtout les volcans explosifs, aux laves visqueuses et aux nuées ardentes ?",o:["Au niveau des dorsales océaniques","Au centre des continents, loin de toute frontière de plaque","En Antarctique uniquement","Dans les zones de subduction"],a:3,e:"Les volcans explosifs (comme la Montagne Pelée) sont souvent situés en zone de subduction : leurs magmas visqueux piègent les gaz, d'où les explosions et les nuées ardentes."},
+{q:"En 1912, Alfred Wegener a proposé que...",o:["Les continents dérivent : ils formaient autrefois un supercontinent unique, la Pangée","La surface de la Terre est immuable","Les séismes sont causés par les explosions volcaniques","Les montagnes naissent uniquement de l'érosion"],a:0,e:"Wegener a remarqué que les côtes d'Afrique et d'Amérique du Sud s'emboîtent et partagent des fossiles anciens : il a proposé la dérive des continents depuis la Pangée."},
+{q:"Pourquoi les ondes sismiques S ralentissent-elles vers 100 à 120 km de profondeur ?",o:["Parce qu'elles rencontrent le noyau externe liquide","Parce que les roches deviennent plus chaudes et ductiles : on passe de la lithosphère à l'asthénosphère","Parce que le manteau est creux à cette profondeur","C'est une simple erreur de mesure sans signification"],a:1,e:"Le ralentissement brutal des ondes S (zone de faibles vitesses) traduit le passage d'un milieu rigide (lithosphère) à un milieu moins rigide et ductile (asthénosphère)."}
+];
+
+const Q02 = [
+{q:"Selon l'OMM, le climat d'une région se définit par des moyennes calculées sur au moins...",o:["30 ans","3 ans","300 ans","24 heures"],a:0,e:"Le climat correspond aux moyennes des grandeurs atmosphériques sur au moins 30 ans ; en dessous, on parle de météo (temps à court terme)."},
+{q:"Combien de grandes zones climatiques distingue-t-on à la surface de la Terre ?",o:["Deux : chaude et froide","Trois : polaire, tempérée, chaude","Quatre : comme les quatre saisons","Une seule, identique partout"],a:1,e:"On distingue trois grandes zones climatiques : polaire, tempérée et chaude (tropicale)."},
+{q:"Pourquoi le Soleil chauffe-t-il davantage l'équateur que les pôles ?",o:["Parce que l'équateur est plus proche du Soleil","Parce que les pôles sont protégés par une couche de glace","Ses rayons arrivent perpendiculaires à l'équateur et obliques aux pôles, à cause de la forme sphérique de la Terre","Parce que l'air est plus dense à l'équateur"],a:2,e:"La sphéricité de la Terre fait que les rayons frappent perpendiculairement à l'équateur (énergie concentrée) et de façon oblique aux pôles (énergie étalée)."},
+{q:"L'air chaud qui monte crée une zone de...",o:["Haute pression : un anticyclone","Sécheresse absolue","Vent glacial permanent","Basse pression : une dépression, avec des nuages et de la pluie"],a:3,e:"L'air chaud s'élève et crée une dépression (basse pression) où se forment nuages et précipitations ; l'air froid descend et crée un anticyclone, au temps sec."},
+{q:"Dans quel sens souffle le vent ?",o:["Des anticyclones (hautes pressions) vers les dépressions (basses pressions)","Des dépressions vers les anticyclones","Toujours d'ouest en est partout sur Terre","Du nord vers le sud uniquement"],a:0,e:"Le vent souffle toujours des hautes pressions (anticyclones) vers les basses pressions (dépressions)."},
+{q:"Quelle serait la température moyenne de la Terre sans effet de serre naturel ?",o:["+15 °C, comme aujourd'hui","-18 °C : les océans seraient entièrement gelés","+30 °C","0 °C exactement"],a:1,e:"L'effet de serre naturel maintient la Terre à +15 °C en moyenne ; sans lui, il ferait -18 °C et les océans seraient gelés. Il est donc vital."},
+{q:"Quels sont les principaux gaz à effet de serre de l'atmosphère ?",o:["L'oxygène et l'azote","L'hélium et l'hydrogène","La vapeur d'eau et le dioxyde de carbone (CO2)","Uniquement le méthane"],a:2,e:"La vapeur d'eau et le CO2 retiennent une partie de la chaleur en réémettant le rayonnement infrarouge vers le sol : c'est l'effet de serre."},
+{q:"Les carottes de glace d'Antarctique nous renseignent sur le climat passé grâce à...",o:["La couleur de la neige","Des fossiles de coquillages marins","L'épaisseur de la neige fraîche","Les bulles d'air piégées dans la glace, qui conservent le CO2 d'autrefois"],a:3,e:"Les bulles d'air piégées dans les glaces depuis des centaines de milliers d'années constituent de vraies archives du CO2 et du climat."},
+{q:"En 1856, Eunice Foote a montré que...",o:["Un cylindre rempli de CO2 chauffe beaucoup plus vite au soleil qu'un cylindre d'air ordinaire","Le climat de la Terre ne change jamais","La Terre se refroidit depuis 1850","Les glaces du pôle Nord avancent vers le sud"],a:0,e:"Son expérience sur le gaz carbonique a permis de découvrir l'effet de serre, complétée ensuite par les travaux de Svante Arrhenius."},
+{q:"Depuis le début de l'ère industrielle, le taux de CO2 atmosphérique...",o:["Est resté exactement le même","A augmenté de plus de 50 % : il est passé de 280 ppm à plus de 420 ppm","A diminué grâce aux forêts","A été divisé par deux"],a:1,e:"Le CO2 est passé de 280 ppm avant 1850 à plus de 420 ppm aujourd'hui (au-delà du seuil naturel de 300 ppm observé sur 800 000 ans), à cause des activités humaines."}
+];
+
+const Q03 = [
+{q:"Le risque naturel résulte du croisement entre...",o:["L'aléa et la vulnérabilité","La météo et le climat","L'érosion et la pollution","La richesse et le tourisme"],a:0,e:"Risque = Aléa (probabilité et intensité de l'événement dangereux) × Vulnérabilité (fragilité des personnes et des biens exposés)."},
+{q:"Un très fort séisme survenant dans un désert totalement inhabité représente...",o:["Un risque très élevé","Un risque très faible, car la vulnérabilité est quasi nulle","Une catastrophe certaine","Le risque maximal possible"],a:1,e:"Sans population ni constructions exposées, la vulnérabilité est nulle : le risque est donc très faible, même si l'aléa est fort."},
+{q:"Peut-on prédire la date et l'heure exactes d'un séisme ?",o:["Oui, deux mois à l'avance","Oui, grâce aux satellites","Non, ce n'est actuellement pas possible","Oui, en observant le comportement des animaux"],a:2,e:"Contrairement à la météo et aux crues, on ne sait pas prédire la date exacte d'un séisme : on surveille (sismomètres, GPS) et on prévient."},
+{q:"La météo et les crues peuvent être prévues...",o:["Un an à l'avance exactement","Jamais, sous aucun délai","Dix ans à l'avance, au mois près","Quelques heures ou quelques jours à l'avance grâce aux satellites et aux radars"],a:3,e:"Les satellites et les radars permettent des prévisions météo et de crues à quelques heures ou jours, ce qui laisse le temps d'alerter."},
+{q:"La vigilance météo française comporte combien de niveaux ?",o:["Quatre : vert, jaune, orange, rouge","Deux : normal et alerte","Six niveaux","Dix niveaux numérotés"],a:0,e:"Les cartes de vigilance météo comportent 4 niveaux : vert (pas de vigilance), jaune (être attentif), orange (être très vigilant) et rouge (crise)."},
+{q:"L'éruption de la Montagne Pelée, le 8 mai 1902, a détruit la ville de...",o:["Saint-Denis, à La Réunion","Saint-Pierre, en Martinique","Pompéi, en Italie","Lima, au Pérou"],a:1,e:"La nuée ardente de la Montagne Pelée a détruit Saint-Pierre (Martinique) en quelques minutes. Les études d'Alfred Lacroix ont ensuite fondé la volcanologie moderne."},
+{q:"Une nuée ardente est...",o:["Une tempête de sable dans le désert","Un orage très violent","Un mélange brûlant de gaz, de cendres et de blocs rocheux qui dévale les pentes à plus de 300 km/h","Une vague de froid polaire"],a:2,e:"La nuée ardente, typique des volcans explosifs, est un mélange de gaz chauds, de cendres et de blocs dévalant les pentes à plus de 300 km/h : c'est le danger majeur de ces volcans."},
+{q:"Le PPRI (Plan de Prévention des Risques d'Inondation) interdit notamment...",o:["De nager dans les lacs","D'arroser les jardins en été","De pêcher dans les rivières","De construire dans les zones inondables"],a:3,e:"Le PPRI réglemente l'usage des sols et interdit les constructions dans les zones inondables pour réduire l'exposition aux crues."},
+{q:"Les bâtiments parasismiques sont conçus pour...",o:["Résister aux secousses sismiques","Produire de l'électricité lors des séismes","Flotter en cas de tsunami","Filtrer l'air après une éruption"],a:0,e:"Construire des bâtiments parasismiques, capables d'encaisser les secousses, est une mesure de prévention essentielle en zone sismique."},
+{q:"Les exercices PPMS au collège servent à...",o:["Mesurer la pollution de l'air","Apprendre aux élèves les bons gestes et l'évacuation en cas de danger","Faire du sport pendant les cours","Remplacer les sorties scolaires"],a:1,e:"Le PPMS (Plan Particulier de Mise en Sécurité) s'entraîne par des exercices d'évacuation : c'est une mesure de prévention qui sauve des vies."}
+];
+
+const Q04 = [
+{q:"Combien de temps faut-il pour former quelques centimètres de sol fertile en climat tempéré ?",o:["De plusieurs siècles à plusieurs milliers d'années","Quelques années","Quelques semaines","Le sol existe depuis toujours, il ne se forme plus"],a:0,e:"Le sol se forme par altération de la roche-mère et fabrication d'humus : 100 à 10 000 ans pour quelques centimètres. C'est une ressource quasi non renouvelable à échelle humaine."},
+{q:"Quels êtres vivants transforment la litière (feuilles mortes, débris) en humus ?",o:["Les grands mammifères herbivores","Les décomposeurs : vers de terre, insectes, champignons, bactéries","Les oiseaux migrateurs","Les poissons des rivières"],a:1,e:"La faune du sol (vers de terre, insectes, champignons, bactéries) décompose les débris végétaux et animaux en humus fertile : le sol est vivant."},
+{q:"Quelles sont les deux grandes menaces qui pèsent sur les sols ?",o:["Les orages et la grêle","Les séismes et les tsunamis","Le bétonnage (artificialisation) et l'érosion","Le ski et la randonnée"],a:2,e:"L'artificialisation par le bétonnage et l'érosion détruisent les sols, qui mettent des siècles à se reformer."},
+{q:"Sur un sol urbain bétonné, lors d'une forte pluie...",o:["L'eau s'infiltre à 80 %, comme en forêt","Toute l'eau s'évapore immédiatement","Rien ne change par rapport à une forêt","Environ 70 % de l'eau ruisselle, provoquant des inondations éclair et empêchant la recharge des nappes"],a:3,e:"En forêt, 80 % de l'eau s'infiltre ; sur sol bétonné, 70 % ruisselle : inondations éclair et nappes phréatiques qui ne se rechargent plus."},
+{q:"Les énergies fossiles (pétrole, charbon, gaz)...",o:["Ont mis des millions d'années à se former et polluent l'air","Se renouvellent chaque année","Sont inépuisables","Ne servent qu'aux centrales nucléaires"],a:0,e:"Les énergies fossiles mettent des millions d'années à se former et rejettent des polluants et du CO2 : il faut les économiser."},
+{q:"Le solaire, l'éolien et l'hydraulique sont des énergies...",o:["Fossiles","Renouvelables : inépuisables à l'échelle humaine","Nucléaires","De réserve, comme le pétrole"],a:1,e:"Les énergies renouvelables (soleil, vent, eau, chaleur de la Terre) sont inépuisables et peu polluantes : ce sont les énergies de demain."},
+{q:"Un écoduc est...",o:["Un tunnel réservé aux voitures","Un barrage hydroélectrique","Un passage à faune, souvent un pont végétalisé au-dessus d'une autoroute","Une serre agricole géante"],a:2,e:"Les écoducs sont des passages à faune qui permettent aux animaux de traverser les routes et autoroutes sans danger."},
+{q:"La Trame verte correspond aux continuités écologiques...",o:["Aquatiques : rivières et mares","Lumineuses : éclairage public","Souterraines : métros et tunnels","Terrestres : haies, arbres, corridors boisés"],a:3,e:"La Trame verte relie les milieux terrestres (haies, arbres), la Trame bleue les milieux aquatiques (rivières, mares) : ensemble, elles permettent à la faune et à la flore de circuler."},
+{q:"La Trame noire vise à...",o:["Réduire la pollution lumineuse nocturne pour protéger les espèces nocturnes","Peindre les routes en noir la nuit","Éteindre les villes en pleine journée","Créer des tunnels réservés aux chauves-souris"],a:0,e:"La Trame noire consiste à diminuer l'éclairage nocturne pour protéger les espèces nocturnes (chauves-souris, chouettes, insectes) perturbées par la lumière artificielle."},
+{q:"En 1962, Rachel Carson publie « Printemps silencieux », livre qui alerte sur...",o:["La fonte des glaciers","Le danger des pesticides chimiques pour les oiseaux et les rivières","Le trou dans la couche d'ozone","La disparition des abeilles uniquement"],a:1,e:"Rachel Carson a révélé comment les pesticides empoisonnent les chaînes alimentaires : son livre a lancé les premiers mouvements de protection de l'environnement."}
+];
+
+const Q05 = [
+{q:"Quelle est l'équation de la respiration cellulaire ?",o:["Glucose + dioxygène (O2) → énergie + CO2 + eau","CO2 + eau → glucose + énergie","Lumière + CO2 → glucose + dioxygène","Glucose → lumière + dioxygène"],a:0,e:"Dans les cellules, le glucose réagit avec le dioxygène pour libérer l'énergie nécessaire à la vie, en produisant du CO2 et de l'eau."},
+{q:"La sève brute est...",o:["Des sucres fabriqués dans les racines","De l'eau et des sels minéraux qui montent des racines vers les feuilles","Un engrais chimique ajouté par l'homme","Un liquide produit par les fleurs"],a:1,e:"La sève brute (eau + sels minéraux) monte des racines vers les feuilles ; la sève élaborée (riche en sucres) est fabriquée dans les feuilles et nourrit toute la plante."},
+{q:"Les stomates des feuilles servent à...",o:["Pomper l'eau du sol","Transporter la sève élaborée","Les échanges gazeux (absorption du CO2, rejet de l'O2)","Fabriquer la chlorophylle"],a:2,e:"Les stomates sont de minuscules pores à la surface des feuilles (des centaines par mm²) qui permettent d'absorber le CO2 et de rejeter l'O2."},
+{q:"Lors de la photosynthèse, le dioxygène (O2) est...",o:["Consommé par la plante","Transformé en CO2","Stocké dans les racines","Rejeté dans l'atmosphère par la plante"],a:3,e:"Photosynthèse : lumière + eau + sels minéraux + CO2 → matière organique (sucres) + rejet de dioxygène."},
+{q:"Un organisme autotrophe est capable de...",o:["Fabriquer sa propre matière organique à partir de matière minérale et de lumière","Se nourrir uniquement de viande","Se reproduire sans partenaire","Vivre sans eau"],a:0,e:"Les végétaux chlorophylliens sont autotrophes : ils fabriquent leur matière organique à partir d'éléments minéraux et de lumière. Les animaux et les champignons sont hétérotrophes."},
+{q:"Quel test met en évidence l'amidon dans un tubercule de pomme de terre ?",o:["Le test au sulfate de cuivre","L'eau iodée, qui colore l'amidon en bleu-noir","Le papier pH","La simple cuisson à l'eau"],a:1,e:"L'eau iodée révèle l'amidon : en sa présence, la solution prend une coloration bleu-noir caractéristique."},
+{q:"L'expérience du saule de Van Helmont (XVIIe siècle) a montré que...",o:["Les plantes se nourrissent uniquement du sol","La terre disparaît quand on arrose trop","La plante ne « mange » pas la terre : sa masse vient essentiellement de l'eau","Les arbres n'ont pas besoin de lumière"],a:2,e:"Van Helmont a arrosé un saule uniquement avec de l'eau pendant 5 ans : l'arbre a gagné plus de 70 kg alors que la terre n'avait presque rien perdu."},
+{q:"Chez l'animal, quels organes éliminent les déchets produits par le fonctionnement des cellules ?",o:["Le cœur et le foie","L'estomac et l'intestin","La peau uniquement","Les reins et les poumons"],a:3,e:"Les poumons éliminent le CO2 et les reins filtrent le sang pour évacuer les autres déchets vers l'urine."},
+{q:"Quel est le rôle du sang dans la nutrition des organes ?",o:["Transporter les nutriments et le dioxygène vers tous les organes","Fabriquer les nutriments à partir des aliments","Digérer les aliments dans l'intestin","Stocker l'amidon dans les muscles"],a:0,e:"Le sang transporte les nutriments et le dioxygène jusqu'aux cellules de tous les organes, et ramène les déchets vers les reins et les poumons."},
+{q:"Le tubercule (pomme de terre), le bulbe (oignon) et les graines (blé, haricot) sont...",o:["Des organes reproducteurs uniquement","Des organes de réserve qui stockent les sucres pour la future plante","Des maladies des plantes","Des parties de la fleur"],a:1,e:"Ces organes de réserve stockent l'amidon (sucre) : ils permettent à la plante de survivre en hiver et de redémarrer au printemps."}
+];
+
+const Q06 = [
+{q:"La reproduction sexuée nécessite l'union de deux cellules reproductrices appelées...",o:["Les gamètes : un gamète mâle (spermatozoïde ou grain de pollen) et un gamète femelle (ovule)","Les ovules uniquement","Les cellules-œufs","Les bactéries"],a:0,e:"La reproduction sexuée repose sur la rencontre d'un gamète mâle et d'un gamète femelle : leur union (fécondation) donne naissance à une cellule-œuf."},
+{q:"La fécondation externe, dans l'eau, se rencontre chez...",o:["Le chat domestique","L'oursin de mer et la truite","L'aigle royal","Le papillon machaon"],a:1,e:"Chez l'oursin et la truite, la femelle libère ses ovules et le mâle ses spermatozoïdes directement dans l'eau, où a lieu la fécondation externe."},
+{q:"Chez les mammifères, les oiseaux et les insectes, la fécondation est...",o:["Externe : dans l'eau","Asexuée : sans gamètes","Interne : elle a lieu à l'intérieur du corps de la femelle","Impossible à observer"],a:2,e:"Chez ces animaux, le mâle dépose ses spermatozoïdes dans le corps de la femelle : la fécondation a lieu à l'intérieur, à l'abri du milieu extérieur."},
+{q:"La reproduction asexuée produit des individus...",o:["Tous différents les uns des autres","Issus de deux parents","Plus petits que la moyenne","Génétiquement identiques au parent unique : des clones"],a:3,e:"Sans fécondation, un seul parent donne naissance à des copies de lui-même : des clones. C'est un moyen très rapide de coloniser un milieu."},
+{q:"Le fraisier se multiplie rapidement grâce à...",o:["Des tiges rampantes appelées stolons qui s'enracinent pour former de nouveaux plants","Des graines transportées par le vent uniquement","La fabrication de pollen","Un bourgeonnement comme l'hydre"],a:0,e:"Les stolons sont des tiges aériennes rampantes : là où elles touchent le sol, elles s'enracinent et forment un nouveau plant, clone du fraisier parent."},
+{q:"L'hydre d'eau douce se reproduit de manière asexuée par...",o:["Ponte d'œufs fécondés dans l'eau","Bourgeonnement : un petit hydre pousse sur le parent avant de s'en détacher","Division en deux comme une bactérie","Pollinisation"],a:1,e:"Chez l'hydre, un bourgeon se forme sur le corps du parent, grandit puis se détache : c'est une reproduction asexuée animale."},
+{q:"La pollinisation, c'est le transport du pollen...",o:["Des racines vers les feuilles","De la fleur vers le sol","Des étamines vers le pistil, souvent par les insectes ou le vent","Du pistil vers les étamines"],a:2,e:"Les insectes (ou le vent) transportent les grains de pollen des étamines vers le stigmate du pistil, permettant la fécondation des ovules."},
+{q:"En 1793, Christian Konrad Sprengel a compris que les couleurs vives et le nectar sucré des fleurs servent à...",o:["Faire fuir les oiseaux","Se protéger du froid","Fabriquer des graines plus grosses","Attirer les insectes qui transportent le pollen d'une fleur à l'autre"],a:3,e:"Sprengel a montré que les fleurs « récompensent » les insectes pollinisateurs par leur nectar : une coopération mutualiste essentielle à la fécondation."},
+{q:"Le changement climatique perturbe la reproduction des plantes parce que...",o:["Certaines fleurs s'ouvrent trop tôt, avant le réveil des insectes pollinisateurs","Les fleurs ne produisent plus de pollen","Les abeilles sont devenues trop grosses","Les graines ne tombent plus au sol"],a:0,e:"La floraison précoce désynchronisée du réveil des pollinisateurs menace la fécondation : c'est un exemple de dérèglement causé par le réchauffement."},
+{q:"Chez les tortues marines, le sexe des bébés dépend de...",o:["La couleur de la carapace des parents","La température du sable du nid : tiède plutôt des mâles, très chaud plutôt des femelles","La taille de la mère","La vitesse des vagues"],a:1,e:"Le réchauffement climatique, en chauffant le sable des plages de ponte, modifie la proportion de mâles et de femelles chez les tortues : un déséquilibre qui menace les populations."}
+];
+
+const Q07 = [
+{q:"Combien de chromosomes contient chacune de nos cellules ?",o:["46 chromosomes, soit 23 paires","23 chromosomes simples","92 chromosomes","12 paires de chromosomes"],a:0,e:"Dans le noyau de chaque cellule humaine se trouvent 46 chromosomes (23 paires), dont une paire détermine le sexe : XX chez la femme, XY chez l'homme."},
+{q:"Quelle paire de chromosomes détermine le sexe masculin ?",o:["XX","XY","YY","XO"],a:1,e:"La 23e paire est sexuelle : XX chez la femme, XY chez l'homme. C'est le chromosome Y qui déclenche le développement masculin."},
+{q:"L'ADN, molécule support de l'information génétique, a la forme d'une...",o:["Étoile à cinq branches","Spirale plate","Double hélice","Chaîne droite et rigide"],a:2,e:"Chaque chromosome contient une très longue molécule d'ADN en double hélice : si on la déroulait, elle mesurerait près de 2 mètres dans une seule cellule !"},
+{q:"Un gène, c'est...",o:["Une cellule reproductrice","Une maladie héréditaire","Une protéine du sang","Un petit morceau de chromosome qui détermine un caractère précis (groupe sanguin, couleur des yeux...)"],a:3,e:"Le gène est une portion d'ADN qui porte l'information d'un caractère héréditaire. Il existe en plusieurs versions : les allèles."},
+{q:"Pour chaque gène, combien d'allèles possédons-nous et d'où viennent-ils ?",o:["Deux : un venant du père, un venant de la mère","Un seul, choisi au hasard","Quatre : deux de chaque parent","Aucun avant la puberté"],a:0,e:"Nous portons deux allèles de chaque gène, l'un transmis par le père, l'autre par la mère. Certains sont dominants, d'autres récessifs."},
+{q:"Un allèle dominant est un allèle qui...",o:["Ne s'exprime jamais","S'exprime toujours, même en un seul exemplaire","Ne s'exprime qu'en deux exemplaires","Disparaît à chaque génération"],a:1,e:"Un allèle dominant s'exprime dès qu'il est présent ; un allèle récessif ne s'exprime que s'il est en deux exemplaires."},
+{q:"Un enfant possède l'allèle A et l'allèle O du groupe sanguin. Quel est son groupe ?",o:["Groupe O, car O est le plus récent","Groupe AO, un groupe rare","Groupe A, car A est dominant sur O qui est récessif","Impossible à savoir sans analyse"],a:2,e:"L'allèle A domine l'allèle O : le phénotype exprimé est le groupe A, même si le génotype contient l'allèle O récessif."},
+{q:"Lors de la fabrication des gamètes (méiose), les paires de chromosomes...",o:["Doublent : chaque gamète en reçoit 92","Restent soudées en 23 paires","S'échangent entre spermatozoïdes et ovules","Se séparent : chaque gamète ne reçoit que 23 chromosomes"],a:3,e:"La méiose (deux divisions successives) réduit le nombre de chromosomes de moitié : chaque gamète reçoit 23 chromosomes, un seul de chaque paire."},
+{q:"Dans une famille où un enfant est atteint de mucoviscidose (m/m) et les parents sains, les parents sont obligatoirement...",o:["Hétérozygotes [S/m], porteurs sains","Homozygotes [m/m], donc malades","Homozygotes [S/S], donc non concernés","Du même groupe sanguin"],a:0,e:"Chaque parent a transmis l'allèle muté m à l'enfant [m/m], tout en étant sain : ils portent donc aussi l'allèle sain dominant S. Leur génotype est [S/m]."},
+{q:"En 1953, qui a photographié l'ADN aux rayons X (« Photo 51 »), clé de la découverte de la double hélice ?",o:["Charles Darwin","Rosalind Franklin","Louis Pasteur","Gregor Mendel"],a:1,e:"Rosalind Franklin a obtenu par cristallographie aux rayons X la célèbre Photo 51, qui a permis (avec Watson et Crick) de comprendre la structure en double hélice de l'ADN."}
+];
+
+const Q08 = [
+{q:"La vie sur Terre est apparue il y a environ...",o:["3,8 milliards d'années","6 000 ans","1 million d'années","450 millions d'années"],a:0,e:"Les plus anciennes traces de vie (bactéries fossiles) datent d'environ 3,8 milliards d'années : tous les êtres vivants actuels descendent de ces premières formes."},
+{q:"Quels arguments prouvent que tous les êtres vivants partagent un ancêtre commun ?",o:["Tous respirent de l'oxygène","Tous sont constitués de cellules et possèdent de l'ADN","Tous ont la même taille","Tous vivent dans l'eau"],a:1,e:"L'universalité de la cellule et de l'ADN est la preuve majeure de la parenté universelle du vivant : l'ADN de toutes les espèces s'écrit avec les mêmes lettres."},
+{q:"Chez l'humain, l'oiseau, la baleine et la chauve-souris, les membres antérieurs...",o:["Sont tous parfaitement identiques","N'ont aucun os commun","Ont la même organisation osseuse (bras, avant-bras, poignet, doigts) héritée d'un ancêtre commun","Sont apparus indépendamment, sans lien"],a:2,e:"Malgré leurs fonctions différentes (marcher, voler, nager), ces squelettes ont la même architecture : c'est une homologie qui prouve la parenté des vertébrés tétrapodes."},
+{q:"Archaeopteryx est un fossile précieux car il présente...",o:["Des fleurs fossiles","Un cœur de mammifère","Des traces d'ADN complet","Des caractères intermédiaires : plumes d'oiseau et dents de reptile"],a:3,e:"Ce fossile à caractères intermédiaires montre la transition entre reptiles et oiseaux : il illustre l'évolution graduelle des espèces."},
+{q:"Sur un arbre de parenté, deux branches proches signifient...",o:["Un ancêtre commun récent entre les deux espèces","Que les deux espèces vivent au même endroit","Qu'elles ont la même taille","Qu'elles se nourrissent pareil"],a:0,e:"Plus deux branches partent d'un nœud récent, plus les espèces sont proches parentes : le nœud représente leur dernier ancêtre commun."},
+{q:"L'Homme descend-il du chimpanzé ?",o:["Oui, directement","Non : l'Homme et le chimpanzé partagent un ancêtre commun disparu, il y a environ 7 millions d'années","Oui, mais seulement les hommes","Non, ils n'ont aucun lien"],a:1,e:"L'Homme et le chimpanzé sont des espèces cousines issues d'un même ancêtre commun disparu : l'une ne descend pas de l'autre. Nous partageons plus de 98 % de notre ADN."},
+{q:"En 1859, Charles Darwin a observé aux îles Galápagos...",o:["Des girafes au cou court","Des fossiles de dinosaures géants","Des pinsons aux becs de formes différentes selon leur nourriture, adaptation par sélection naturelle","Des baleines avec des pattes"],a:2,e:"Lors du voyage du Beagle, Darwin a compris que la forme du bec de chaque espèce de pinson correspondait à sa nourriture (graines, insectes, fleurs) : c'est l'adaptation par sélection naturelle."},
+{q:"Le mécanisme de la sélection naturelle, c'est quand...",o:["Les individus choisissent volontairement de muter","Les animaux s'entraînent pour devenir plus forts","Les caractères acquis par l'effort sont transmis","Les individus portant des variations avantageuses survivent mieux et transmettent ces caractères"],a:3,e:"Des mutations apparaissent AU HASARD ; l'environnement « trie » ensuite : les variations avantageuses (meilleure survie, plus de descendants) se répandent dans la population."},
+{q:"La phalène du bouleau illustre la sélection naturelle car...",o:["Les papillons sombres survivent mieux sur des troncs noircis par la suie, et se reproduisent davantage","Les papillons clairs ont appris à se cacher","Les papillons ont changé de couleur volontairement","La suie a coloré leurs ailes"],a:0,e:"Sur les troncs pollués, les phalènes sombres sont mieux camouflées : les oiseaux les mangent moins, elles se reproduisent davantage et la population s'assombrit en quelques générations."},
+{q:"Les oiseaux actuels sont...",o:["Des mammifères à plumes","Les descendants directs des dinosaures","Des reptiles à sang froid","Les ancêtres des ptérosaures"],a:1,e:"Les oiseaux forment le seul groupe vivant de dinosaures : ils descendent directement d'eux, ce que montrent les fossiles à plumes et l'anatomie comparée."}
+];
+
+const Q09 = [
+{q:"Pendant un effort physique, les muscles consomment davantage...",o:["De dioxygène et de glucose, et rejettent plus de CO2 et de chaleur","De CO2 et de déchets","D'azote et de vapeur d'eau","De vitamines"],a:0,e:"Les muscles en activité brûlent glucose + O2 (respiration cellulaire) : il faut donc leur apporter davantage de nutriments et de dioxygène par le sang."},
+{q:"Que se passe-t-il pour la fréquence cardiaque et le rythme respiratoire pendant un sprint ?",o:["Les deux diminuent pour économiser l'énergie","Les deux augmentent pour apporter O2 et glucose aux muscles","Le cœur ralentit mais la respiration accélère","Rien ne change"],a:1,e:"Le rythme cardiaque et le rythme respiratoire augmentent ensemble : le sang circule plus vite, livrant O2 et glucose aux muscles et évacuant le CO2 produit."},
+{q:"La sueur sert à...",o:["Éliminer les microbes","Lubrifier les articulations","Évacuer la chaleur produite par les muscles","Éliminer le sucre en excès"],a:2,e:"Les muscles produisent beaucoup de chaleur : la sueur, en s'évaporant, refroidit le corps et maintient sa température à 37°C."},
+{q:"Remets dans l'ordre la chaîne nerveuse quand un élève voit une balle et l'attrape :",o:["Muscle → cerveau → œil → nerf","Cerveau → œil → muscle → nerf sensitif","Nerf moteur → œil → nerf sensitif → cerveau","Œil (récepteur) → nerf sensitif → cerveau → nerf moteur → muscle de la main"],a:3,e:"Les organes des sens captent le stimulus (œil), le message sensitif remonte au cerveau par les nerfs, le cerveau analyse et décide, le message moteur redescend vers le muscle (effecteur)."},
+{q:"Les cellules du cerveau et des nerfs s'appellent...",o:["Les neurones","Les globules rouges","Les phagocytes","Les myocytes"],a:0,e:"Le cerveau humain contient environ 86 milliards de neurones, cellules spécialisées dans la genèse et la conduction des messages nerveux électriques."},
+{q:"Le message nerveux passe d'un neurone au suivant au niveau de...",o:["La membrane plasmique","La synapse, grâce à des neurotransmetteurs (molécules chimiques)","Le noyau","Le sang"],a:1,e:"La synapse est la zone de jonction entre deux neurones : la transmission y est chimique, par des neurotransmetteurs qui stimulent ou inhibent le neurone suivant."},
+{q:"En 1628, William Harvey a démontré que le cœur...",o:["Fabrique le sang en continu","Est le siège de la pensée","Fonctionne comme une pompe musculaire, en circuit fermé et à sens unique","Pulse le sang vers les poumons uniquement"],a:2,e:"Harvey a prouvé la circulation du sang en circuit fermé : le cœur est une pompe musculaire qui propulse le sang dans un seul sens, valves et artères directionnant le flux."},
+{q:"Pourquoi l'alcool augmente-t-il le temps de réaction d'un conducteur ?",o:["Il éteint les neurones définitivement","Il épaissit le sang","Il agit uniquement sur la vision","Il perturbe la transmission chimique au niveau des synapses cérébrales"],a:3,e:"À 0,5 g/L (seuil légal), le temps de réaction passe de 0,75 s à 1,2 s : à 90 km/h, la distance de freinage grimpe de 19 m à 30 m. L'alcool perturbe les synapses."},
+{q:"Pour mémoriser et récupérer, le cerveau a surtout besoin de...",o:["Un sommeil suffisant","De longs écrans avant de dormir","De musique très forte au casque","De boissons énergisantes"],a:0,e:"Le sommeil consolide la mémoire : la lumière des écrans perturbe l'endormissement et la musique trop forte au casque lèse définitivement l'audition."},
+{q:"L'entraînement sportif régulier...",o:["Fatigue définitivement le cœur","Améliore l'endurance et renforce le cœur","Est inutile avant 18 ans","Rend les muscles plus lourds seulement"],a:1,e:"L'entraînement régulier améliore l'endurance (VO2 max : volume maximal d'O2 consommé par minute) et renforce le muscle cardiaque."}
+];
+
+const Q10 = [
+{q:"La digestion commence dans la bouche où les dents...",o:["Coupent et broient les aliments : c'est la digestion mécanique","Absorbent directement les nutriments","Fabriquent les enzymes stomacales","Trie les aliments sains et toxiques"],a:0,e:"La digestion est double : mécanique (dents, brassage de l'estomac) et chimique (enzymes). La bouche assure le broyage mécanique, tandis que la salive amorce la digestion chimique de l'amidon."},
+{q:"Le milieu de l'estomac est...",o:["Basique comme le savon","Acide : il aide à détruire les bactéries et à digérer les protéines","Neutre comme l'eau pure","Sucré comme le sirop"],a:1,e:"L'estomac brasse mécaniquement les aliments dans un milieu acide qui détruit une partie des bactéries et prépare la digestion des protéines."},
+{q:"Les enzymes digestives agissent comme...",o:["Des éponges qui absorbent l'eau","Des camions qui transportent le sang","Des minuscules ciseaux qui découpent chimiquement les aliments en nutriments","Des muscles qui brassent l'estomac"],a:2,e:"Chaque enzyme est spécialisée (amylase → amidon, protéases → protéines, lipases → lipides) : elles découpent les grosses molécules alimentaires en petites molécules solubles, les nutriments."},
+{q:"La salive contient une enzyme qui commence la digestion...",o:["Des graisses","Des vitamines","De l'eau","De l'amidon"],a:3,e:"L'amylase salivaire découpe l'amidon (pain, pomme de terre) dès la mastication : une digestion chimique démarre donc déjà dans la bouche."},
+{q:"Où la quasi-totalité des nutriments passe-t-elle dans le sang ?",o:["Dans l'intestin grêle, au niveau des villosités","Dans la bouche","Dans l'estomac","Dans le gros intestin"],a:0,e:"L'absorption intestinale a lieu dans l'intestin grêle : ses millions de replis (villosités) forment une immense surface d'échange où les nutriments passent dans le sang."},
+{q:"Pourquoi la paroi de l'intestin grêle est-elle plissée en millions de villosités ?",o:["Pour décorer l'intérieur de l'intestin","Pour augmenter énormément la surface d'absorption (environ 300 m²)","Pour stocker les aliments non digérés","Pour ralentir le passage du sang"],a:1,e:"Les villosités multiplient la surface d'échange : l'intestin grêle offre environ 300 m², l'équivalent d'un terrain de tennis, pour absorber efficacement les nutriments."},
+{q:"Une fois absorbés, les nutriments sont...",o:["Stockés dans l'estomac de réserve","Éliminés par le gros intestin","Distribués par le sang à tous les organes","Transformés en salive"],a:2,e:"Le sang transporte les nutriments (glucose, acides aminés, acides gras) vers toutes les cellules de l'organisme, qui les utilisent pour produire de l'énergie et fabriquer leur matière."},
+{q:"Les fibres non digérées...",o:["Sont réabsorbées par l'estomac","Se transforment en glucose","Restent bloquées dans l'intestin grêle","Passent dans le gros intestin, où les bactéries du microbiote les digèrent en partie, avant élimination"],a:3,e:"Le gros intestin héberge des milliards de bactéries (le microbiote) qui digèrent les fibres, fabriquent des vitamines et protègent contre les microbes nocifs."},
+{q:"En 1783, Spallanzani a montré que la digestion est chimique en...",o:["Plaçant de la viande dans un tube percé avec du suc digestif : la viande s'est dissoute","Pesant des aliments avant et après repas","Observant des dents au microscope","Faisant bouillir de la salive"],a:0,e:"La viande dissoute uniquement en présence de suc digestif prouve que la digestion n'est pas qu'un simple broyage mécanique : les enzymes détruisent chimiquement la matière."},
+{q:"Pour une alimentation équilibrée, on privilégie...",o:["Uniquement des aliments de Nutri-Score E","Les aliments de Nutri-Score A et B, des fruits, légumes et fibres, avec une activité physique régulière","Un seul repas par jour","Les plats industriels prêts à réchauffer"],a:1,e:"Le Nutri-Score (de A à E) guide vers les aliments de meilleure qualité nutritionnelle ; excès de sucre et de graisses favorisent prise de poids et caries."}
+];
+const Q11 = [
+{q:"L'entrée de micro-organismes dans le corps (par une coupure ou la respiration) s'appelle...",o:["La contamination","L'infection","La vaccination","L'asepsie"],a:0,e:"La contamination est l'entrée des microbes dans le corps ; l'infection est leur multiplication à l'intérieur. Se laver les mains et désinfecter une plaie évite la contamination."},
+{q:"Quels sont les 4 signes de l'inflammation d'une plaie ?",o:["Rougeur, saignement, fièvre, fatigue","Rougeur, gonflement, chaleur, douleur","Douleur, vertige, toux, éternuement","Chaleur, pâleur, frissons, soif"],a:1,e:"Une plaie enflammée présente 4 signes : rougeur, gonflement (œdème), chaleur et douleur. C'est le signe que les défenses du corps sont en action."},
+{q:"La phagocytose, c'est quand...",o:["Les globules rouges transportent plus d'oxygène","La peau fabrique une nouvelle barrière","Des globules blancs appelés phagocytes englobent et digèrent les microbes","Le corps produit des anticorps spécifiques"],a:2,e:"Les phagocytes « mangent » les microbes : adhésion, ingestion dans une vésicule, digestion enzymatique, rejet des débris. C'est la réponse rapide, non spécifique."},
+{q:"Un anticorps est...",o:["Un poison fabriqué par les bactéries","Une hormone produite par l'hypophyse","Un globule rouge transportant l'oxygène","Une protéine en forme de Y produite par les lymphocytes B, qui se fixe sur un antigène comme une clé dans une serrure"],a:3,e:"Les lymphocytes B fabriquent des anticorps sur mesure : chaque anticorps se fixe spécifiquement sur l'antigène du microbe (spécificité clé-serrure) pour le neutraliser."},
+{q:"Quel est le rôle des lymphocytes T tueurs ?",o:["Ils détruisent par contact les cellules infectées par un virus","Ils fabriquent des anticorps libres dans le sang","Ils digèrent les microbes par phagocytose","Ils transportent l'oxygène vers les organes"],a:0,e:"Les lymphocytes B sécrètent des anticorps libres dans le sang ; les lymphocytes T tueurs détruisent directement, par contact, les cellules infectées."},
+{q:"La vaccination consiste à...",o:["Injecter un microbe mortel pour tuer les globules blancs","Présenter au corps un microbe rendu inoffensif pour qu'il fabrique des anticorps et des lymphocytes mémoires","Donner directement des anticorps qui durent toute la vie","Prendre un antibiotique chaque matin"],a:1,e:"Le vaccin entraîne le système immunitaire sans déclencher la maladie : à la vraie rencontre, les lymphocytes mémoires réagissent immédiatement."},
+{q:"Les antibiotiques sont efficaces...",o:["Contre tous les virus","Contre les bactéries et les virus","Uniquement contre les bactéries","Uniquement contre les champignons"],a:2,e:"Les antibiotiques ciblent des structures bactériennes (comme la paroi) : ils sont totalement inutiles contre les virus, par exemple du rhume ou de la grippe."},
+{q:"L'antibiorésistance apparaît quand...",o:["On prend trop de vaccins","On mange trop de yaourts","On se lave trop les mains","On abuse des antibiotiques : des bactéries deviennent résistantes aux traitements"],a:3,e:"L'usage abusif des antibiotiques sélectionne des bactéries résistantes : les traitements deviennent alors inefficaces. C'est pourquoi le médecin ne prescrit des antibiotiques que lorsque c'est nécessaire."},
+{q:"En 1885, Louis Pasteur a testé pour la première fois son vaccin contre la rage sur...",o:["Le jeune Joseph Meister, mordu par un chien enragé","Une vache malade du charbon","Son propre fils","Un soldat blessé à la guerre"],a:0,e:"Pasteur a vacciné avec succès le jeune Joseph Meister, mordu par un chien enragé : c'est le premier vaccin contre la rage, une étape majeure de la médecine."},
+{q:"Lors d'une seconde rencontre avec le même microbe, la réponse immunitaire est...",o:["Identique à la première rencontre","Quasi immédiate et environ 100 fois plus intense que la première, grâce aux lymphocytes mémoires","Plus lente car le corps est fatigué","Impossible : le corps ne peut répondre qu'une fois"],a:1,e:"La réponse primaire demande environ 7 jours ; la réponse secondaire, portée par les lymphocytes mémoires, est quasi immédiate, 100 fois plus intense et durable. C'est le principe de la vaccination."}
+];
+
+const Q12 = [
+{q:"Chez la femme, l'ovulation a lieu en général...",o:["Vers le 14e jour d'un cycle de 28 jours","Le premier jour des règles","Tous les jours","Vers le 50e anniversaire"],a:0,e:"Les ovaires libèrent un ovule environ tous les 28 jours, vers le 14e jour du cycle. Sans fécondation, la muqueuse utérine est évacuée : ce sont les règles."},
+{q:"Où a lieu la fécondation chez la femme ?",o:["Dans l'utérus","Dans les trompes","Dans l'ovaire","Dans le vagin"],a:1,e:"La rencontre entre le spermatozoïde et l'ovule a lieu dans les trompes ; la cellule-œuf descend ensuite se nidifier dans l'utérus."},
+{q:"Les règles (menstruations) correspondent à...",o:["La destruction d'un os du bassin","L'évacuation des ovules non utilisés","L'élimination de la muqueuse utérine (endomètre) en l'absence de fécondation","Un saignement causé par une blessure"],a:2,e:"Chaque cycle, la paroi de l'utérus s'épaissit pour accueillir un éventuel embryon ; sans fécondation, cette muqueuse gorgée de sang est évacuée : ce sont les règles."},
+{q:"Chez l'homme, la production de spermatozoïdes...",o:["A lieu une fois par mois","S'arrête à la puberté","N'existe que pendant la nuit","Est continue, environ 1000 spermatozoïdes par seconde pendant toute la vie d'adulte"],a:3,e:"Contrairement au cycle féminin, les testicules produisent des spermatozoïdes en continu, environ 1000 par seconde, pendant toute la vie adulte."},
+{q:"La ménopause, arrêt définitif des cycles et des règles, survient en général...",o:["Vers 50 ans","Vers 20 ans","Vers 80 ans","À la puberté"],a:0,e:"Vers 50 ans, les ovaires cessent de libérer des ovules : les cycles s'arrêtent définitivement, c'est la ménopause."},
+{q:"Quelle glande, située dans le cerveau, commande le fonctionnement des organes reproducteurs ?",o:["La thyroïde","L'hypophyse","Le pancréas","Les glandes salivaires"],a:1,e:"L'hypophyse, dans le cerveau, envoie des messagers chimiques aux testicules et aux ovaires, qui fabriquent alors les hormones sexuelles."},
+{q:"Les hormones sexuelles sont...",o:["L'insuline et le glucagon","L'adrénaline uniquement","La testostérone chez l'homme, les œstrogènes et la progestérone chez la femme","Les mêmes chez l'homme et chez la femme"],a:2,e:"Une hormone est fabriquée par une glande et agit sur des organes cibles : testostérone chez l'homme, œstrogènes et progestérone chez la femme."},
+{q:"Quel est le SEUL moyen de contraception qui protège aussi contre les IST comme le VIH ?",o:["La pilule contraceptive","Le stérilet","L'implant","Le préservatif, masculin ou féminin"],a:3,e:"Seul le préservatif forme une barrière physique étanche : il protège à la fois d'une grossesse et des Infections Sexuellement Transmissibles."},
+{q:"La pilule contraceptive a été mise au point dans les années 1950 par Gregory Pincus et légalisée en France en...",o:["1967","1900","2020","1945"],a:0,e:"Mise au point par Gregory Pincus dans les années 1950, la pilule a été légalisée en France en 1967. Elle bloque l'ovulation et rend la muqueuse utérine impropre à la nidation."},
+{q:"Le vaccin contre le papillomavirus (HPV)...",o:["Ne concerne que les filles","Protège les filles ET les garçons contre certains cancers","Protège uniquement contre l'acné","N'existe pas encore"],a:1,e:"Le vaccin contre le HPV protège aussi bien les filles que les garçons contre certains cancers (col de l'utérus, etc.)."}
+];
+
+const Q13 = [
+{q:"Quels sont les 3 constituants communs à toutes les cellules animales et végétales ?",o:["Membrane plasmique, cytoplasme et noyau","Paroi, chloroplastes et vacuoles","Noyau, mitochondries et squelette","Membrane, sang et oxygène"],a:0,e:"Toute cellule possède : la membrane plasmique (enveloppe protectrice), le cytoplasme (siège des réactions vitales) et le noyau (centre de commande contenant l'information)."},
+{q:"La paroi cellulosique rigide existe...",o:["Uniquement dans les cellules animales","Uniquement dans les cellules végétales","Dans toutes les cellules","Seulement chez les bactéries"],a:1,e:"La paroi cellulosique, qui donne sa forme rigide à la cellule, est spécifique des cellules végétales : c'est ce qui les distingue des cellules animales."},
+{q:"La paramécie et la levure sont des êtres vivants...",o:["Pluricellulaires (des milliards de cellules)","Acellulaires","Unicellulaires (constitués d'une seule cellule)","À mi-chemin entre animal et végétal"],a:2,e:"De la bactérie à la baleine bleue, tous les êtres vivants sont faits de cellules : certains n'en ont qu'une (paramécie, levure), d'autres des milliards (l'Homme, l'arbre)."},
+{q:"Dans une fleur, les étamines fabriquent...",o:["Les ovules, cellules reproductrices femelles","Le nectar uniquement","Les pétales colorés","Les grains de pollen, cellules reproductrices mâles"],a:3,e:"La fleur est l'organe reproducteur : les étamines produisent le pollen (gamètes mâles) et le pistil contient l'ovaire avec les ovules (gamètes femelles)."},
+{q:"Qu'est-ce que la pollinisation ?",o:["Le transport du pollen des étamines vers le pistil, souvent par les insectes","La transformation de la fleur en fruit","La fabrication du nectar","La croissance des racines"],a:0,e:"Les insectes pollinisateurs (abeilles, bourdons) transportent le pollen vers le stigmate du pistil, où un tube pollinique descend jusqu'à l'ovule pour le féconder."},
+{q:"La coopération entre l'abeille et la fleur est bénéfique...",o:["Seulement à la plante","Aux deux : l'abeille se nourrit de nectar, la plante est fécondée","Seulement à l'abeille","À personne, c'est un hasard"],a:1,e:"C'est une coopération mutuelle : l'insecte butine le nectar (sa récompense) et transporte le pollen, assurant la fécondation de la plante."},
+{q:"Après la fécondation, que deviennent le pistil et les ovules ?",o:["Le pistil tombe et les ovules disparaissent","Les ovules deviennent des fleurs nouvelles","Le pistil se transforme en fruit et les ovules en graines","Le pistil se transforme en racine"],a:2,e:"Le pistil gonfle pour former le fruit (la pomme, la chair de la cerise) et les ovules fécondés deviennent les graines (pépins, noyaux)."},
+{q:"Les décomposeurs du sol (vers de terre, cloportes, champignons, bactéries)...",o:["Fabricent la lumière du Soleil","Tuent toutes les plantes","Produisent du pollen","Transforment la matière organique morte en matière minérale réutilisée par les racines"],a:3,e:"Les décomposeurs fragmentent et digèrent la litière (feuilles mortes) en humus puis en sels minéraux, réabsorbés par les racines : rien ne se perd, tout se recycle."},
+{q:"Quel est le rôle des galeries creusées par les vers de terre ?",o:["Elles aèrent le sol et facilitent la pénétration de l'eau et des racines","Elles piègent les insectes nuisibles","Elles stockent le pollen pour l'hiver","Elles évacuent les déchets des plantes"],a:0,e:"En creusant, les vers de terre aèrent le sol et permettent à l'eau et aux racines de mieux pénétrer : ce sont de véritables ingénieurs du sol."},
+{q:"Comment appelle-t-on la couche de feuilles mortes et de débris qui recouvre le sol de la forêt ?",o:["L'humus sec","La litière","La chlorophylle","L'écorce"],a:1,e:"La litière est constituée des feuilles mortes et débris végétaux : les décomposeurs la transforment progressivement en matière minérale, refermant le cycle de la matière."}
+];
+
+const Q14 = [
+{q:"Sur quoi repose la classification des êtres vivants en groupes emboîtés ?",o:["Le partage d'attributs anatomiques observables","Le milieu de vie (aquatique ou terrestre)","La locomotion (voler, nager)","Le régime alimentaire"],a:0,e:"On classe les êtres vivants sur ce qu'ils POSSÈDENT (squelette osseux, poils, plumes, 4 membres...), jamais sur le milieu de vie, la locomotion ou le régime alimentaire."},
+{q:"Parmi ces groupes, lequel est le plus vaste (contient les autres) ?",o:["Les mammifères","Les vertébrés","Les tétrapodes","Les primates"],a:1,e:"Les groupes sont emboîtés : les mammifères font partie des tétrapodes (4 membres), qui font partie des vertébrés (colonne vertébrale). Chaque groupe est inclus dans un groupe plus vaste."},
+{q:"Sur un arbre de parenté, chaque nœud représente...",o:["Une espèce encore vivante aujourd'hui","Une extinction massive","Le dernier ancêtre commun hypothétique des espèces qui en découlent","Un caractère qui a disparu"],a:2,e:"Chaque nœud de l'arbre phylogénétique correspond à l'ancêtre commun hypothétique qui a transmis une innovation évolutive à toute sa descendance."},
+{q:"Deux espèces sont d'autant plus proches parentes qu'elles partagent...",o:["Le même continent","La même couleur","La même taille","Un ancêtre commun plus récent"],a:3,e:"Le degré de parenté se mesure à la récence du dernier ancêtre commun : nœud plus récent = parenté plus proche."},
+{q:"Le pigeon est plus proche parent du crocodile que du lézard. Pourquoi ?",o:["Parce que pigeon et crocodile partagent un ancêtre commun plus récent","Parce que le pigeon et le lézard volent tous les deux","Parce que le crocodile et le lézard ont la même couleur","Parce que le pigeon est plus grand que le lézard"],a:0,e:"Contre toute intuition, l'arbre de parenté montre que les oiseaux (pigeon) et le crocodile partagent un ancêtre commun plus récent que celui qu'ils partagent chacun avec le lézard."},
+{q:"Pourquoi l'âne et le cheval sont-ils deux espèces distinctes, alors qu'ils peuvent se croiser ?",o:["Parce qu'ils n'ont pas la même taille","Parce que leur descendant, le mulet, est stérile","Parce qu'ils ne vivent pas dans le même pays","Parce que l'un est herbivore et pas l'autre"],a:1,e:"La définition biologique de l'espèce exige une descendance fertile : la jument et l'âne donnent un mulet, mais hybride stérile. Ce sont donc deux espèces séparées."},
+{q:"Le canard colvert mâle a une tête vert brillant, la femelle est brune et terne. Ce phénomène s'appelle...",o:["L'interfécondité","La biodiversité génétique","Le dimorphisme sexuel","La mutation aléatoire"],a:2,e:"Le dimorphisme sexuel désigne les différences morphologiques marquées entre mâles et femelles d'une même espèce : ramure du cerf, plumage du paon, tête du canard colvert."},
+{q:"Quelles sont les 3 échelles de la biodiversité ?",o:["La diversité des continents, des pays et des villes","La diversité des plantes, des insectes et des mammifères","La diversité des climats, des sols et des rivières","La diversité des écosystèmes, des espèces et des gènes"],a:3,e:"La biodiversité s'apprécie à 3 échelles emboîtées : la diversité des écosystèmes (milieux), la diversité spécifique (nombre d'espèces) et la diversité génétique (entre individus)."},
+{q:"Les dinosaures non aviens (sans les oiseaux) ont disparu...",o:["Il y a environ 66 millions d'années","Il y a 100 ans","Au début du XXe siècle","Il y a 4 milliards d'années"],a:0,e:"Les fossiles révèlent des crises biologiques majeures : l'extinction des dinosaures non aviens date d'environ 66 millions d'années (fin du Crétacé), suivie de phases de diversification."},
+{q:"Les oiseaux d'aujourd'hui sont...",o:["Des mammifères volants","Les descendants directs des dinosaures","Des reptiles à sang froid","Les ancêtres des chauves-souris"],a:1,e:"Les oiseaux forment le groupe vivant des dinosaures : ils descendent directement d'eux, ce qui explique leurs attributs communs (plumes, squelette, etc.)."}
+];
+
+const Q15 = [
+{q:"Pourquoi la pâte à pain gonfle-t-elle pendant la levée ?",o:["Parce que les levures respirent et fermentent en rejetant du dioxyde de carbone (CO2) qui forme des bulles","Parce que le boulanger souffle dedans","Parce que la farine contient des bulles d'air","Parce que la pâte chauffe au Soleil"],a:0,e:"Les levures consomment le sucre de la farine et rejettent du CO2 (fermentation alcoolique) : le gaz est piégé dans le réseau de gluten et fait gonfler la pâte."},
+{q:"La levure de boulanger (Saccharomyces cerevisiae) est...",o:["Une bactérie qui forme des colonies","Un champignon microscopique unicellulaire qui se reproduit par bourgeonnement","Un algae verte multicellulaire","Un virus qui infecte le blé"],a:1,e:"Saccharomyces cerevisiae est un champignon unicellulaire : observée au microscope, on voit ses cellules bourgeonner, c'est-à-dire former des petites cellules filles."},
+{q:"La fabrication du yaourt repose sur...",o:["Des levures qui rejettent du CO2","Des virus qui mangent le sucre","Des ferments lactiques qui transforment le lactose du lait en acide lactique","Un chauffage à 200°C du lait"],a:2,e:"Les bactéries lactiques transforment le lactose (sucre du lait) en acide lactique : le lait liquide devient un gel, à environ 42°C — c'est la fermentation lactique."},
+{q:"Le réfrigérateur (4 °C) conserve les aliments parce que...",o:["Le froid tue toutes les bactéries","Le froid détruit les virus","Les bactéries adorent le froid et s'endorment","Le froid ralentit fortement la prolifération des bactéries, sans les tuer"],a:3,e:"Attention : le froid ne tue pas les microbes, il ralentit leur multiplication. À la sortie du frigo, ils se remultiplient : c'est pourquoi on ne rompt pas la chaîne du froid."},
+{q:"La pasteurisation et la stérilisation conservent les aliments en...",o:["Détruisant les microbes pathogènes par la chaleur","Ajoutant du sucre","Refroidissant brutalement","Enlevant tout l'air"],a:0,e:"Contrairement au froid, la chaleur détruit les microbes pathogènes : c'est le principe de la pasteurisation (lait, jus de fruits) et de la stérilisation (conserves)."},
+{q:"Une fermentation est...",o:["Une réaction chimique purement artificielle","Une transformation biologique d'une matière organique par des micro-organismes vivants","Une congélation rapide","Un mélange mécanique de deux liquides"],a:1,e:"La fermentation (pain, yaourt, fromage, choucroute) est réalisée par des êtres vivants microscopiques : levures ou bactéries, qui transforment la matière organique."},
+{q:"La puberté est déclenchée par...",o:["Le sport","L'alimentation uniquement","Des hormones produites par les glandes, sous le commandement du cerveau","La volonté de l'adolescent"],a:2,e:"Les hormones, messagers chimiques du sang, commandent les transformations de la puberté : poussée de croissance, pilosité, développement de la poitrine, mue de la voix."},
+{q:"Les caractères sexuels primaires sont...",o:["La pilosité apparue à l'adolescence","La mue de la voix","Le développement des muscles","Les organes génitaux présents dès la naissance"],a:3,e:"Les caractères sexuels primaires (organes génitaux externes et internes) existent dès la naissance ; les caractères sexuels secondaires apparaissent, eux, à la puberté."},
+{q:"Les caractères sexuels secondaires (pilosité, développement de la poitrine, mue de la voix)...",o:["Apparaissent à l'adolescence, sous l'effet des hormones","Sont présents dès la naissance","Disparaissent à l'âge adulte","Sont identiques chez les filles et les garçons"],a:0,e:"Ces modifications corporelles apparaissent à la puberté : elles marquent le passage à la maturité sexuelle, sous l'action des hormones sexuelles."},
+{q:"À la puberté, quel événement marque la maturité sexuelle ?",o:["La fin de la croissance","La production de spermatozoïdes chez le garçon, les cycles menstruels et premières règles chez la fille","L'apparition des dents de sagesse","Le changement de couleur des yeux"],a:1,e:"À la puberté, les organes reproducteurs deviennent fonctionnels : fabrication continue de spermatozoïdes chez le garçon, cycles avec ovulation puis règles chez la fille."}
+];
+
+/* ================= CATALOGUE ================= */
+const QUIZZES = [
+  { id: "eb01", n: 1, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "La dynamique terrestre et la tectonique des plaques", questions: Q01 },
+  { id: "eb02", n: 2, cycle: 4, level: "5e", theme: "La planète Terre et l'action humaine", title: "Météo, climat et réchauffement planétaire", questions: Q02 },
+  { id: "eb03", n: 3, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "Gestion des risques naturels", questions: Q03 },
+  { id: "eb04", n: 4, cycle: 4, level: "3e", theme: "La planète Terre et l'action humaine", title: "Gestion des ressources terrestres", questions: Q04 },
+  { id: "eb05", n: 5, cycle: 4, level: "5e", theme: "Le vivant et son évolution", title: "La nutrition des organismes", questions: Q05 },
+  { id: "eb06", n: 6, cycle: 4, level: "4e", theme: "Le vivant et son évolution", title: "La reproduction sexuée des êtres vivants", questions: Q06 },
+  { id: "eb07", n: 7, cycle: 4, level: "3e", theme: "Le vivant et son évolution", title: "Génétique humaine et hérédité", questions: Q07 },
+  { id: "eb08", n: 8, cycle: 4, level: "3e", theme: "Le vivant et son évolution", title: "L'évolution : preuves et mécanismes", questions: Q08 },
+  { id: "eb09", n: 9, cycle: 4, level: "4e", theme: "Le corps humain et la santé", title: "Effort musculaire et système nerveux", questions: Q09 },
+  { id: "eb10", n: 10, cycle: 4, level: "5e", theme: "Le corps humain et la santé", title: "Digestion et voyage des nutriments", questions: Q10 },
+  { id: "eb11", n: 11, cycle: 4, level: "3e", theme: "Le corps humain et la santé", title: "Le système immunitaire humain", questions: Q11 },
+  { id: "eb12", n: 12, cycle: 4, level: "4e", theme: "Le corps humain et la santé", title: "La reproduction humaine", questions: Q12 },
+  { id: "eb13", n: 13, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Cellule, pollinisation et recyclage du sol", questions: Q13 },
+  { id: "eb14", n: 14, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Classification du vivant et parentés", questions: Q14 },
+  { id: "eb15", n: 15, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Micro-organismes et fermentations", questions: Q15 }
+];
+
+/* ================= OUTILS PARTAGÉS ================= */
+const LETTERS = ["A", "B", "C", "D"];
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const byId = (id) => QUIZZES.find((q) => q.id === id);
+const LS_KEY = "svtq_results_v1";
+
+function toast(msg) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 2600);
+}
+function downloadFile(name, content, mime) {
+  const b = new Blob(["\ufeff" + content], { type: (mime || "application/octet-stream") + ";charset=utf-8" });
+  const u = URL.createObjectURL(b);
+  const a = document.createElement("a");
+  a.href = u; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 4000);
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function slug(s) {
+  return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-+|-+$/g, "").toLowerCase() || "eleve";
+}
+const SVGW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+const IC = {
+  play: SVGW + '<path d="M8 5.14v13.72L19 12 8 5.14z"/></svg>',
+  check: SVGW + '<path d="M20 6 9 17l-5-5"/></svg>',
+  x: SVGW + '<path d="M18 6 6 18M6 6l12 12"/></svg>',
+  dl: SVGW + '<path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5M4 21h16"/></svg>',
+  copy: SVGW + '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  mail: SVGW + '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+  redo: SVGW + '<path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>',
+  home: SVGW + '<path d="m3 10.5 9-7.5 9 7.5V21h-6v-6h-6v6H3z"/></svg>',
+  key: SVGW + '<circle cx="7.5" cy="15.5" r="4.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>',
+  chart: SVGW + '<path d="M3 3v18h18"/><path d="M7 15v3M12 9v9M17 5v13"/></svg>',
+  book: SVGW + '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  db: SVGW + '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>',
+  print: SVGW + '<path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>',
+  trash: SVGW + '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>',
+  link: SVGW + '<path d="M10 14a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 10a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>',
+  code: SVGW + '<path d="m8 8-4 4 4 4M16 8l4 4-4 4"/></svg>',
+  up: SVGW + '<path d="M12 16V4m0 0-5 5m5-5 5 5"/><path d="M4 20h16"/></svg>',
+  out: SVGW + '<path d="M14 3h7v7"/><path d="M21 3 10 14"/><path d="M19 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/></svg>'
+};
+
+/* ================= APPLICATION ÉLÈVE ================= */
+function runStudentApp(root, quiz, opts) {
+  opts = Object.assign({ correction: true, askName: true, mail: "", standalone: false }, opts || {});
+  const M = quiz.questions;
+  const KEY = "svtq_p_" + quiz.id;
+  let first = "", last = "", cls = "";
+  let ord = M.map((m) => shuffle(m.o.map((_, i) => i))); // ordre affiché (mélangé), distinct par question
+  let ans = M.map(() => null); // réponse en index ORIGINEL
+  let idx = 0, phase = "start", score = 0, line = "", saved = null, prevTry = null;
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (raw && Array.isArray(raw.a) && raw.a.length === M.length && Array.isArray(raw.ord) && raw.ord.every((o, i) => o.length === M[i].o.length) && raw.ts && Date.now() - raw.ts < 172800000) saved = raw;
+  } catch (e) {}
+  const persist = () => { try { localStorage.setItem(KEY, JSON.stringify({ fn: first, ln: last, c: cls, a: ans, i: idx, ord, ts: Date.now() })); } catch (e) {} };
+  const fullDisplay = () => (first + " " + last).replace(/\s+/g, " ").trim();
+  const fname = () => "quizz-" + quiz.id + "-" + slug(cls) + "-" + slug(fullDisplay()) + ".ndjson";
+  const begin = () => { ans = M.map(() => null); idx = 0; ord = M.map((m) => shuffle(m.o.map((_, i) => i))); };
+  const findPrevTry = () => {
+    try {
+      const raw = (localStorage.getItem(LS_KEY) || "").split("\n").filter(Boolean);
+      for (const l of raw) {
+        const o = JSON.parse(l);
+        if (o && o.quiz === quiz.id && typeof o.s === "string" && o.n && o.p) {
+          if (normName(o.n) === normName(first) && normName(o.p) === normName(last) && normClass(o.c) === normClass(cls)) return o;
+        } else if (o && o.quiz === quiz.id && typeof o.s === "string" && !o.n && !o.p) {
+          if (normName(o.s) === normName(fullDisplay()) && normClass(o.c) === normClass(cls)) return o;
+        }
+      }
+    } catch (e) {}
+    return null;
+  };
+
+  function vStart() {
+    const prev = findPrevTry();
+    const prevInfo = prev ? '<p class="note">Dépôt(s) précédent(s) pour ce quiz : <b>' + (prev.k || 1) + '</b> — dernier score ' + scoreOf(prev) + "/" + M.length + ". Un nouveau dépôt remplacera le précédent.</p>" : "";
+    return '<div class="quizpage">' +
+      '<div class="qhead"><span class="qnum">' + esc(quiz.level) + " · " + (quiz.cycle === 3 ? "Cycle 3" : "Cycle 4") + '</span><span class="qnum">Quiz ' + quiz.n + "</span></div>" +
+      '<div class="hero" style="padding:24px 22px"><h1 style="font-size:1.5rem">' + esc(quiz.title) + "</h1>" +
+      '<p class="sub" style="margin:6px 0 0">' + M.length + " questions · " + esc(quiz.theme) + "</p></div>" +
+      '<div class="steps">' +
+      '<div class="st"><b>1.</b> Je réponds aux questions</div>' +
+      '<div class="st"><b>2.</b> Je télécharge mon fichier de réponses</div>' +
+      '<div class="st"><b>3.</b> Je dépose mon fichier dans la zone de dépôt</div>' +
+      "</div>" +
+      '<div class="formcard">' +
+      '<div class="field"><label for="s-first">Ton prénom</label><input id="s-first" autocomplete="given-name" placeholder="ex : Léa" maxlength="40"></div>' +
+      '<div class="field"><label for="s-last">Ton nom</label><input id="s-last" autocomplete="family-name" placeholder="ex : Martin" maxlength="40"></div>' +
+      '<div class="field"><label for="s-cls">Ta classe</label><input id="s-cls" autocomplete="off" placeholder="ex : 3eB" maxlength="24"></div>' +
+      prevInfo +
+      '<p class="hint">Ton professeur identifiera tes réponses grâce à ton prénom, ton nom et ta classe : vérifie bien l\'orthographe.</p>' +
+      '<div class="actions">' +
+      '<button class="btn" data-act="begin">' + IC.play + " Commencer le quiz</button>" +
+      (saved ? '<button class="btn ghost" data-act="resume">' + IC.redo + " Reprendre où j'en étais</button>" : "") +
+      "</div></div></div>";
+  }
+
+  function vRun() {
+    const p = Math.round((100 * (idx + 1)) / M.length);
+    const m = M[idx];
+    const rows = ord[idx].map(function (orig, pos) {
+      const sel = ans[idx] === orig;
+      return '<label class="opt' + (sel ? " sel" : "") + '"><input type="radio" name="svtqo" value="' + orig + '"' + (sel ? " checked" : "") + ">" +
+        '<span class="ball">' + LETTERS[pos] + '</span><span class="txt">' + esc(m.o[orig]) + "</span></label>";
+    }).join("");
+    const last = idx === M.length - 1;
+    const prevSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;flex:none"><path d="m15 18-6-6 6-6"/></svg>';
+    const nextSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;flex:none"><path d="m9 6 6 6-6 6"/></svg>';
+    return '<div class="quizpage">' +
+      '<div class="qhead"><span class="qnum">' + esc(quiz.title) + '</span><span class="qnum" style="margin-left:auto">Question ' + (idx + 1) + " / " + M.length + "</span></div>" +
+      '<div class="prog"><i style="width:' + p + '%"></i></div>' +
+      '<div class="qbox"><span class="qnum">Question ' + (idx + 1) + "</span>" +
+      '<p class="qtext">' + esc(m.q) + '</p><div class="opts">' + rows + "</div>" +
+      '<div class="nav">' +
+      '<button class="btn ghost" data-act="prev"' + (idx === 0 ? " disabled" : "") + ">" + prevSvg + " Précédent</button>" +
+      '<button class="btn" data-act="next">' + (last ? "Terminer le quiz" : "Suivant") + nextSvg + "</button>" +
+      "</div></div>" +
+      '<p class="hint" style="text-align:center;margin-top:12px">' + esc(fullDisplay()) + " · " + esc(cls) + "</p></div>";
+  }
+
+  function vRes() {
+    const pct = M.length ? Math.round((100 * score) / M.length) : 0;
+    const col = pct >= 70 ? "#16a34a" : pct >= 40 ? "#d97706" : "#dc2626";
+    const C = 2 * Math.PI * 52;
+    const verdict = pct >= 80 ? "Excellent travail !" : pct >= 60 ? "Bien joué !" : pct >= 40 ? "Passable, continue !" : "À revoir, courage !";
+    let recap = "";
+    if (opts.correction) {
+      recap = '<div class="recap">' + M.map(function (m, i) {
+        const ok = ans[i] === m.a;
+        return '<div class="rline ' + (ok ? "ok" : "ko") + '">' +
+          '<div class="rq"><b>Q' + (i + 1) + "</b> <span class=\"ic\">" + (ok ? IC.check : IC.x) + "</span> " + esc(m.q) + "</div>" +
+          '<div class="rr">Ta réponse : <b class="' + (ok ? "okc" : "koc") + '">' + (ans[i] == null ? "aucune" : LETTERS[ord[i].indexOf(ans[i])] + " — " + esc(m.o[ans[i]])) + "</b><br>" +
+          "Bonne réponse : <b class=\"okc\">" + LETTERS[ord[i].indexOf(m.a)] + " — " + esc(m.o[m.a]) + "</b></div>" +
+          '<div class="expl">' + esc(m.e || "") + "</div></div>";
+      }).join("") + "</div>";
+    }
+    const mailHref = "mailto:" + encodeURIComponent(opts.mail) +
+      "?subject=" + encodeURIComponent("Quizz SVT " + quiz.n + " - " + cls + " - " + fullDisplay()) +
+      "&body=" + encodeURIComponent(line + "\n\n(Fichier NDJSON : dépose ce texte dans un fichier .ndjson si le téléchargement est impossible.)");
+    const prevBox = prevTry
+      ? '<div class="tryline"><span class="who">Dépôt précédent</span><span class="meta">tentative n°' + (prevTry.k || 1) + " · " + scoreOf(prevTry) + "/" + M.length + "</span><span class=\"meta\">Le nouveau dépôt remplacera cette ligne.</span></div>"
+      : "";
+    return '<div class="quizpage"><div class="reshead">' +
+      '<div class="ringwrap"><svg width="150" height="150" viewBox="0 0 120 120">' +
+      '<circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="11"/>' +
+      '<circle cx="60" cy="60" r="52" fill="none" stroke="' + col + '" stroke-width="11" stroke-linecap="round" stroke-dasharray="' + C + '" stroke-dashoffset="' + (C * (1 - score / Math.max(1, M.length))) + '"/></svg>' +
+      '<div class="ringtxt"><span class="big">' + score + "/" + M.length + '</span><span class="sm">' + pct + "% de réussite</span></div></div>" +
+      '<div class="verdict" style="color:' + col + '">' + verdict + "</div>" +
+      '<p class="hint">' + esc(fullDisplay()) + " · " + esc(cls) + " · " + esc(quiz.title) + "</p></div>" +
+      recap + prevBox +
+      '<div class="sendbox"><h4>Enregistre et dépose tes réponses</h4><ol>' +
+      "<li><b>Télécharge mes réponses</b> : un petit fichier <code>.ndjson</code> est enregistré sur ton appareil.</li>" +
+      "<li><b>Dépose ce fichier</b> dans la zone ci-dessous : tes réponses partent directement dans la base du professeur.</li>" +
+      "<li>Si la zone ne fonctionne pas (hors connexion, ENT...) : envoie le fichier ou le <b>code copié</b> à ton professeur.</li></ol>" +
+      '<div class="actions">' +
+      '<button class="btn ok" data-act="dl">' + IC.dl + " Télécharger mes réponses</button>" +
+      '<button class="btn ghost" data-act="copy">' + IC.copy + " Copier le code</button>" +
+      (opts.mail ? '<a class="btn" href="' + mailHref + '">' + IC.mail + " Envoyer par mail</a>" : "") +
+      "</div>" +
+      '<textarea id="r-code" class="codebox" readonly rows="3">' + esc(line) + "</textarea>" +
+      '<p class="hint" style="margin:8px 0 0">Fichier : <code>' + esc(fname()) + "</code> (1 ligne JSON, ~150 octets)</p>" +
+      (opts.standalone
+        ? '<p class="hint">Version hors-ligne : envoie ce fichier ou le code copié à ton professeur (ENT, mail...).</p>'
+        : '<div class="drop" id="dropzone" style="margin-top:14px">' + IC.up + "<p><b>Dépose ici</b> ton fichier de réponses <code>.ndjson</code><br>(glisser-déposer ou clic pour choisir le fichier)</p><input type=\"file\" id=\"fileinput\" accept=\".ndjson,.txt,.json\" style=\"display:none\"></div>") +
+      '<p class="hint" id="drop-ok" style="display:none;color:#059669;font-weight:700;margin-top:8px">Dépôt enregistré — merci !</p></div>' +
+      '<div class="actions" style="justify-content:center;margin-top:16px">' +
+      '<button class="btn ghost" data-act="again">' + IC.redo + ' Recommencer</button>' +
+      (!opts.standalone ? '<button class="btn" data-act="goto-depot">' + IC.up + ' Déposer mon fichier</button>' +
+        '<button class="btn ghost" data-act="home">' + IC.home + " Retour à l'accueil</button>" : "") +
+      "</div></div>";
+  }
+
+  function render() {
+    root.innerHTML = phase === "start" ? vStart() : phase === "run" ? vRun() : vRes();
+    root.querySelectorAll("[data-act]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        const act = el.getAttribute("data-act");
+        if (act === "begin") {
+          const fi = root.querySelector("#s-first"), la = root.querySelector("#s-last"), cl = root.querySelector("#s-cls");
+          first = (fi.value || "").trim(); last = (la.value || "").trim(); cls = (cl.value || "").trim();
+          if (first.length < 2) { toast("Indique ton prénom."); fi.focus(); return; }
+          if (last.length < 2) { toast("Indique ton nom."); la.focus(); return; }
+          if (!cls) { toast("Indique ta classe."); cl.focus(); return; }
+          prevTry = findPrevTry();
+          begin(); phase = "run"; persist(); render();
+        } else if (act === "resume" && saved) {
+          first = saved.fn || (saved.n || "").split(" ")[0] || ""; last = saved.ln || (saved.n || "").split(" ").slice(1).join(" ") || ""; cls = saved.c || "";
+          ans = saved.a.slice(); idx = Math.min(saved.i || 0, M.length - 1); ord = saved.ord;
+          phase = "run"; render();
+        } else if (act === "prev") { if (idx > 0) { idx--; persist(); render(); } }
+        else if (act === "next") {
+          if (idx < M.length - 1) { idx++; persist(); render(); return; }
+          const miss = ans.filter((v) => v == null).length;
+          if (miss > 0 && !confirm(miss + " question(s) sans réponse. Vraiment terminer le quiz ?")) return;
+          finish();
+        } else if (act === "dl") { downloadFile(fname(), line + "\n", "application/x-ndjson"); toast("Fichier téléchargé : envoie-le à ton professeur."); }
+        else if (act === "copy") {
+          (navigator.clipboard ? navigator.clipboard.writeText(line) : Promise.reject()).then(
+            function () { toast("Code copié ! Colle-le dans un message pour ton professeur."); },
+            function () { const ta = root.querySelector("#r-code"); ta.focus(); ta.select(); document.execCommand("copy"); toast("Code copié !"); }
+          );
+        } else if (act === "again") { phase = "start"; try { localStorage.removeItem(KEY); } catch (e) {} saved = null; render(); }
+        else if (act === "home") { renderHome(); }
+      });
+    });
+    if (phase === "run") {
+      root.querySelectorAll('input[name="svtqo"]').forEach(function (r) {
+        r.addEventListener("change", function () { ans[idx] = parseInt(r.value, 10); persist(); render(); });
+      });
+    }
+    if (phase === "start") {
+      const fi = root.querySelector("#s-first"), la = root.querySelector("#s-last"), cl = root.querySelector("#s-cls");
+      [fi, la, cl].forEach(function (i) { i.addEventListener("keydown", function (e) { if (e.key === "Enter") root.querySelector('[data-act="begin"]').click(); }); });
+      fi.focus();
+    }
+  }
+
+  function finish() {
+    score = ans.reduce(function (acc, v, i) { return acc + (v === M[i].a ? 1 : 0); }, 0);
+    prevTry = findPrevTry();
+    const k = prevTry ? (prevTry.k || 1) + 1 : 1;
+    line = JSON.stringify({ v: 2, quiz: quiz.id, p: first, n: last, c: cls, k: k, a: ans, t: new Date().toISOString() });
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    phase = "res"; render();
+  }
+  render();
+}
+
+/* ================= ACCUEIL & ROUTAGE ================= */
+let homeFilter = { cycle: "all", level: "all" };
+
+function renderHome() {
+  window.__qlink = null;
+  const app = $("#app");
+  const levels = [...new Set(QUIZZES.map((q) => q.level))];
+  const chip = (cur, val, label, act) => '<button class="chip ' + (cur === val ? "on" : "") + '" data-act="' + act + '" data-val="' + val + '">' + label + "</button>";
+  const list = QUIZZES.filter((q) => (homeFilter.cycle === "all" || q.cycle === +homeFilter.cycle) && (homeFilter.level === "all" || q.level === homeFilter.level));
+  const cards = list.map((q) =>
+    '<article class="qcard ' + (q.cycle === 3 ? "c3" : "") + '" data-act="start" data-val="' + q.id + '" role="button" tabindex="0">' +
+    '<div class="toprow"><span class="numbadge">' + q.n + '</span><span class="lvl">' + esc(q.level) + '</span><span class="cyc">Cycle ' + q.cycle + "</span></div>" +
+    "<h3>" + esc(q.title) + "</h3><p class=\"theme\">" + esc(q.theme) + "</p>" +
+    '<div class="meta" style="margin-top:auto">' + q.questions.length + " question" + (q.questions.length > 1 ? "s" : "") + " · QCM</div>" +
+    '<button class="btn sm" ' + (q.questions.length ? "" : "disabled") + ">" + IC.play + " Commencer</button></article>"
+  ).join("");
+  app.innerHTML = '<div class="wrap">' +
+    '<div class="hero"><h1>Quizz SVT</h1>' +
+    '<p class="sub">Révise avec les quiz des ebooks SVT : 10 questions par thème, pour les classes de 6e (cycle 3) et 5e, 4e, 3e (cycle 4).</p>' +
+    '<div class="badges"><span class="badge">' + QUIZZES.filter((q) => q.questions.length).length + ' quiz</span>' +
+    '<span class="badge">' + QUIZZES.reduce((a, q) => a + q.questions.length, 0) + ' questions</span>' +
+    '<span class="badge">Cycle 3 &amp; Cycle 4</span></div></div>' +
+    '<div class="chips">' + chip(homeFilter.cycle, "all", "Tous", "f-cycle") + chip(homeFilter.cycle, "4", "Cycle 4", "f-cycle") + chip(homeFilter.cycle, "3", "Cycle 3 (6e)", "f-cycle") +
+    levels.map((l) => chip(homeFilter.level, l, l, "f-level")).join("") + "</div>" +
+    '<div class="grid">' + (cards || '<p class="empty">Aucun quiz pour ce filtre.</p>') + "</div>" +
+    '<div class="depbox"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
+    '<div style="flex:1;min-width:220px"><h3>' + IC.up + " J'ai déjà un fichier de réponses à déposer</h3>" +
+    '<p class="hint">Si tu as terminé un quiz et téléchargé ton fichier <code>.ndjson</code>, dépose-le ici pour l\'envoyer directement dans la base du professeur.</p></div>' +
+    '<button class="btn" data-act="goto-depot">' + IC.up + " Déposer mes réponses</button></div></div>" +
+    '<div class="site-foot"><button class="lnk" data-act="teacher-open">' + IC.key + " Espace enseignant</button></div></div>";
+}
+
+function startQuiz(id) {
+  const quiz = byId(id);
+  if (!quiz || !quiz.questions.length) { location.hash = ""; renderHome(); return; }
+  window.__qlink = id;
+  runStudentApp($("#app"), quiz, { correction: SHOW_CORRECTION, askName: true, mail: TEACHER_EMAIL, standalone: false });
+  window.scrollTo(0, 0);
+}
+
+function route() {
+  const p = new URLSearchParams(location.search);
+  const h = location.hash.replace("#", "");
+  const qid = p.get("quiz") || (["eb01","eb02","eb03","eb04","eb05","eb06","eb07","eb08","eb09","eb10","eb11","eb12","eb13","eb14","eb15"].indexOf(h) >= 0 ? h : null);
+  if (p.get("prof") === "1") { renderHome(); openTeacherLogin(); return; }
+  if (p.get("depot") === "1") { renderDepot(); return; }
+  if (qid && byId(qid) && byId(qid).questions.length) { startQuiz(qid); return; }
+  renderHome();
+}
+
+/* ================= VUE DÉPÔT ÉLÈVE (?depot=1) ================= */
+let depotSession = []; // dépôts effectués pendant cette session (affichage élève)
+
+function renderDepot() {
+  const app = $("#app");
+  const lines = depotSession.slice(-8).reverse().map(function (r) {
+    const qz = byId(r.quiz);
+    const k = r.k || 1;
+    const kInfo = k > 1 ? ' <span class="badge2">' + k + " dépôts</span>" : "";
+    return '<div class="tryline"><span class="who">Quiz ' + qz.n + " — " + esc(qz.title) + "</span>" +
+      '<span class="meta">' + scoreOf(r) + "/" + qz.questions.length + kInfo + " · enregistré</span></div>";
+  }).join("");
+  app.innerHTML = '<div class="wrap">' +
+    '<div class="hero" style="padding:24px 22px"><h1 style="font-size:1.6rem">Déposer mes réponses</h1>' +
+    '<p class="sub">Dépose ici le fichier <code>.ndjson</code> téléchargé à la fin de ton quiz : il part directement dans la base du professeur, classé avec ton prénom, ton nom et ta classe.</p></div>' +
+    '<div class="depbox">' +
+    '<div class="drop" id="dropzone">' + IC.up + "<p><b>Glisse ton fichier</b> <code>.ndjson</code> ici<br>(ou clique pour choisir le fichier sur ton appareil)</p><input type=\"file\" id=\"fileinput\" accept=\".ndjson,.txt,.json\" multiple style=\"display:none\"></div>" +
+    '<p class="hint">' + IC.check + " Tu peux redéposer ton quiz autant de fois que tu veux pour t'améliorer : seul ton dernier dépôt compte, et le professeur voit le nombre de dépôts et ta progression.</p>" +
+    "</div>" +
+    (depotSession.length ? '<div class="tpanel"><h3>Dépôts de cette session</h3>' + lines + "</div>" : "") +
+    '<div class="site-foot"><button class="lnk" data-act="gohome">' + IC.home + " Retour aux quiz</button></div></div>";
+}
+
+/* ================= ESPACE ENSEIGNANT ================= */
+function teacherUnlocked() { try { return sessionStorage.getItem("svtq_t") === "1"; } catch (e) { return false; } }
+function openTeacherLogin() {
+  if (teacherUnlocked()) { renderTeacher(); return; }
+  const old = document.querySelector(".overlay"); if (old) old.remove();
+  const ov = document.createElement("div");
+  ov.className = "overlay";
+  ov.innerHTML = '<div class="modal"><h3>Espace enseignant</h3><p class="sub">Accès réservé aux professeurs. Saisissez le code d\'accès.</p>' +
+    '<div class="field"><label for="tcode">Code</label><input id="tcode" type="password" autocomplete="off"></div>' +
+    '<p class="err" id="tcerr"></p>' +
+    '<div class="actions"><button class="btn" data-act="go">' + IC.key + ' Déverrouiller</button><button class="btn ghost" data-act="cancel">Annuler</button></div></div>';
+  document.body.appendChild(ov);
+  const inp = ov.querySelector("#tcode"), err = ov.querySelector("#tcerr");
+  const tryCode = function () {
+    if (inp.value === TEACHER_CODE) {
+      try { sessionStorage.setItem("svtq_t", "1"); } catch (e) {}
+      ov.remove(); renderTeacher(); toast("Espace enseignant déverrouillé.");
+    } else {
+      err.textContent = "Code incorrect.";
+      const m = ov.querySelector(".modal"); m.classList.remove("shake"); void m.offsetWidth; m.classList.add("shake");
+      inp.value = ""; inp.focus();
+    }
+  };
+  ov.addEventListener("click", function (e) {
+    if (e.target === ov) ov.remove();
+    const act = e.target.closest && e.target.closest("[data-act]");
+    if (!act) return;
+    if (act.getAttribute("data-act") === "go") tryCode();
+    if (act.getAttribute("data-act") === "cancel") ov.remove();
+  });
+  inp.addEventListener("keydown", function (e) { if (e.key === "Enter") tryCode(); });
+  inp.focus();
+}
+
+/* --- Stockage local des résultats (import élève/enseignant) --- */
+function loadResults() {
+  let out = [];
+  try {
+    const raw = (localStorage.getItem(LS_KEY) || "").split("\n").filter(Boolean);
+    for (const l of raw) {
+      const o = JSON.parse(l);
+      if (o && o.quiz && byId(o.quiz) && Array.isArray(o.a) && o.a.length === byId(o.quiz).questions.length && (typeof o.s === "string" || (typeof o.p === "string" && typeof o.n === "string"))) out.push(o);
+    }
+  } catch (e) {}
+  return out;
+}
+function saveResults(arr) { try { localStorage.setItem(LS_KEY, arr.map((o) => JSON.stringify(o)).join("\n")); } catch (e) {} }
+function importResultLine(l, list) {
+  try {
+    const o = JSON.parse(l);
+    if (o && o.quiz && byId(o.quiz) && typeof o.s === "string" && Array.isArray(o.a) && o.a.length === byId(o.quiz).questions.length) {
+      if (list.findIndex((r) => r.quiz === o.quiz && r.s === o.s && r.t === o.t) < 0) list.push(o);
+    }
+  } catch (e) {}
+}
+function scoreOf(r) { const qz = byId(r.quiz); return r.a.reduce((acc, v, i) => acc + (v === qz.questions[i].a ? 1 : 0), 0); }
+function normClass(c) { return String(c || "").trim().toUpperCase().replace(/\s+/g, " "); }
+function normName(s) { return String(s || "").trim().toLowerCase().replace(/\s+/g, " ").normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+/* Identité d'un dépôt : élève (prénom/nom v2, ou s v1) + quiz. Retourne une clé normalisée. */
+function resultKey(o) {
+  const quiz = o.quiz || "";
+  if (o.n && o.p) return quiz + "|" + normName(o.p) + "|" + normName(o.n) + "|" + normClass(o.c);
+  return quiz + "|" + normName(o.s || "") + "||" + normClass(o.c);
+}
+/* Import d'une ligne NDJSON (v1 ou v2) avec FUSION : un nouveau dépôt du même élève
+   sur le même quiz remplace l'ancien, incrémente le compteur k et conserve l'historique. */
+function importResultLine(l, list) {
+  try {
+    const o = JSON.parse(l);
+    if (o && o.quiz && byId(o.quiz) && Array.isArray(o.a) && o.a.length === byId(o.quiz).questions.length) {
+      const key = resultKey(o);
+      const prevIdx = list.findIndex((r) => resultKey(r) === key);
+      if (prevIdx >= 0) {
+        const prev = list[prevIdx];
+        const prevScore = scoreOf(prev), newScore = scoreOf(o);
+        const hist = (prev.h || []).concat([{ t: prev.t || o.t, s: prevScore }]);
+        if (hist.length > 20) hist.shift();
+        const merged = Object.assign({}, o, { k: Math.max(prev.k || 1, 1) + 1, h: hist });
+        list[prevIdx] = merged;
+        merged._delta = newScore - prevScore;
+      } else {
+        list.push(Object.assign({}, o, { k: o.k || 1 }));
+      }
+    }
+  } catch (e) {}
+}
+function fullNameOf(r) { return (r.p && r.n) ? (r.p + " " + r.n) : (r.s || "?"); }
+
+let T = { tab: "stats", selQuiz: "all", selClass: "all", results: [] };
+
+function renderTeacher() {
+  T.results = loadResults();
+  const app = $("#app");
+  const tab = (id, label) => '<button class="tab ' + (T.tab === id ? "on" : "") + '" data-act="tab" data-val="' + id + '">' + label + "</button>";
+  app.innerHTML = '<div class="wrap">' +
+    '<div class="thead"><h2>Espace enseignant</h2><div class="sp">' +
+    '<button class="btn ghost sm" data-act="home">' + IC.home + ' Accueil</button>' +
+    '<button class="btn ghost sm" data-act="lock">' + IC.key + " Verrouiller</button></div></div>" +
+    '<div class="tabs">' + tab("stats", IC.chart + " Résultats") + tab("keys", IC.book + " Corrigés") + tab("links", IC.link + " Liens &amp; export HTML") + tab("data", IC.db + " Données") + "</div>" +
+    '<div id="tpanel"></div></div>';
+  renderTPanel();
+}
+
+function renderTPanel() {
+  const el = $("#tpanel");
+  if (T.tab === "stats") el.innerHTML = tStats();
+  else if (T.tab === "keys") el.innerHTML = tKeys();
+  else if (T.tab === "links") el.innerHTML = tLinks();
+  else el.innerHTML = tData();
+}
+
+/* ---------- Onglet Résultats ---------- */
+function tStats() {
+  const R = T.results;
+  const quizzes = QUIZZES.filter((q) => q.questions.length);
+  const classes = [...new Set(R.map((r) => normClass(r.c)))].sort();
+  const sel = R.filter((r) => (T.selQuiz === "all" || r.quiz === T.selQuiz) && (T.selClass === "all" || normClass(r.c) === T.selClass));
+  const qsel = '<select data-act="selquiz"><option value="all">Tous les quiz</option>' + quizzes.map((q) => '<option value="' + q.id + '"' + (T.selQuiz === q.id ? " selected" : "") + ">Quiz " + q.n + " — " + esc(q.title) + "</option>").join("") + "</select>";
+  const csel = '<select data-act="selclass"><option value="all">Toutes les classes</option>' + classes.map((c) => '<option value="' + esc(c) + '"' + (T.selClass === c ? " selected" : "") + ">" + esc(c) + "</option>").join("") + "</select>";
+  let head = '<div class="controls no-print">' + qsel + csel +
+    '<button class="btn ghost sm" data-act="exportcsv">' + IC.dl + " Export CSV</button>" +
+    '<button class="btn ghost sm" data-act="print">' + IC.print + " Imprimer</button></div>";
+  if (!R.length) {
+    return head + '<div class="tpanel"><h3>Aucun résultat pour l\'instant</h3><p class="empty">Importez les fichiers de réponses des élèves (<code>.ndjson</code>) dans l\'onglet « Données », en les glissant dans la zone prévue.</p></div>';
+  }
+  if (!sel.length) return head + '<div class="tpanel"><p class="empty">Aucun résultat pour ce filtre.</p></div>';
+  const avgPct = Math.round(100 * sel.reduce((a, r) => a + scoreOf(r) / byId(r.quiz).questions.length, 0) / sel.length);
+  const stats = '<div class="statgrid">' +
+    '<div class="stat"><div class="v">' + sel.length + '</div><div class="l">réponse(s) d\'élève(s)</div></div>' +
+    '<div class="stat"><div class="v">' + avgPct + '%</div><div class="l">réussite moyenne</div></div>' +
+    '<div class="stat"><div class="v">' + classes.length + '</div><div class="l">classe(s)</div></div></div>';
+  let perQuiz = "";
+  if (T.selQuiz === "all") {
+    const rows = quizzes.map((q) => {
+      const rs = sel.filter((r) => r.quiz === q.id);
+      if (!rs.length) return "";
+      const pct = Math.round(100 * rs.reduce((a, r) => a + scoreOf(r) / q.questions.length, 0) / rs.length);
+      return '<tr><td>Quiz ' + q.n + "</td><td>" + esc(q.title) + "</td><td>" + rs.length + "</td><td><b>" + pct + "%</b></td></tr>";
+    }).join("");
+    perQuiz = '<div class="tpanel"><h3>Réussite par quiz</h3><div class="tblwrap"><table class="dt"><tr><th>Quiz</th><th>Titre</th><th>Réponses</th><th>Moyenne</th></tr>' + rows + "</table></div></div>";
+  }
+  const qz = T.selQuiz !== "all" ? byId(T.selQuiz) : null;
+  let perQ = "";
+  if (qz) {
+    const rs = sel.filter((r) => r.quiz === qz.id);
+    if (rs.length) {
+      const bars = qz.questions.map(function (m, i) {
+        const n = rs.reduce((a, r) => a + (r.a[i] === m.a ? 1 : 0), 0);
+        const pct = Math.round(100 * n / rs.length);
+        const cls = pct >= 70 ? "f-ok" : pct >= 40 ? "f-mid" : "f-ko";
+        return '<div class="qbar"><div class="lbl"><b>Q' + (i + 1) + "</b><span>" + esc(m.q.slice(0, 80)) + (m.q.length > 80 ? "…" : "") + '</span></div>' +
+          '<div class="track"><div class="fill ' + cls + '" style="width:' + pct + '%"></div></div>' +
+          '<div class="pct">' + pct + "% de réussite (" + n + "/" + rs.length + ')</div></div>';
+      }).join("");
+      perQ = '<div class="tpanel"><h3>Taux de réussite par question — ' + esc(qz.title) + '</h3>' +
+        (rs.length ? '<div class="qbars">' + bars + '</div><p class="note">Les barres rouges signalent les notions à reprendre en classe.</p>' : '<p class="empty">Aucune réponse à ce quiz pour l\'instant.</p>') + "</div>";
+    }
+  }
+  const rows = sel.slice().sort(function (a, b) { return (normClass(a.c) + fullNameOf(a)).localeCompare(normClass(b.c) + fullNameOf(b)) || (b.t || "").localeCompare(a.t || ""); }).map(function (r) {
+    const sc = scoreOf(r), qz = byId(r.quiz);
+    const pct = Math.round(100 * sc / qz.questions.length);
+    const d = r.t ? new Date(r.t) : null;
+    const k = r.k || 1;
+    const kBadge = k > 1 ? ' <span class="badge2">' + k + " dépôt" + (k > 1 ? "s" : "") + "</span>" : "";
+    return "<tr><td>" + esc(r.p || "") + "</td><td>" + esc(r.n || "") + "</td><td>" + esc(r.c) + "</td><td>Quiz " + qz.n + "</td><td><b>" + sc + "/" + qz.questions.length + "</b></td><td>" + pct + "%</td><td>" + k + kBadge + "</td><td>" + (d ? d.toLocaleDateString("fr-FR") : "") + "</td></tr>";
+  }).join("");
+  const table = '<div class="tpanel"><h3>Réponses des élèves</h3><div class="tblwrap"><table class="dt"><tr><th>Prénom</th><th>Nom</th><th>Classe</th><th>Quiz</th><th>Score</th><th>%</th><th>Dépôts</th><th>Date</th></tr>' + rows + "</table></div></div>";
+  return head + stats + perQuiz + perQ + table;
+}
+
+/* ---------- Onglet Corrigés ---------- */
+function tKeys() {
+  const quizzes = QUIZZES.filter((q) => q.questions.length);
+  const id = T.selQuiz !== "all" ? T.selQuiz : (quizzes[0] ? quizzes[0].id : null);
+  const qz = byId(id);
+  const sel = '<div class="controls no-print"><select data-act="selquiz">' + quizzes.map((q) => '<option value="' + q.id + '"' + (q.id === id ? " selected" : "") + ">Quiz " + q.n + " — " + esc(q.title) + "</option>").join("") + "</select>" +
+    '<button class="btn ghost sm" data-act="print">' + IC.print + " Imprimer</button>" +
+    '<button class="btn ghost sm" data-act="dlpdf">' + IC.dl + " Enregistrer (imprimable)</button></div>";
+  if (!qz) return '<p class="empty">Aucun quiz disponible.</p>';
+  const ks = qz.questions.map(function (m, i) {
+    const opts = m.o.map((o, j) => '<li' + (j === m.a ? ' class="good"' : "") + ">" + LETTERS[j] + ". " + esc(o) + "</li>").join("");
+    return '<div class="kline"><div class="kq"><b>Q' + (i + 1) + "</b> " + esc(m.q) + '</div><ul class="kopts">' + opts + "</ul>" +
+      (m.e ? '<div class="kexpl">' + esc(m.e) + "</div>" : "") + "</div>";
+  }).join("");
+  return sel + '<div class="tpanel"><h3>Corrigé — Quiz ' + qz.n + " : " + esc(qz.title) + "</h3>" + ks + "</div>";
+}
+
+/* ---------- Onglet Liens & export HTML ---------- */
+function tLinks() {
+  const base = location.href.split("?")[0].split("#")[0];
+  const quizzes = QUIZZES.filter((q) => q.questions.length);
+  const rows = quizzes.map(function (q) {
+    const url = base + "?quiz=" + q.id;
+    return '<div class="xrow"><span class="idb">Quiz ' + q.n + '</span><span class="t">' + esc(q.title) + " · " + q.level + '</span><div class="acts">' +
+      '<button class="btn ghost sm" data-act="copylink" data-val="' + url + '">' + IC.copy + " Lien</button>" +
+      '<button class="btn ghost sm" data-act="openlink" data-val="' + url + '">' + IC.link + " Ouvrir</button>" +
+      '<button class="btn sm" data-act="dlhtml" data-val="' + q.id + '">' + IC.dl + " HTML autonome</button>" +
+      "</div></div>";
+  }).join("");
+  return '<div class="tpanel"><h3>Liens directs à envoyer à une classe</h3>' +
+    '<p class="note">Chaque lien ouvre directement le quiz indiqué, sur n\'importe quel appareil (ordinateur, tablette, smartphone). Les pages peuvent être bookmarkées ou collées dans Pronote / l\'ENT.</p>' +
+    rows + "</div>" +
+    '<div class="tpanel"><h3>Exporter chaque quiz en HTML autonome</h3>' +
+    '<p class="note">Le fichier téléchargé fonctionne <b>sans internet</b> : il contient le quiz complet, la saisie de l\'élève et l\'enregistrement du fichier de réponses. Idéal pour une clé USB, le réseau du collège ou un dépôt ENT.</p>' +
+    '<div class="actions no-print">' + quizzes.map((q) => '<button class="btn sm" data-act="dlhtml" data-val="' + q.id + '">' + IC.dl + " Quiz " + q.n + "</button>").join("") + "</div></div>";
+}
+
+/* ---------- Onglet Données ---------- */
+function tData() {
+  const R = T.results;
+  const rows = R.map(function (r, i) {
+    const qz = byId(r.quiz);
+    const k = r.k || 1;
+    const delta = typeof r._delta === "number" ? r._delta : null;
+    const dIcon = delta === null ? "" : delta > 0 ? ' <span class="delta up">+' + delta + "</span>" : delta < 0 ? ' <span class="delta dn">' + delta + "</span>" : ' <span class="delta eq">=</span>';
+    const hist = (r.h && r.h.length) ? ' <span class="meta" title="Historique des dépôts">[' + r.h.map((x) => x.s + "/10").join(" → ") + ' → ' + scoreOf(r) + '/10]</span>' : "";
+    return "<tr><td>" + (i + 1) + "</td><td>" + esc(r.p || r.s || "?") + "</td><td>" + esc(r.n || "") + "</td><td>" + esc(r.c) + "</td><td>Quiz " + qz.n + "</td><td><b>" + k + "</b>" + dIcon + "</td><td>" + hist + "</td><td>" + esc((r.t || "").slice(0, 10)) + '</td><td><button class="iconbtn" data-act="del" data-val="' + i + '" title="Supprimer">' + IC.trash + "</button></td></tr>";
+  }).join("");
+  return '<div class="tpanel"><h3>Importer les réponses des élèves</h3>' +
+    '<div class="drop" id="dropzone">' + IC.db + '<p><b>Glissez ici</b> les fichiers <code>.ndjson</code> reçus (ou cliquez pour choisir).<br>Vous pouvez en déposer plusieurs à la fois : les fichiers cumulent les réponses d\'une classe entière.<br>Un élève qui redépose son quiz remplace sa ligne précédente : le compteur de dépôts s\'incrémente et la progression s\'affiche.</p><input type="file" id="fileinput" accept=".ndjson,.txt,.json" multiple style="display:none"></div>' +
+    '<div class="actions"><button class="btn ghost sm" data-act="pastemodal">' + IC.code + ' Coller un code élève</button></div>' +
+    '<p class="note">Les résultats sont enregistrés dans ce navigateur. Pour une sauvegarde ou un transfert vers votre base, utilisez l\'export ci-dessous.</p></div>' +
+    '<div class="tpanel"><h3>Réponses enregistrées (' + R.length + ')</h3>' +
+    (R.length ? '<div class="actions no-print"><button class="btn sm" data-act="exportall">' + IC.dl + " Export NDJSON</button>" +
+    '<button class="btn ghost sm" data-act="exportcsvdata">' + IC.dl + " Export CSV (base)</button>" +
+    '<button class="btn warn sm" data-act="clearall">' + IC.trash + " Tout effacer</button></div>" +
+    '<div class="tblwrap"><table class="dt"><tr><th>#</th><th>Prénom</th><th>Nom</th><th>Classe</th><th>Quiz</th><th>Dépôts</th><th>Progression</th><th>Dernier dépôt</th><th></th></tr>' + rows + "</table></div>"
+    : '<p class="empty">Aucune réponse importée pour le moment.</p>') + "</div>";
+}
+
+/* ---------- Actions enseignant ---------- */
+function csvOf(results) {
+  const head = "prenom;nom;classe;quiz;score;total;pct;depots;date;reponses";
+  const lines = results.map(function (r) {
+    const qz = byId(r.quiz), sc = scoreOf(r);
+    const pct = Math.round(100 * sc / qz.questions.length);
+    const ans = r.a.map((v) => v == null ? "-" : (v + 1)).join(",");
+    const d = r.t ? new Date(r.t).toISOString() : "";
+    return [r.p || r.s || "", r.n || "", r.c, "Quiz " + qz.n, sc, qz.questions.length, pct, r.k || 1, d, ans].map((x) => '"' + String(x).replace(/"/g, '""') + '"').join(";");
+  });
+  return head + "\n" + lines.join("\n");
+}
+
+function buildStandaloneHTML(quiz) {
+  const css = document.getElementById("appcss").textContent;
+  const js = document.getElementById("appjs").textContent
+    .replace(/\nwindow\.addEventListener\("hashchange", route\);\nroute\(\);\s*$/, "\n");
+  const corr = SHOW_CORRECTION ? "true" : "false";
+  const boot = 'runStudentApp(document.getElementById("app"), byId("' + quiz.id + '"), { correction: ' + corr + ', askName: true, mail: ' + JSON.stringify(TEACHER_EMAIL) + ', standalone: true });';
+  const full = js + "\n" + boot;
+  return "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Quizz SVT " + quiz.n + " — " + esc(quiz.title) + "</title>\n<link rel=\"icon\" href=\"data:,\">\n<style>" + css + "</style>\n</head>\n<body>\n<div id=\"app\"></div>\n<div id=\"toast\" class=\"toast\"></div>\n<script>" + full + "</" + "script>\n</body>\n</html>";
+}
+
+function wireTeacher() {
+  /* Délégation globale installée une seule fois au chargement (voir installGlobalEvents) */
+}
+
+function installTeacherEvents() {
+  document.addEventListener("click", function (e) {
+    if (sessionStorage.getItem("svtq_t") !== "1") return; // espace enseignant actif seulement
+    const el = e.target.closest("[data-act]");
+    if (!el) return;
+    const act = el.getAttribute("data-act"), val = el.getAttribute("data-val");
+    if (act === "home" || act === "lock") { try { sessionStorage.removeItem("svtq_t"); } catch (err) {} history.pushState(null, "", location.pathname); renderHome(); }
+    else if (act === "tab") { T.tab = val; renderTeacher(); }
+    else if (act === "print") { window.print(); }
+    else if (act === "dlpdf") { window.print(); }
+    else if (act === "exportcsv") { const sel = filterSel(); if (sel.length) downloadFile("resultats-quizz-svt.csv", csvOf(sel), "text/csv"); }
+    else if (act === "exportcsvdata") { if (T.results.length) downloadFile("base-reponses-svt.csv", csvOf(T.results), "text/csv"); }
+    else if (act === "exportall") { if (T.results.length) downloadFile("reponses-svt.ndjson", T.results.map((o) => JSON.stringify(o)).join("\n") + "\n", "application/x-ndjson"); }
+    else if (act === "copylink") {
+      (navigator.clipboard ? navigator.clipboard.writeText(val) : Promise.reject()).then(
+        function () { toast("Lien copié !"); },
+        function () { toast("Copie impossible : notez le lien manuellement."); }
+      );
+    } else if (act === "openlink") { window.open(val, "_blank"); }
+    else if (act === "dlhtml") { const qz = byId(val); downloadFile("quizz-svt-" + qz.n + "-" + slug(qz.title) + ".html", buildStandaloneHTML(qz), "text/html"); toast("Quiz " + qz.n + " exporté en HTML autonome."); }
+    else if (act === "del") { T.results.splice(+val, 1); saveResults(T.results); renderTPanel(); }
+    else if (act === "clearall") { if (confirm("Effacer TOUTES les réponses enregistrées dans ce navigateur ?")) { T.results = []; saveResults([]); renderTPanel(); } }
+    else if (act === "pastemodal") { openPasteModal(); }
+  });
+  document.addEventListener("change", function (e) {
+    if (sessionStorage.getItem("svtq_t") !== "1") return;
+    const el = e.target.closest ? e.target.closest("[data-act]") : null;
+    if (!el) return;
+    const act = el.getAttribute("data-act");
+    if (act === "selquiz") { T.selQuiz = el.value; renderTPanel(); }
+    else if (act === "selclass") { T.selClass = el.value; renderTPanel(); }
+  });
+}
+
+function filterSel() {
+  return T.results.filter((r) => (T.selQuiz === "all" || r.quiz === T.selQuiz) && (T.selClass === "all" || normClass(r.c) === T.selClass));
+}
+
+function importFiles(files) {
+  if (!files || !files.length) return;
+  const list = loadResults();
+  const beforeKeys = list.map(resultKey);
+  let done = 0, added = 0, merged = 0;
+  Array.prototype.forEach.call(files, function (f) {
+    const fr = new FileReader();
+    fr.onload = function () {
+      String(fr.result).split(/\r?\n/).forEach(function (l) {
+        if (!l.trim()) return;
+        const o = (function () { try { return JSON.parse(l.trim()); } catch (e) { return null; } })();
+        if (!o) return;
+        const key = (function () { try { return resultKey(o); } catch (e) { return null; } })();
+        const prevIdx = key ? list.findIndex((r) => resultKey(r) === key) : -1;
+        const prevLen = list.length;
+        importResultLine(l.trim(), list); // la fusion gère k, h (historique) et _delta
+        if (list.length > prevLen) { added++; if (o && o.quiz) depotSession.push(o); }
+        else if (prevIdx >= 0) { merged++; if (o && o.quiz) depotSession.push(o); }
+      });
+      done++;
+      if (done === files.length) {
+        saveResults(list);
+        T.results = list;
+        const msg = (added ? added + " nouvelle(s) réponse(s)" : "") + (merged ? (added ? " + " : "") + merged + " redépôt(s) (compteur mis à jour)" : "");
+        toast(msg || "Aucune donnée valide trouvée.");
+        const ok = document.getElementById("drop-ok");
+        if (ok && (added || merged)) { ok.style.display = "block"; ok.innerHTML = IC.check + " Dépôt enregistré — merci !"; }
+        const depBox = document.querySelector(".depbox");
+        if (depBox) renderDepot();
+        else if (teacherUnlocked()) renderTPanel();
+      }    };
+    fr.readAsText(f, "utf-8");
+  });
+}
+
+function openPasteModal() {
+  const old = document.querySelector(".overlay"); if (old) old.remove();
+  const ov = document.createElement("div");
+  ov.className = "overlay";
+  ov.innerHTML = '<div class="modal"><h3>Coller un code élève</h3><p class="sub">L\'élève peut vous envoyer le code texte s\'il ne peut pas télécharger le fichier.</p>' +
+    '<textarea id="pcode" class="codebox" rows="4" placeholder=\'{"v":1,"quiz":"eb01",...}\'></textarea>' +
+    '<div class="actions"><button class="btn" data-act="pimport">Importer</button><button class="btn ghost" data-act="pcancel">Annuler</button></div></div>';
+  document.body.appendChild(ov);
+  const ta = ov.querySelector("#pcode");
+  ov.addEventListener("click", function (e) {
+    if (e.target === ov) ov.remove();
+    const el = e.target.closest && e.target.closest("[data-act]");
+    if (!el) return;
+    if (el.getAttribute("data-act") === "pimport") {
+      const list = T.results.length ? T.results.slice() : loadResults();
+      const beforeKeys = list.map(resultKey);
+      let added = 0, merged = 0;
+      ta.value.split(/\r?\n/).forEach(function (l) {
+        if (!l.trim()) return;
+        const o = (function () { try { return JSON.parse(l.trim()); } catch (e) { return null; } })();
+        if (!o) return;
+        const key = (function () { try { return resultKey(o); } catch (e) { return null; } })();
+        const prevIdx = key ? list.findIndex((r) => resultKey(r) === key) : -1;
+        const prevLen = list.length;
+        importResultLine(l.trim(), list); // la fusion gère k, h (historique) et _delta
+        if (list.length > prevLen) added++;
+        else if (prevIdx >= 0) merged++;
+      });
+      if (added || merged) { T.results = list; saveResults(list); renderTPanel(); ov.remove(); toast((added ? added + " ajout(s)" : "") + (merged ? (added ? " + " : "") + merged + " redépôt(s)" : "") + "."); }
+      else { toast("Code invalide ou déjà enregistré."); }
+    }
+    if (el.getAttribute("data-act") === "pcancel") ov.remove();
+  });
+  ta.focus();
+}
+
+/* ================= ÉVÉNEMENTS GLOBAUX & DÉMARRAGE ================= */
+document.addEventListener("click", function (e) {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  const act = el.getAttribute("data-act"), val = el.getAttribute("data-val");
+  if (act === "start") { history.pushState(null, "", "?quiz=" + val); startQuiz(val); }
+  else if (act === "teacher-open") openTeacherLogin();
+  else if (act === "goto-depot") { history.pushState(null, "", "?depot=1"); renderDepot(); window.scrollTo(0, 0); }
+  else if (act === "gohome") { history.pushState(null, "", location.pathname); renderHome(); }
+  else if (act === "f-cycle") { homeFilter.cycle = val; renderHome(); }
+  else if (act === "f-level") { homeFilter.level = val; renderHome(); }
+});
+/* Ouverture du sélecteur de fichiers : la zone de dépôt est publique (élève comme enseignant) */
+document.addEventListener("click", function (e) {
+  const dz = e.target.closest ? e.target.closest("#dropzone") : null;
+  if (!dz) return;
+  if (e.target.id === "fileinput") return;
+  const fi = document.getElementById("fileinput");
+  if (fi) fi.click();
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const el = e.target.closest ? e.target.closest('[data-act="start"]') : null;
+  if (el && el.getAttribute("data-act") === "start") { e.preventDefault(); el.click(); }
+});
+/* Sélecteur de fichiers de la zone de dépôt (public : élève comme enseignant) */
+document.addEventListener("change", function (e) {
+  if (e.target && e.target.id === "fileinput") { importFiles(e.target.files); e.target.value = ""; }
+});
+/* Drag & drop des fichiers de réponses (délégation document, public) */
+document.addEventListener("dragover", function (e) { if (document.getElementById("dropzone")) { e.preventDefault(); document.getElementById("dropzone").classList.add("over"); } });
+document.addEventListener("dragleave", function () { const dz = document.getElementById("dropzone"); if (dz) dz.classList.remove("over"); });
+document.addEventListener("drop", function (e) {
+  const dz = document.getElementById("dropzone");
+  if (!dz) return;
+  e.preventDefault(); dz.classList.remove("over");
+  importFiles(e.dataTransfer.files);
+});
+installTeacherEvents();
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
