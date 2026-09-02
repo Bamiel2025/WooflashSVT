@@ -27,8 +27,8 @@
    ============================================================ */
 
 // Laisser "" pour utiliser la feuille liée au script (recommandé).
-const SPREADSHEET_ID = "";
-const SHEET_NAME = "Réponses";
+var SPREADSHEET_ID = "";
+var SHEET_NAME = "Réponses";
 
 /* Réception d'un envoi d'élève (POST JSON) */
 function doPost(e) {
@@ -47,17 +47,17 @@ function handle(raw) {
   try {
     const o = JSON.parse(raw || "{}");
     const sheet = getSheet();
-    const q = QUIZ_INFO[o.quiz] || { n: "?", total: 10 };
-    const score = computeScore(o.a, o.quiz);
-    const key = ((o.p || "") + "|" + (o.n || "") + "|" + (o.c || "")).trim().toUpperCase();
-    /* un redépôt remplace la ligne précédente de l'élève */
-    const data = sheet.getDataRange().getValues();
-    let rowIdx = -1, maxK = 0;
-    for (let i = 1; i < data.length; i++) {
-      if (String(data[i][7]).trim().toUpperCase() === key) { rowIdx = i + 1; maxK = Number(data[i][6]) || 1; }
-    }
-    const k = rowIdx > 0 ? maxK + 1 : Math.max(1, Number(o.k) || 1);
-    const row = [
+    var q = QUIZ_INFO[o.quiz] || { n: "?", total: 10 };
+  var score = computeScore(o.a, o.quiz);
+  var key = ((o.p || "") + "|" + (o.n || "") + "|" + (o.c || "")).trim().toUpperCase();
+  /* un redépôt remplace la ligne précédente de l'élève */
+  var data = sheet.getDataRange().getValues();
+  var rowIdx = -1, maxK = 0;
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][7]).trim().toUpperCase() === key) { rowIdx = i + 1; maxK = Number(data[i][6]) || 1; }
+  }
+  var k = rowIdx > 0 ? maxK + 1 : Math.max(1, Number(o.k) || 1);
+  var row = [
       new Date(),
       o.p || "", o.n || "", o.c || "",
       "Quiz " + q.n, o.quiz,
@@ -77,11 +77,11 @@ function handle(raw) {
 }
 
 function getSheet() {
-  let ss = SPREADSHEET_ID
+  var ss = SPREADSHEET_ID
     ? SpreadsheetApp.openById(SPREADSHEET_ID)
     : SpreadsheetApp.getActiveSpreadsheet();
   if (!ss) ss = SpreadsheetApp.create("Base de réponses quizz SVT");
-  let sh = ss.getSheetByName(SHEET_NAME);
+  var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
     sh.appendRow(["Date", "Prénom", "Nom", "Classe", "Quiz", "ID quiz", "Dépôts", "Clé élève", "Score", "Réponses (numéros)", "Code NDJSON"]);
@@ -111,9 +111,9 @@ var QUIZ_INFO = {
 };
 
 function computeScore(a, quizId) {
-  const info = QUIZ_INFO[quizId];
+  var info = QUIZ_INFO[quizId];
   if (!info || !info.a || !a) return "?";
-  let s = 0;
-  for (let i = 0; i < info.a.length; i++) if (a[i] === info.a[i]) s++;
+  var s = 0;
+  for (var i = 0; i < info.a.length; i++) if (a[i] === info.a[i]) s++;
   return s;
 }
