@@ -6,9 +6,10 @@
    1. Va sur https://script.google.com → « Nouveau projet ».
    2. Colle TOUT ce fichier dans l'éditeur, puis enregistre.
    3. En haut, clique sur le sélecteur de projet (à côté de
-      « Services + ») → onglet « Feuilles » → « Créer une
-      feuille de calcul ». (Alternative : crée une feuille
-      manuellement et mets son ID dans SPREADSHEET_ID.)
+      « Services + ») → onglet « Feuilles ».
+      (Optionnel : tu peux créer une feuille ici pour lier
+      le script à un classeur existant ; sinon, la feuille
+      sera créée automatiquement au premier envoi.)
    4. Clique sur « Déployer » → « Nouveau déploiement » →
       type « Application Web » :
         - Exécuter en tant que : Moi
@@ -76,10 +77,10 @@ function handle(raw) {
 }
 
 function getSheet() {
-  const ss = SPREADSHEET_ID
+  let ss = SPREADSHEET_ID
     ? SpreadsheetApp.openById(SPREADSHEET_ID)
     : SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) throw new Error("Aucune feuille : lie une feuille au script ou remplis SPREADSHEET_ID.");
+  if (!ss) ss = SpreadsheetApp.create("Base de réponses quizz SVT");
   let sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
