@@ -17,6 +17,9 @@ input,select,textarea{font-family:inherit;font-size:1rem}
 a{color:#6d28d9}
 .hero{background:linear-gradient(135deg,#312e81,#6d28d9 60%,#7c3aed);color:#fff;border-radius:22px;padding:30px 26px;margin:18px 0 22px;box-shadow:0 10px 30px rgba(79,70,229,.25)}
 .hero h1{font-size:clamp(1.6rem,4vw,2.3rem);letter-spacing:-.02em}
+.herorow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.herobtn{background:rgba(255,255,255,.95);color:#312e81;border:1.5px solid rgba(255,255,255,.55);box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.herobtn:hover{background:#fff;filter:none;transform:translateY(-1px)}
 .hero .sub{opacity:.92;font-size:1.02rem;max-width:640px}
 .hero .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .hero .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:4px 12px;border-radius:999px;font-size:.82rem;font-weight:600}
@@ -668,7 +671,8 @@ function renderHome() {
     '<button class="btn sm" ' + (q.questions.length ? "" : "disabled") + ">" + IC.play + " Commencer</button></article>"
   ).join("");
   app.innerHTML = '<div class="wrap">' +
-    '<div class="hero"><h1>Quizz SVT</h1>' +
+    '<div class="hero"><div class="herorow"><h1>Quizz SVT</h1>' +
+    '<button class="btn sm herobtn" data-act="goto-depot" title="Déposer un fichier de réponses déjà téléchargé">' + IC.up + " Déposer mes réponses</button></div>" +
     '<p class="sub">Révise avec les quiz des ebooks SVT : 10 questions par thème, pour les classes de 6e (cycle 3) et 5e, 4e, 3e (cycle 4).</p>' +
     '<div class="badges"><span class="badge">' + QUIZZES.filter((q) => q.questions.length).length + ' quiz</span>' +
     '<span class="badge">' + QUIZZES.reduce((a, q) => a + q.questions.length, 0) + ' questions</span>' +
@@ -676,10 +680,6 @@ function renderHome() {
     '<div class="chips">' + chip(homeFilter.cycle, "all", "Tous", "f-cycle") + chip(homeFilter.cycle, "4", "Cycle 4", "f-cycle") + chip(homeFilter.cycle, "3", "Cycle 3 (6e)", "f-cycle") +
     levels.map((l) => chip(homeFilter.level, l, l, "f-level")).join("") + "</div>" +
     '<div class="grid">' + (cards || '<p class="empty">Aucun quiz pour ce filtre.</p>') + "</div>" +
-    '<div class="depbox"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">' +
-    '<div style="flex:1;min-width:220px"><h3>' + IC.up + " J'ai déjà un fichier de réponses à déposer</h3>" +
-    '<p class="hint">Si tu as terminé un quiz et téléchargé ton fichier <code>.ndjson</code>, dépose-le ici pour l\'envoyer directement dans la base du professeur.</p></div>' +
-    '<button class="btn" data-act="goto-depot">' + IC.up + " Déposer mes réponses</button></div></div>" +
     '<div class="site-foot"><button class="lnk" data-act="teacher-open">' + IC.key + " Espace enseignant</button></div></div>";
 }
 
