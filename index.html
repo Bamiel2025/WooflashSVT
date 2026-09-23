@@ -182,7 +182,7 @@ table.dt tr:last-child td{border-bottom:none}
 .lvl0{background:#fee2e2;color:#b91c1c}
 .lvl1{background:#fef3c7;color:#b45309}
 .lvl2{background:#dcfce7;color:#15803d}
-.drop svg{width:42px;height:42px;color:#7c3aed}
+.drop svg{width:36px;height:36px;max-width:36px;max-height:36px;color:#7c3aed}
 @media (max-width:640px){.hero{padding:22px 18px;border-radius:16px}.qbox,.formcard,.tpanel{padding:16px}.nav{flex-wrap:wrap}.nav .btn{flex:1}}
 @media print{.no-print{display:none!important}body{background:#fff}.hero,.tpanel{box-shadow:none}}
 </style>
@@ -808,7 +808,7 @@ function sendToSheets(jsonLine, cb) {
   }).then(function () { cb(true); }).catch(function () { cb(false); });
 }
 
-const SVGW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+const SVGW = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
 const IC = {
   play: SVGW + '<path d="M8 5.14v13.72L19 12 8 5.14z"/></svg>',
   check: SVGW + '<path d="M20 6 9 17l-5-5"/></svg>',
@@ -1104,7 +1104,7 @@ function renderDepot() {
     '<div class="hero" style="padding:24px 22px"><h1 style="font-size:1.6rem">Déposer mes réponses</h1>' +
     '<p class="sub">Tes réponses sont envoyées automatiquement à la fin du quiz avec le bouton « Envoyer mes réponses au professeur ». Cette page sert uniquement au fichiers de secours (<code>.ndjson</code>) si l\'envoi automatique a échoué.</p></div>' +
     '<div class="depbox">' +
-    '<div class="drop" id="dropzone">' + IC.up + "<p><b>Glisse ton fichier</b> <code>.ndjson</code> de secours ici<br>(ou clique pour choisir le fichier sur ton appareil)</p><input type=\"file\" id=\"fileinput\" accept=\".ndjson,.txt,.json\" multiple style=\"display:none\"></div>" +
+    '<div class="drop" id="dropzone"><p><b>Glisse ton fichier</b> <code>.ndjson</code> de secours ici<br>(ou clique pour choisir le fichier sur ton appareil)</p><input type="file" id="fileinput" accept=".ndjson,.txt,.json" multiple style="display:none"></div>' +
     '<p class="hint">' + IC.check + " Sur l'appareil du professeur uniquement, ce dépôt alimente sa base locale.</p>" +
     "</div>" +
     (depotSession.length ? '<div class="tpanel"><h3>Dépôts de cette session</h3>' + lines + "</div>" : "") +

@@ -62,10 +62,12 @@ var o = JSON.parse(raw || "{}");
   var key = ((o.p || "") + "|" + (o.n || "") + "|" + (o.c || "")).trim().toUpperCase();
   /* un redépôt remplace la ligne précédente de l'élève */
   var data = sheet.getDataRange().getValues();
-  var rowIdx = -1, maxK = 0;
-  for (var i = 1; i < data.length; i++) {
-    if (String(data[i][7]).trim().toUpperCase() === key) { rowIdx = i + 1; maxK = Number(data[i][6]) || 1; }
-  }
+    var rowIdx = -1, maxK = 0;
+    /* i = 0 : la feuille n'a pas d'en-tête par défaut — ne jamais sauter la 1re ligne.
+       Une ligne d'en-tête éventuelle ne matchera aucune clé élève. */
+    for (var i = 0; i < data.length; i++) {
+      if (String(data[i][7]).trim().toUpperCase() === key) { rowIdx = i + 1; maxK = Number(data[i][6]) || 1; }
+    }
   var k = rowIdx > 0 ? maxK + 1 : Math.max(1, Number(o.k) || 1);
   var row = [
       new Date(),
@@ -123,13 +125,16 @@ function getSubmissionsJson() {
     var sheet = getSheet();
     var data = sheet.getDataRange().getValues();
     var lines = [];
-    for (var i = 1; i < data.length; i++) {
+    /* i = 0 : la feuille créée par ce script n'a PAS d'en-tête — partir de 1
+       laissait toujours la 1re ligne hors export. Une ligne d'en-tête
+       éventuelle est écartée par isValidRaw/rebuildRaw. */
+    for (var i = 0; i < data.length; i++) {
       if (!data[i]) continue;
       var raw = data[i][10]; // colonne Code NDJSON
       /* Repli : si le code brut est absent ou illisible (cellule tronquée/modifiée),
          on reconstruit un code valide depuis les colonnes : aucune ligne n'est perdue. */
       if (!isValidRaw(raw)) raw = rebuildRaw(data[i]);
-      if (raw) lines.push(raw);
+      if (raw && isValidRaw(raw)) lines.push(raw);
     }
     var out = ContentService.createTextOutput(lines.join("\n"))
       .setMimeType(ContentService.MimeType.TEXT);
