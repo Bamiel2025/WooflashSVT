@@ -167,6 +167,22 @@ table.dt tr:last-child td{border-bottom:none}
 .badge2{display:inline-block;background:#ede9fe;color:#6d28d9;font-weight:700;font-size:.72rem;border-radius:999px;padding:2px 9px}
 .empty{color:#94a3b8;text-align:center;padding:26px 10px;font-size:.9rem}
 :focus-visible{outline:3px solid #a78bfa;outline-offset:2px}
+.piebox{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.pielegend{display:flex;flex-direction:column;gap:8px;font-size:.88rem;color:#475569}
+.pielegend .li{display:flex;align-items:center;gap:9px}
+.pielegend .li b{min-width:135px;color:#0f172a}
+.dot{width:14px;height:14px;border-radius:5px;flex:none}
+.histo{display:flex;align-items:flex-end;gap:10px;min-height:172px;margin-top:10px}
+.histo .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;min-width:0}
+.histo .bar{width:100%;max-width:56px;border-radius:8px 8px 3px 3px;min-height:4px}
+.histo .n{font-weight:800;font-size:.9rem;color:#0f172a}
+.histo .rg{font-size:.72rem;color:#64748b;font-weight:600}
+.donutcell{display:flex;align-items:center;gap:9px}
+.lvlbadge{display:inline-block;font-weight:700;font-size:.75rem;border-radius:999px;padding:3px 11px;white-space:nowrap}
+.lvl0{background:#fee2e2;color:#b91c1c}
+.lvl1{background:#fef3c7;color:#b45309}
+.lvl2{background:#dcfce7;color:#15803d}
+.drop svg{width:42px;height:42px;color:#7c3aed}
 @media (max-width:640px){.hero{padding:22px 18px;border-radius:16px}.qbox,.formcard,.tpanel{padding:16px}.nav{flex-wrap:wrap}.nav .btn{flex:1}}
 @media print{.no-print{display:none!important}body{background:#fff}.hero,.tpanel{box-shadow:none}}
 </style>
@@ -208,7 +224,7 @@ table.dt tr:last-child td{border-bottom:none}
 const TEACHER_CODE = "quizzsvt2027";
 const TEACHER_EMAIL = "";
 const SHOW_CORRECTION = true;
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycbz7COjGp_P1Bf_D8o2BGCI3oFuXYkgVUTM1IA9poCona2pfp8bgj_aupiqtTf637RU/exec";
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbz2BsvbdMIxwmc2UOKRSPrsO3YQ2OwGUznpyL6alDkx9h8J9gLNLLd-BSqaAhv172izWA/exec";
 /* ================= QUESTIONS — 10 QCM par ebook ================= */
 /* q: question · o: propositions · a: index de la bonne réponse · e: explication */
 
@@ -1240,6 +1256,10 @@ function tStats() {
     '<div class="stat"><div class="v">' + sel.length + '</div><div class="l">réponse(s) d\'élève(s)</div></div>' +
     '<div class="stat"><div class="v">' + avgPct + '%</div><div class="l">réussite moyenne</div></div>' +
     '<div class="stat"><div class="v">' + classes.length + '</div><div class="l">classe(s)</div></div></div>';
+  const gCounts = levelCounts(sel);
+  const groupsPanel = '<div class="tpanel"><h3>Groupes de niveau (filtres appliqués)</h3><div class="piebox">' + pieSVG(gCounts, 150) + pieLegend(gCounts, sel.length) + '</div>' +
+    '<h3 style="margin-top:16px">Répartition des scores</h3>' + scoreHisto(sel) + '</div>';
+  const clsPanels = classPanels(sel);
   let perQuiz = "";
   if (T.selQuiz === "all") {
     const rows = quizzes.map((q) => {
@@ -1270,13 +1290,17 @@ function tStats() {
   const rows = sel.slice().sort(function (a, b) { return (normClass(a.c) + fullNameOf(a)).localeCompare(normClass(b.c) + fullNameOf(b)) || (b.t || "").localeCompare(a.t || ""); }).map(function (r) {
     const sc = scoreOf(r), qz = byId(r.quiz);
     const pct = Math.round(100 * sc / qz.questions.length);
+    const lv = lvlOfPct(pct);
     const d = r.t ? new Date(r.t) : null;
     const k = r.k || 1;
     const kBadge = k > 1 ? ' <span class="badge2">' + k + " dépôt" + (k > 1 ? "s" : "") + "</span>" : "";
-    return "<tr><td>" + esc(r.p || "") + "</td><td>" + esc(r.n || "") + "</td><td>" + esc(r.c) + "</td><td>Quiz " + qz.n + "</td><td><b>" + sc + "/" + qz.questions.length + "</b></td><td>" + pct + "%</td><td>" + k + kBadge + "</td><td>" + (d ? d.toLocaleDateString("fr-FR") : "") + "</td></tr>";
+    return "<tr><td>" + esc(r.p || "") + "</td><td>" + esc(r.n || "") + "</td><td>" + esc(r.c) + "</td><td>Quiz " + qz.n + "</td>" +
+      '<td><div class="donutcell">' + donutSVG(pct, 34, LVLCOLORS[lv]) + "<b>" + sc + "/" + qz.questions.length + "</b></div></td>" +
+      '<td><span class="lvlbadge lvl' + lv + '">' + LVLNAMES[lv] + "</span></td>" +
+      "<td>" + pct + "%</td><td>" + k + kBadge + "</td><td>" + (d ? d.toLocaleDateString("fr-FR") : "") + "</td></tr>";
   }).join("");
-  const table = '<div class="tpanel"><h3>Réponses des élèves</h3><div class="tblwrap"><table class="dt"><tr><th>Prénom</th><th>Nom</th><th>Classe</th><th>Quiz</th><th>Score</th><th>%</th><th>Dépôts</th><th>Date</th></tr>' + rows + "</table></div></div>";
-  return head + stats + perQuiz + perQ + table;
+  const table = '<div class="tpanel"><h3>Réponses des élèves</h3><div class="tblwrap"><table class="dt"><tr><th>Prénom</th><th>Nom</th><th>Classe</th><th>Quiz</th><th>Score</th><th>Niveau</th><th>%</th><th>Dépôts</th><th>Date</th></tr>' + rows + "</table></div></div>";
+  return head + stats + groupsPanel + clsPanels + perQuiz + perQ + table;
 }
 
 /* ---------- Onglet Corrigés ---------- */
@@ -1328,7 +1352,7 @@ function tData() {
     return "<tr><td>" + (i + 1) + "</td><td>" + esc(r.p || r.s || "?") + "</td><td>" + esc(r.n || "") + "</td><td>" + esc(r.c) + "</td><td>Quiz " + qz.n + "</td><td><b>" + k + "</b>" + dIcon + "</td><td>" + hist + "</td><td>" + esc((r.t || "").slice(0, 10)) + '</td><td><button class="iconbtn" data-act="del" data-val="' + i + '" title="Supprimer">' + IC.trash + "</button></td></tr>";
   }).join("");
   return '<div class="tpanel"><h3>Importer les réponses des élèves</h3>' +
-    '<div class="drop" id="dropzone">' + IC.db + '<p><b>Glissez ici</b> les fichiers <code>.ndjson</code> reçus (ou cliquez pour choisir).<br>Vous pouvez en déposer plusieurs à la fois : les fichiers cumulent les réponses d\'une classe entière.<br>Un élève qui redépose son quiz remplace sa ligne précédente : le compteur de dépôts s\'incrémente et la progression s\'affiche.</p><input type="file" id="fileinput" accept=".ndjson,.txt,.json" multiple style="display:none"></div>' +
+    '<div class="drop" id="dropzone"><p><b>Glissez ici</b> les fichiers <code>.ndjson</code> reçus (ou cliquez pour choisir).<br>Vous pouvez en déposer plusieurs à la fois : les fichiers cumulent les réponses d\'une classe entière.<br>Un élève qui redépose son quiz remplace sa ligne précédente : le compteur de dépôts s\'incrémente et la progression s\'affiche.</p><input type="file" id="fileinput" accept=".ndjson,.txt,.json" multiple style="display:none"></div>' +
     '<div class="actions">' +
     (SHEETS_URL ? '<button class="btn sm" data-act="ghload">' + IC.db + " Charger depuis Google Sheets</button>" : "") +
     '<button class="btn ghost sm" data-act="pastemodal">' + IC.code + ' Coller un code élève</button>' +
@@ -1411,6 +1435,87 @@ function installTeacherEvents() {
 
 function filterSel() {
   return T.results.filter((r) => (T.selQuiz === "all" || r.quiz === T.selQuiz) && (T.selClass === "all" || normClass(r.c) === T.selClass));
+}
+
+/* ---------- Graphiques de résultats (SVG autonomes) ---------- */
+/* Groupes de niveau : Fragile (<40%), Correct (40-69%), Très satisfaisant (>=70%) */
+const LVLNAMES = ["Fragile", "Correct", "Très satisfaisant"];
+const LVLCOLORS = ["#dc2626", "#d97706", "#16a34a"];
+const LVLFILL = ["f-ko", "f-mid", "f-ok"];
+function lvlOfPct(p) { return p >= 70 ? 2 : p >= 40 ? 1 : 0; }
+
+/* Mini anneau de % (par élève dans le tableau) */
+function donutSVG(pct, size, color) {
+  const C = 2 * Math.PI * 52, p = Math.max(0, Math.min(100, pct));
+  const off = (C * (1 - p / 100)).toFixed(1);
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 120 120" style="transform:rotate(-90deg);flex:none" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="15"/><circle cx="60" cy="60" r="52" fill="none" stroke="' + color + '" stroke-width="15" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off + '"/></svg>';
+}
+
+/* Diagramme en camembert des 3 groupes de niveau */
+function pieSVG(counts, size) {
+  size = size || 150;
+  const R = 52, C = 75;
+  const total = counts[0] + counts[1] + counts[2];
+  if (!total) return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 150 150" style="flex:none"><circle cx="75" cy="75" r="52" fill="none" stroke="#e2e8f0" stroke-width="26"/></svg>';
+  let a = -Math.PI / 2, s = "";
+  for (let i = 0; i < 3; i++) {
+    if (!counts[i]) continue;
+    const a1 = a + (counts[i] / total) * Math.PI * 2;
+    if (counts[i] === total) { s += '<circle cx="75" cy="75" r="52" fill="none" stroke="' + LVLCOLORS[i] + '" stroke-width="26"/>'; }
+    else {
+      const big = (a1 - a) > Math.PI ? 1 : 0;
+      s += '<path d="M75 75 L' + (75 + R * Math.cos(a)).toFixed(1) + ' ' + (75 + R * Math.sin(a)).toFixed(1) + ' A52 52 0 ' + big + ' 1 ' + (75 + R * Math.cos(a1)).toFixed(1) + ' ' + (75 + R * Math.sin(a1)).toFixed(1) + ' Z" fill="' + LVLCOLORS[i] + '"/>';
+    }
+    a = a1;
+  }
+  return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 150 150" style="flex:none" role="img">' + s + '</svg>';
+}
+function pieLegend(counts, total) {
+  return '<div class="pielegend">' + [0, 1, 2].map(function (i) {
+    const p = total ? Math.round(100 * counts[i] / total) : 0;
+    return '<div class="li"><span class="dot" style="background:' + LVLCOLORS[i] + '"></span><b>' + LVLNAMES[i] + '</b><span>' + counts[i] + ' élève(s) · ' + p + '%</span></div>';
+  }).join("") + "</div>";
+}
+function levelCounts(rs) {
+  const c = [0, 0, 0];
+  rs.forEach(function (r) { const qz = byId(r.quiz); c[lvlOfPct(Math.round(100 * scoreOf(r) / qz.questions.length))]++; });
+  return c;
+}
+
+/* Histogramme de répartition des scores (tranches de %) */
+function scoreHisto(rs) {
+  const edges = [0, 20, 40, 60, 80, 101], labels = ["0–19", "20–39", "40–59", "60–79", "80–100"];
+  const counts = [0, 0, 0, 0, 0];
+  rs.forEach(function (r) {
+    const qz = byId(r.quiz), p = Math.round(100 * scoreOf(r) / qz.questions.length);
+    for (let i = 0; i < 5; i++) { if (p >= edges[i] && p < edges[i + 1]) { counts[i]++; break; } }
+  });
+  const mx = Math.max.apply(null, counts.concat([1]));
+  const cols = counts.map(function (n, i) {
+    const h = Math.round(120 * n / mx), mid = (edges[i] + Math.min(edges[i + 1] - 1, 100)) / 2;
+    return '<div class="col"><span class="n">' + n + '</span><div class="bar" style="height:' + h + 'px;background:' + LVLCOLORS[lvlOfPct(mid)] + '" title="' + n + ' élève(s)"></div><span class="rg">' + labels[i] + '%</span></div>';
+  }).join("");
+  return '<div class="histo">' + cols + '</div>';
+}
+
+/* Panneaux par classe : camembert des groupes + histogramme des élèves (triés) */
+function classPanels(sel) {
+  const byC = {};
+  sel.forEach(function (r) { const c = normClass(r.c) || "?"; (byC[c] = byC[c] || []).push(r); });
+  return Object.keys(byC).sort().map(function (c) {
+    const rs = byC[c].slice().sort(function (a, b) { return scoreOf(b) - scoreOf(a); });
+    const counts = levelCounts(rs);
+    const avg = Math.round(100 * rs.reduce(function (s, r) { return s + scoreOf(r) / byId(r.quiz).questions.length; }, 0) / rs.length);
+    const bars = rs.map(function (r) {
+      const qz = byId(r.quiz), sc = scoreOf(r), p = Math.round(100 * sc / qz.questions.length), lv = lvlOfPct(p);
+      return '<div class="qbar"><div class="lbl"><b style="color:#0f172a">' + esc(fullNameOf(r)) + '</b><span>Quiz ' + qz.n + ' · ' + sc + '/' + qz.questions.length + '</span></div>' +
+        '<div class="track"><div class="fill ' + LVLFILL[lv] + '" style="width:' + p + '%"></div></div>' +
+        '<div class="pct">' + p + '% · ' + LVLNAMES[lv] + '</div></div>';
+    }).join("");
+    return '<div class="tpanel"><h3>Classe ' + esc(c) + ' — ' + rs.length + ' élève(s) · moyenne ' + avg + '%</h3>' +
+      '<div class="piebox">' + pieSVG(counts, 130) + pieLegend(counts, rs.length) + '</div>' +
+      '<div class="qbars" style="margin-top:12px">' + bars + '</div></div>';
+  }).join("");
 }
 
 /* Découpe un flux NDJSON en objets {line, o} exploitables.
