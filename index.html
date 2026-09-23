@@ -406,12 +406,311 @@ const Q15 = [
 {q:"À la puberté, quel événement marque la maturité sexuelle ?",o:["La fin de la croissance","La production de spermatozoïdes chez le garçon, les cycles menstruels et premières règles chez la fille","L'apparition des dents de sagesse","Le changement de couleur des yeux"],a:1,e:"À la puberté, les organes reproducteurs deviennent fonctionnels : fabrication continue de spermatozoïdes chez le garçon, cycles avec ovulation puis règles chez la fille."}
 ];
 
+const Q16 = [
+{q:"Notre intestin héberge un grand nombre de micro-organismes qui...",o:["Contribuent à son bon fonctionnement","Détruisent systématiquement nos cellules","Empêchent toute digestion","Ne servent strictement à rien"],a:0,e:"Notre organisme héberge de nombreux micro-organismes, particulièrement dans l'intestin, qui contribuent à son bon fonctionnement."},
+{q:"La contamination, c'est...",o:["La vaccination contre un virus","L'entrée de micro-organismes dans le corps, par exemple par une peau abîmée","La guérison d'une maladie","La digestion des aliments"],a:1,e:"La contamination est l'entrée des micro-organismes dans le corps lorsque nos barrières protectrices, comme la peau, sont abîmées."},
+{q:"L'infection, c'est lorsque les micro-organismes...",o:["Restent sur la peau sans entrer","Sont éliminés par l'eau","Provoquent une maladie en se multipliant dans le corps","Deviennent des vaccins"],a:2,e:"Bactéries ou virus peuvent provoquer des maladies en se multipliant dans le corps : c'est l'infection."},
+{q:"La phagocytose est...",o:["La production d'anticorps par les lymphocytes B","La destruction des lymphocytes T","La vaccination","Une première réponse rapide : des cellules englobent et détruisent les microbes"],a:3,e:"Contre une infection, une première réponse rapide se met en place : la phagocytose."},
+{q:"Les anticorps sont produits par...",o:["Les lymphocytes B","Les globules rouges","Les plaquettes","Les cellules nerveuses"],a:0,e:"Si l'infection persiste, des réactions plus lentes et spécifiques s'installent, dont la production d'anticorps par les lymphocytes B."},
+{q:"Quel est le rôle des lymphocytes T tueurs ?",o:["Transporter le dioxygène","Détruire les cellules infectées de l'organisme","Fabriquer des anticorps","Digérer les aliments"],a:1,e:"Les lymphocytes T tueurs détruisent les cellules infectées : c'est l'autre réaction spécifique, avec les anticorps des lymphocytes B."},
+{q:"Les antibiotiques sont des médicaments efficaces contre...",o:["Les virus uniquement","Les contaminations sans microbes","Les infections d'origine bactérienne","Toutes les maladies sans exception"],a:2,e:"La prise d'antibiotiques fait partie des mesures individuelles contre les infections bactériennes."},
+{q:"Pour prévenir les infections, on peut recourir à...",o:["L'arrêt de toute hygiène","La prise d'antibiotiques en permanence","Des antiseptiques uniquement après la maladie","La vaccination, obligatoire ou recommandée selon les cas"],a:3,e:"Pour prévenir les infections, des vaccinations sont obligatoires ou recommandées."},
+{q:"Parmi ces mesures, laquelle limite la contamination lors d'une plaie ?",o:["L'usage d'un antiseptique et une bonne hygiène","L'arrêt de la vaccination","L'absence de lavage des mains","Le partage des pansements"],a:0,e:"Hygiène, usage d'antiseptique, port du préservatif : des mesures individuelles luttent contre la contamination et l'infection."},
+{q:"Toutes ces mesures (hygiène, vaccination...) s'inscrivent dans...",o:["Un traitement individuel uniquement curatif","Une interdiction des médicaments","Une démarche globale de prévention et de lutte contre les épidémies","Une action sans rapport avec la santé publique"],a:2,e:"Toutes ces mesures s'inscrivent dans une démarche globale de politique de prévention et de lutte contre les épidémies."}
+];
+
+const Q17 = [
+{q:"Le phénotype d'un individu est le résultat de...",o:["L'expression de ses gènes et de l'influence de l'environnement","Ses gènes uniquement, sans aucune influence extérieure","Son alimentation uniquement","Le hasard sans aucun support biologique"],a:0,e:"Le phénotype est le résultat de l'expression des gènes et de l'influence de l'environnement."},
+{q:"Les chromosomes, constitués d'ADN, sont...",o:["Dans le cytoplasme sans rôle précis","Le support de l'information génétique, présents dans le noyau","Des protéines du sang","Des fragments de membrane"],a:1,e:"Les chromosomes, constitués d'ADN et présents dans le noyau, sont le support de l'information génétique."},
+{q:"L'ensemble des chromosomes d'une cellule forme...",o:["Le phénotype","Le génotype","Le caryotype, caractéristique d'une espèce","Une mutation"],a:2,e:"Les chromosomes forment le caryotype, caractéristique d'une espèce."},
+{q:"Un gène, c'est...",o:["Une cellule reproductrice","Une protéine du sang","Une paire de chromosomes","Une portion d'ADN qui porte l'information génétique pour un caractère"],a:3,e:"Un gène, portion d'ADN, porte l'information génétique pour un caractère."},
+{q:"Un gène existe sous plusieurs formes appelées...",o:["Les allèles","Les phénotypes","Les caryotypes","Les mutations"],a:0,e:"Chaque gène existe sous plusieurs formes, les allèles ; leur ensemble constitue le génotype."},
+{q:"L'apparition de nouveaux caractères est liée à...",o:["La fécondation uniquement","Des modifications de l'ADN : les mutations","La disparition des chromosomes","L'arrêt de la mitose"],a:1,e:"L'apparition de nouveaux caractères est liée à des modifications de l'ADN, les mutations."},
+{q:"Lors de la mitose (division cellulaire), les chromosomes sont...",o:["Éliminés","Mélangés au hasard","Copiés (duplication) puis transmis à chaque nouvelle cellule","Divisés par deux"],a:2,e:"La mitose assure la multiplication des cellules : les chromosomes sont copiés puis transmis, ce qui assure la stabilité de l'information génétique."},
+{q:"Les cellules reproductrices sont les seules cellules à posséder...",o:["Le double de l'information génétique","Aucune information génétique","Deux noyaux","La moitié de l'information génétique, à la suite de la méiose"],a:3,e:"Les cellules reproductrices possèdent la moitié de l'information génétique, à la suite de la méiose, une division particulière."},
+{q:"La fécondation permet...",o:["La disparition des chromosomes","La transmission des caractères héréditaires et le maintien d'un caryotype stable","La création d'une nouvelle espèce à chaque fois","La suppression des mutations"],a:1,e:"La fécondation permet la transmission des caractères héréditaires et le maintien d'un caryotype stable."},
+{q:"La variabilité des caractères observés dans une espèce s'explique par...",o:["Le hasard sans aucune cause","L'absence totale de gènes","L'ensemble des allèles qui constitue le génotype","La seule influence des vaccins"],a:2,e:"L'ensemble des allèles constitue le génotype : cela explique la variabilité des caractères observés dans une espèce."}
+];
+
+const Q18 = [
+{q:"La biodiversité représente...",o:["La diversité des êtres vivants d'un milieu et leurs relations entre eux et avec le milieu","Le nombre de roches d'un milieu","La température d'un milieu","La seule diversité des paysages"],a:0,e:"La biodiversité représente la diversité des êtres vivants qui occupent un milieu et leurs relations entre eux et avec le milieu."},
+{q:"On peut représenter les liens de parenté sous la forme...",o:["De listes de courses","De groupes emboîtés ou d'arbres de parenté, selon les caractères physiques partagés","De cartes routières","De frises sans ordre"],a:1,e:"Les liens de parenté se représentent en groupes emboîtés ou en arbres, en fonction des caractères physiques partagés."},
+{q:"D'après les traces fossiles, l'origine de la vie date d'il y a...",o:["Quelques milliers d'années","6000 ans","Au moins 3,7 milliards d'années","100 millions d'années"],a:2,e:"Des traces fossiles datent l'origine de la vie à au moins 3,7 milliards d'années."},
+{q:"Lors des grandes crises de la biodiversité...",o:["Aucune espèce ne disparaît","La biodiversité augmente aussitôt","Les fossiles disparaissent","Des groupes entiers (dinosaures, trilobites...) se sont éteints en un temps géologique court"],a:3,e:"Durant les grandes crises, des groupes entiers se sont éteints sur un temps géologique court."},
+{q:"Après une crise de la biodiversité, on observe toujours...",o:["Une explosion évolutive : de nombreux groupes se diversifient","La fin de toute évolution","La disparition des fossiles","L'arrêt des mutations"],a:0,e:"Une explosion évolutive survient toujours après une crise de la biodiversité."},
+{q:"Concernant le genre Homo aujourd'hui...",o:["Plusieurs espèces coexistent","L'homme est la seule espèce encore existante, les autres (Néandertal, Dénisova...) étant éteintes","Il n'a jamais existé d'autres espèces","Les chimpanzés en font partie"],a:1,e:"L'homme est la seule espèce du genre Homo existant actuellement, les autres étant éteintes."},
+{q:"On peut classer l'homme parmi les primates, dont les plus proches parents actuels sont...",o:["Les lémuriens","Les gorilles uniquement","Les chimpanzés","Les orangs-outans uniquement"],a:2,e:"L'homme s'inscrit dans le processus d'évolution : ses plus proches parents actuels sont les chimpanzés."},
+{q:"L'évolution du vivant est...",o:["Une simple opinion","Une croyance sans preuve","Une invention récente","Une théorie scientifique qui s'appuie sur des faits et des observations dans la nature"],a:3,e:"L'évolution du vivant est une théorie scientifique appuyée sur des faits et des observations."},
+{q:"L'évolution des espèces s'explique notamment par...",o:["La transmission de caractères décidés par les individus","L'apparition de nouveaux caractères au hasard suite à des mutations, puis la sélection naturelle","L'absence de toute variation","La création fixe et définitive des espèces"],a:1,e:"L'évolution s'explique par l'apparition de nouveaux caractères au hasard (mutations) et la sélection naturelle."},
+{q:"Des espèces qui partagent des caractères physiques...",o:["N'ont aucun lien de parenté","Vivent forcément dans le même milieu","Ont hérité ces caractères d'un ancêtre commun : elles sont apparentées","Se reproduisent forcément ensemble"],a:2,e:"Des caractères partagés ont été transmis par un ancêtre commun : les espèces concernées sont apparentées."}
+];
+
+const Q19 = [
+{q:"Les séismes et les éruptions volcaniques se produisent...",o:["Partout avec la même fréquence","Uniquement au centre des continents","Uniquement sous les océans","Dans des zones précises du globe : les zones actives"],a:3,e:"On observe séismes et éruptions dans des zones précises du globe : les zones actives."},
+{q:"Ces zones actives sont situées...",o:["À la frontière entre les plaques terrestres","Au centre des plaques","Sous les grandes plaines uniquement","Loin de toute plaque"],a:0,e:"Les zones actives sont situées à la frontière entre les plaques terrestres."},
+{q:"La tectonique des plaques, c'est...",o:["L'immobilité totale des plaques","Le mouvement des plaques lithosphériques les unes par rapport aux autres","La disparition des séismes","Le refroidissement de la surface uniquement"],a:1,e:"Les plaques lithosphériques sont en mouvement les unes par rapport aux autres : c'est la tectonique des plaques."},
+{q:"La mobilité des plaques est la conséquence...",o:["De l'énergie du Soleil","Du vent en surface","D'une énergie interne qui se dissipe des profondeurs du globe vers la surface","Des marées uniquement"],a:2,e:"Cette mobilité est la conséquence d'une énergie interne qui se dissipe des profondeurs vers la surface."},
+{q:"Les zones à risque sismique et volcanique sont...",o:["Ignorées des scientifiques","Surveillées afin d'anticiper une activité géologique dangereuse pour les humains","Interdites d'accès à tous","Dépourvues de tout appareil de mesure"],a:1,e:"Les zones à risque sont surveillées afin d'anticiper une activité géologique dangereuse."},
+{q:"En cas d'accident géologique majeur, les populations locales sont...",o:["Évacuées vers la zone active","Laissées sans aucune information","Éduquées au comportement à adopter","Invitées à se rapprocher du volcan"],a:2,e:"Les populations locales sont éduquées au comportement à adopter en cas d'accident géologique majeur."},
+{q:"Plus l'énergie émise par un séisme est importante...",o:["Plus la magnitude est grande","Plus la magnitude est petite","Moins il y a de dégâts","Moins on le détecte"],a:0,e:"Plus l'énergie émise par un séisme est importante, plus la magnitude est grande."},
+{q:"La magnitude d'un séisme rend donc compte de...",o:["La profondeur de la mer","L'énergie émise par le séisme","La température de la lave","La vitesse du vent"],a:1,e:"La magnitude est liée à l'énergie émise par le séisme."},
+{q:"Un volcanisme et des séismes fréquents à la frontière de deux plaques s'expliquent par...",o:["Le hasard météorologique","L'érosion des sols","Le mouvement relatif des plaques lithosphériques à leur frontière","La pollution de l'air"],a:2,e:"C'est le mouvement des plaques à leur frontière qui explique l'activité des zones actives."},
+{q:"Surveiller les zones à risque permet avant tout de...",o:["Supprimer tout risque naturel","Anticiper la survenue d'une activité dangereuse pour protéger les humains","Prévoir la météo","Empêcher les plaques de bouger"],a:1,e:"La surveillance vise à anticiper la survenue d'une activité géologique dangereuse pour les humains."}
+];
+
+const Q20 = [
+{q:"La climatologie étudie les phénomènes météorologiques...",o:["Sur des zones étendues et une longue échelle de temps","En un seul point et en une minute","Uniquement dans les océans","Sans aucun instrument de mesure"],a:0,e:"La climatologie étudie les phénomènes météorologiques sur des zones et une échelle de temps étendues."},
+{q:"Les phénomènes météorologiques sont liés à...",o:["L'immobilité totale de l'air et de l'eau","Une dynamique des masses d'eau et des masses d'air qui se manifeste par des mouvements","La seule rotation de la Lune","L'absence d'énergie solaire"],a:1,e:"Ils sont liés à la dynamique des masses d'eau et des masses d'air, qui se manifeste par des mouvements."},
+{q:"Les vents (mouvements des masses d'air) sont dus à...",o:["L'inégale répartition de l'énergie solaire à la surface de la Terre","La rotation des éoliennes","L'agitation des poissons","L'absence d'atmosphère"],a:0,e:"Les vents sont dus à l'inégale répartition de l'énergie solaire à la surface de la Terre."},
+{q:"Les mouvements des masses d'eau des océans ont pour origine...",o:["Les marées uniquement","La couleur de l'eau","Les vents en surface des océans et les différences de température de l'eau","Les courants des rivières"],a:2,e:"Les vents en surface des océans et les différences de température de l'eau sont à l'origine des mouvements des masses d'eau."},
+{q:"Comprendre les phénomènes météo et climatiques permet de...",o:["Supprimer tous les aléas","Mieux appréhender et se protéger face à des aléas parfois dangereux pour l'homme","Prévoir les séismes","Contrôler le Soleil"],a:1,e:"Comprendre ces phénomènes, c'est appréhender et se protéger face à des aléas parfois dangereux."},
+{q:"L'étude du climat permet aussi de...",o:["Modifier la composition du Soleil","Arrêter la rotation de la Terre","Supprimer les saisons","Connaître les climats passés et appréhender l'avenir du climat"],a:3,e:"Ces études permettent de connaître les climats passés et d'appréhender l'avenir du climat."},
+{q:"Le réchauffement climatique actuel est lié à...",o:["La disparition de l'atmosphère","Le refroidissement du Soleil","L'augmentation de l'effet de serre, liée aux activités humaines","La diminution de l'effet de serre"],a:2,e:"Le réchauffement climatique, son origine et l'augmentation de l'effet de serre sont au cœur de ces études."},
+{q:"La météo et le climat se distinguent car...",o:["La climatologie travaille sur des zones et des durées étendues, la météo sur le court terme","Ce sont exactement la même chose","La météo n'utilise aucun satellite","Le climat ne change jamais"],a:0,e:"La climatologie porte sur des zones et des durées étendues, contrairement à la météo du court terme."},
+{q:"Les masses d'eau et les masses d'air sont...",o:["Des roches du manteau","Des gaz du noyau","Les enveloppes solides de la Terre","Les enveloppes fluides de la Terre, dont la connaissance explique météo et climats"],a:3,e:"La connaissance des enveloppes fluides (masses d'eau et d'air) permet de comprendre météo et climats."},
+{q:"Un aléa météorologique dangereux pour l'homme peut être...",o:["Un ciel dégagé","Une tempête violente ou une canicule","Une brise légère","Un arc-en-ciel"],a:1,e:"Certains aléas météorologiques sont dangereux pour l'homme : tempêtes, inondations, canicules."}
+];
+
+const Q21 = [
+{q:"La reproduction asexuée permet de produire des descendants...",o:["À partir d'un seul individu","Toujours à partir de deux individus","Uniquement dans l'eau","Sans aucune cellule"],a:0,e:"La reproduction asexuée permet de produire des descendants à partir d'un seul individu."},
+{q:"La reproduction sexuée implique...",o:["Un seul individu","La rencontre de deux cellules reproductrices de sexe différent","Aucune fécondation","La division d'une bactérie"],a:1,e:"La reproduction sexuée implique la rencontre de deux cellules reproductrices de sexe différent."},
+{q:"L'oviparité, c'est un développement...",o:["Dans les voies génitales de la mère","Sans fécondation","Dans un œuf, à l'extérieur de l'organisme maternel","Dans le placenta"],a:2,e:"Le nouvel individu peut se développer à l'extérieur de l'organisme maternel, dans un œuf : c'est l'oviparité."},
+{q:"La viviparité, c'est un développement...",o:["À l'intérieur de l'organisme maternel, dans les voies génitales","Dans un œuf pondu","Dans l'eau uniquement","Sans embryon"],a:0,e:"Le développement peut aussi avoir lieu à l'intérieur de l'organisme maternel : c'est la viviparité."},
+{q:"Selon les conditions du milieu, la reproduction est plus ou moins efficace :",o:["La population reste toujours identique","Les individus deviennent immortels","La reproduction s'arrête définitivement","Le nombre de descendants produits varie, ce qui modifie l'effectif de la population"],a:3,e:"Selon les conditions du milieu, le nombre de descendants varie, ce qui modifie l'effectif de la population."},
+{q:"Il existe donc une dynamique des populations...",o:["Sans aucun lien avec la reproduction","Liée à l'efficacité de la reproduction","Identique dans tous les milieux","Qui supprime toute mortalité"],a:1,e:"Il existe une dynamique des populations liée à l'efficacité de la reproduction."},
+{q:"Les générations successives produites par reproduction asexuée sont...",o:["Toutes différentes","De plus en plus grosses","Identiques entre elles","Issues de deux parents"],a:2,e:"Les générations successives d'individus produits par reproduction asexuée sont identiques."},
+{q:"Les individus issus de reproduction sexuée présentent...",o:["Aucune différence entre eux","Les caractères d'une autre espèce","Toujours le même sexe","Une variabilité de leurs caractères, les caractères communs à l'espèce étant conservés"],a:3,e:"Les individus issus de reproduction sexuée présentent une variabilité de leurs caractères, même si les caractères de l'espèce sont conservés."},
+{q:"Cette diversité des descendants est...",o:["Un atout dans un milieu changeant : elle est source d'évolution","Un danger qui fait disparaître l'espèce","Sans aucun intérêt","La preuve d'une maladie"],a:0,e:"Cette diversité des descendants est un atout dans un milieu changeant : elle est source d'évolution."},
+{q:"Les modalités de la reproduction sexuée diffèrent selon...",o:["La couleur des individus","Les contraintes exercées par le milieu de vie de l'espèce","Le nombre de pattes","La saison uniquement"],a:1,e:"Les modalités de la reproduction sexuée diffèrent selon les contraintes exercées par le milieu de vie."}
+];
+
+const Q22 = [
+{q:"À la puberté, les changements du corps sont déclenchés par...",o:["L'arrêt des hormones","La mise en fonctionnement des organes reproducteurs","La diminution de la croissance","La perte des caractères sexuels"],a:1,e:"À la puberté, les changements sont déclenchés par la mise en fonctionnement des organes reproducteurs."},
+{q:"Chez les garçons, les testicules produisent à partir de la puberté...",o:["La testostérone et des spermatozoïdes, les cellules reproductrices","Des ovules et des œstrogènes","Du lait maternel","Des anticorps"],a:0,e:"Les testicules produisent une hormone, la testostérone, et des spermatozoïdes."},
+{q:"De la puberté à la ménopause, les ovaires produisent...",o:["Des spermatozoïdes","Plusieurs ovules par jour","Un ovule par cycle, ainsi que des œstrogènes et de la progestérone","De la testostérone"],a:2,e:"Les ovaires produisent un ovule par cycle et des hormones : œstrogènes et progestérone."},
+{q:"Le premier pic d'œstrogène (vers le 13e jour du cycle) est responsable de...",o:["Des règles","L'épaississement maximal","La fécondation","L'ovulation"],a:3,e:"Le premier pic d'œstrogène est responsable de l'ovulation."},
+{q:"Les pics simultanés d'œstrogène et de progestérone (vers le 21e jour) provoquent...",o:["Les règles immédiates","L'épaississement de la muqueuse utérine et son enrichissement en vaisseaux sanguins","L'arrêt définitif du cycle","La ménopause"],a:1,e:"Ces pics sont responsables de l'épaississement de la muqueuse utérine et de son enrichissement en vaisseaux."},
+{q:"Les règles sont dues à...",o:["La chute du taux d'hormones ovariennes","Un pic d'hormones","La fécondation","L'ovulation"],a:0,e:"La chute du taux d'hormones ovariennes est responsable des règles."},
+{q:"La pilule contraceptive agit en...",o:["Favorisant l'ovulation","Épaississant la muqueuse","Détruisant les spermatozoïdes dans le sang","Empêchant les pics d'hormones ovariennes, ce qui bloque l'ovulation"],a:3,e:"La pilule empêche la mise en place des pics d'hormones, ce qui bloque l'ovulation."},
+{q:"Après un rapport sexuel, la cellule-œuf issue de la fécondation...",o:["Reste sans jamais se diviser","Devient un micro-organisme","Se développe en embryon puis en fœtus grâce à de nombreuses divisions cellulaires","Disparaît immédiatement"],a:2,e:"La cellule-œuf se développe en embryon puis en fœtus grâce à de nombreuses divisions cellulaires, dans l'utérus."},
+{q:"Pendant la grossesse, les échanges entre la mère et l'enfant se font...",o:["Directement dans le sang sans filtre","Au niveau du placenta, qui joue un rôle de filtre","Dans les trompes","Dans les ovaires"],a:1,e:"Ce développement est permis grâce à des échanges au niveau du placenta, qui joue un rôle de filtre."},
+{q:"Un comportement sexuel responsable consiste à...",o:["Se prémunir contre une grossesse non désirée et contre les IST, en respectant son ou sa partenaire","Ignorer tout moyen de contraception","Refuser toute information","Prendre des risques sans protection"],a:0,e:"La sexualité doit reposer sur un comportement responsable : se prémunir contre grossesse non désirée et IST, en respectant son ou sa partenaire."}
+];
+
+const Q23 = [
+{q:"Notre corps capte les variations de l'environnement grâce...",o:["Aux muscles uniquement","Aux os","Aux organes sensoriels pourvus de récepteurs sensoriels spécifiques","Au sang"],a:2,e:"Notre corps capte les variations de l'environnement grâce aux organes sensoriels pourvus de récepteurs spécifiques."},
+{q:"La stimulation des récepteurs sensoriels provoque...",o:["La naissance de messages nerveux sensitifs transmis au cerveau par des nerfs","L'arrêt du cœur","La production d'hormones digestives","La contraction immédiate de tous les muscles"],a:0,e:"La stimulation de ces cellules provoque la naissance de messages nerveux sensitifs transmis au cerveau par des nerfs."},
+{q:"Pour percevoir l'environnement, les zones du cerveau activées...",o:["Fonctionnent isolément","Communiquent entre elles","S'éteignent aussitôt","Envoient du sang aux yeux"],a:1,e:"Plusieurs zones du cerveau sont activées et communiquent entre elles afin de percevoir l'environnement."},
+{q:"L'aire motrice du cerveau envoie aux muscles...",o:["Des hormones digestives","Des globules rouges","Du sang oxygéné","Des messages nerveux moteurs"],a:3,e:"Ces zones communiquent avec l'aire motrice pour envoyer des messages nerveux moteurs aux muscles."},
+{q:"Les messages nerveux sont élaborés et transmis par...",o:["Des cellules nerveuses appelées neurones","Les globules rouges","Les plaquettes","Les cellules musculaires"],a:0,e:"Les messages nerveux sont élaborés et transmis par des cellules nerveuses appelées neurones."},
+{q:"Les neurones constituent...",o:["Une barrière étanche","Un muscle unique","Un réseau complexe de communication","Un os du crâne"],a:2,e:"Les neurones constituent un réseau complexe de communication."},
+{q:"Les neurones communiquent entre eux au niveau des...",o:["Articulations","Synapses","Valvules","Alvéoles pulmonaires"],a:1,e:"Ces neurones communiquent entre eux au niveau des synapses."},
+{q:"Le bon fonctionnement du système nerveux peut être modifié par...",o:["Une alimentation équilibrée","Le sommeil","Le sport modéré","Des agressions physiques de l'environnement et par les drogues"],a:3,e:"Le bon fonctionnement du système nerveux peut être modifié par des agressions physiques et par les drogues."},
+{q:"Dans la chaîne du stimulus à la réponse, le cerveau joue le rôle de...",o:["Simple conducteur passif","Muscle effecteur","Centre qui reçoit les messages sensitifs, les analyse puis envoie des ordres moteurs","Récepteur sensoriel"],a:2,e:"Le cerveau reçoit les messages sensitifs, les analyse grâce à ses zones qui communiquent, puis envoie des ordres via l'aire motrice."},
+{q:"Un message nerveux sensitif circule...",o:["Du récepteur sensoriel vers le cerveau par un nerf","Du muscle vers la peau","Du cerveau vers l'œil uniquement","Dans le sang"],a:0,e:"Le message sensitif naît au récepteur sensoriel et est transmis au cerveau par des nerfs."}
+];
+
+const Q24 = [
+{q:"Les végétaux chlorophylliens prélèvent leurs éléments nutritifs...",o:["À la frontière de deux milieux : le sol et l'atmosphère","Uniquement dans l'air","Uniquement dans l'eau des rivières","Dans les autres plantes"],a:0,e:"Les végétaux chlorophylliens vivent à la frontière du sol et de l'atmosphère, où ils prélèvent leurs éléments nutritifs."},
+{q:"L'eau et les sels minéraux sont absorbés...",o:["Par les fleurs","Par les fruits","Par les poils absorbants des racines","Par les graines"],a:2,e:"L'eau et les sels minéraux sont absorbés par les poils absorbants des racines."},
+{q:"L'absorption par les racines est améliorée par...",o:["L'absence de tout micro-organisme","La mise en place de symbioses avec les micro-organismes du sol","Le bétonnage du sol","L'arrachage des poils absorbants"],a:1,e:"Cette absorption est améliorée par des symbioses avec les micro-organismes du sol."},
+{q:"L'eau et les sels minéraux transportés des racines vers les feuilles constituent...",o:["La sève élaborée","La matière organique","La chlorophylle","La sève brute"],a:3,e:"L'eau et les sels minéraux constituent la sève brute, transportée des racines aux feuilles."},
+{q:"Les feuilles prélèvent le dioxyde de carbone de l'air par...",o:["Les poils absorbants","Les racines","Les stomates","Les fleurs"],a:2,e:"Les feuilles prélèvent le dioxyde de carbone de l'air par les stomates."},
+{q:"Lors de la photosynthèse, en présence de lumière et d'eau, le CO2 est converti en...",o:["Matière organique","Matière minérale pure","Dioxygène uniquement","Sels minéraux"],a:0,e:"En présence de lumière et d'eau, le CO2 est converti en matière organique : c'est la photosynthèse."},
+{q:"La matière organique produite est ensuite...",o:["Toujours rejetée","Stockée provisoirement dans les feuilles ou exportée par la sève élaborée vers les organes de réserve","Détruite aussitôt","Transformée en eau"],a:1,e:"Elle est stockée dans les feuilles ou exportée par la sève élaborée vers les organes de réserve (racine, tige, graine)."},
+{q:"Les organes de réserve d'une plante peuvent être...",o:["Les pétales uniquement","Le pollen","Les étamines","Des racines, des tiges ou des graines"],a:3,e:"La sève élaborée alimente les organes de réserve : racine, tige, graine."},
+{q:"La plante utilise la matière organique produite pour...",o:["Le fonctionnement de ses cellules","Refroidir l'atmosphère","Nourrir les animaux voisins","Fabriquer du sol"],a:0,e:"La matière organique produite est utilisée par les cellules de la plante pour leur fonctionnement."},
+{q:"Une transformation chimique dans la plante convertit...",o:["L'eau en lumière","La lumière en eau","L'énergie chimique de la matière organique en énergie directement utilisable par la plante","Les sels minéraux en CO2"],a:2,e:"Une transformation chimique convertit l'énergie chimique de la matière organique en énergie directement utilisable."}
+];
+
+const Q25 = [
+{q:"La nutrition des animaux consiste à prélever dans le milieu extérieur...",o:["Uniquement de l'eau","De la matière organique et minérale","Uniquement de la lumière","Uniquement des gaz"],a:1,e:"La nutrition des animaux consiste à prélever de la matière organique et minérale dans le milieu extérieur."},
+{q:"À partir de cette matière, les animaux produisent de l'énergie pour...",o:["Éclairer leur milieu","Refroidir leur corps","Fabriquer de l'eau","Assurer leur croissance et le fonctionnement de leurs cellules"],a:3,e:"Les animaux produisent de l'énergie pour assurer leur croissance et le fonctionnement des cellules."},
+{q:"Le dioxygène est prélevé au niveau des appareils respiratoires, comme...",o:["Les branchies, les poumons ou les trachées","Le cœur et le foie","L'estomac et l'intestin","Les reins"],a:0,e:"Le dioxygène de l'eau ou de l'air est prélevé au niveau des appareils respiratoires (branchie, poumon ou trachée)."},
+{q:"Ces appareils respiratoires présentent...",o:["Une paroi totalement étanche","Aucune vascularisation","Une surface d'échange qui facilite le passage du dioxygène vers le milieu intérieur","Des poils absorbants"],a:2,e:"Ils présentent une surface d'échange qui facilite le passage du dioxygène vers le milieu intérieur."},
+{q:"Dans l'appareil digestif, les aliments sont transformés en nutriments...",o:["Par simple stockage","Sous l'action d'enzymes","Par congélation","Par dessiccation"],a:1,e:"Les aliments sont transformés en nutriments dans l'appareil digestif sous l'action d'enzymes."},
+{q:"La structure du tube digestif...",o:["Dépend du régime alimentaire de l'animal","Est identique chez tous les animaux","Ne sert à rien","Empêche toute absorption"],a:0,e:"La structure du tube digestif dépend du régime alimentaire de l'animal."},
+{q:"Le passage des nutriments vers le milieu intérieur se fait...",o:["Au niveau de la peau","Dans les poumons","Par les trachées","Au niveau d'une très grande surface d'absorption intestinale"],a:3,e:"Le passage des nutriments se fait au niveau d'une surface d'absorption intestinale très grande."},
+{q:"Les nutriments et le dioxygène sont distribués aux cellules par...",o:["Le système nerveux","Les os","Des systèmes de transport ouverts ou fermés","Les muscles"],a:2,e:"Des systèmes de transport ouverts ou fermés distribuent nutriments et dioxygène aux cellules."},
+{q:"Le dioxyde de carbone produit par les cellules est éliminé...",o:["Au niveau de l'appareil respiratoire","Par les muscles","Par le tube digestif","Par la peau uniquement"],a:0,e:"Le dioxyde de carbone est éliminé au niveau de l'appareil respiratoire."},
+{q:"Les déchets azotés sont éliminés par...",o:["Les poumons","Des systèmes de filtration comme les reins ou les tubes de Malpighi","Le cœur","Les branchies uniquement"],a:1,e:"Les déchets azotés sont éliminés par des systèmes de filtration (reins ou tubes de Malpighi)."}
+];
+
+const Q26 = [
+{q:"Un écosystème est...",o:["Une association d'êtres vivants entretenant des relations complexes au sein d'un territoire donné","Un seul individu isolé","Un milieu sans aucun être vivant","Une ville sans nature"],a:0,e:"Les écosystèmes sont des associations d'êtres vivants entretenant des relations complexes au sein d'un territoire donné."},
+{q:"Les écosystèmes sont des ensembles...",o:["Instables et indestructibles","Stables mais fragiles","Immuables","Artificiels uniquement"],a:1,e:"Ce sont des ensembles stables mais fragiles."},
+{q:"Ces dernières décennies, l'augmentation rapide de la population humaine a entraîné...",o:["La disparition de toute pollution","Une diminution des besoins","Aucun effet sur la nature","Des pressions croissantes sur les écosystèmes, à l'échelle locale et globale"],a:3,e:"L'augmentation rapide de la population humaine a entraîné des pressions croissantes sur les écosystèmes."},
+{q:"Parmi ces menaces pour les écosystèmes, laquelle est liée aux activités humaines ?",o:["Les marées","La rotation de la Terre","Le réchauffement climatique, la pollution et les perturbations des milieux naturels","Les éclipses"],a:2,e:"Réchauffement climatique, pollution et perturbations des milieux menacent sérieusement les écosystèmes."},
+{q:"Les écosystèmes fournissent à l'humanité...",o:["Un ensemble de bienfaits appelé service écologique","Uniquement des problèmes","Aucune ressource","Seulement des paysages"],a:0,e:"Les écosystèmes fournissent à l'humanité un ensemble de bienfaits appelé service écologique."},
+{q:"Face à ces menaces, de plus en plus de personnes...",o:["Ignorent la situation","Aggravent volontairement les dégâts","Prennent conscience de leur importance et mettent en place des actions de préservation","Interdisent toute promenade"],a:2,e:"De plus en plus de personnes prennent conscience de leur importance et mettent en place des actions de préservation."},
+{q:"L'homme peut donc agir sur les écosystèmes de la planète...",o:["Uniquement de façon négative","Positivement ou négativement","Sans aucun effet possible","Uniquement en ville"],a:1,e:"L'homme peut agir positivement ou négativement sur les écosystèmes de la planète."},
+{q:"Au quotidien, chacun peut contribuer à préserver l'environnement...",o:["En gaspillant l'eau","En multipliant les déchets","En détruisant les habitats naturels","En appliquant des gestes éco-responsables"],a:3,e:"Au quotidien, tout le monde peut contribuer à préserver l'environnement en appliquant des gestes éco-responsables."},
+{q:"Un geste éco-responsable, c'est par exemple...",o:["Jeter ses piles dans la nature","Trier ses déchets et économiser l'eau et l'énergie","Laisser couler le robinet","Brûler ses déchets en plein air"],a:1,e:"Trier, économiser l'eau et l'énergie : des gestes éco-responsables à la portée de tous."},
+{q:"La préservation des écosystèmes se joue...",o:["À différentes échelles, du local au global","Uniquement à l'autre bout du monde","Seulement dans les océans","Nulle part : c'est inutile"],a:0,e:"Les actions de préservation se mettent en place à différentes échelles, locale et globale."}
+];
+
+const Q27 = [
+{q:"Une ressource naturelle est prélevée par l'homme dans l'environnement pour...",o:["Détruire les milieux naturels","Augmenter la pollution","Subvenir à ses besoins et réaliser ses activités","Épuiser les sols"],a:2,e:"Une ressource naturelle est prélevée pour subvenir aux besoins de l'homme et à ses activités."},
+{q:"Depuis le milieu du 19e siècle, l'explosion démographique et les progrès techniques ont entraîné...",o:["Une exploitation des ressources naturelles de plus en plus forte","L'arrêt de toute exploitation","La disparition des besoins","Le retour à la préhistoire"],a:0,e:"Depuis le milieu du 19e siècle, l'exploitation des ressources naturelles est de plus en plus forte."},
+{q:"Aujourd'hui, certaines ressources dites non renouvelables...",o:["Se renouvellent en quelques jours","Sont surexploitées et pourraient bientôt manquer","Sont illimitées","Ne servent plus à rien"],a:1,e:"Certaines ressources non renouvelables sont surexploitées et pourraient bientôt manquer."},
+{q:"L'utilisation des combustibles fossiles (charbon, pétrole, gaz naturel)...",o:["Refroidit la planète","N'a aucun effet sur le climat","Produit uniquement de l'eau pure","Est un facteur important du réchauffement climatique actuel"],a:3,e:"L'utilisation des combustibles fossiles pour l'énergie est un facteur important du réchauffement climatique."},
+{q:"Face à la demande croissante, certains pays réagissent en...",o:["Interdisant toute énergie","Utilisant en priorité les énergies renouvelables","Augmentant l'usage du charbon","Ignorant le problème"],a:1,e:"Certains pays utilisent en priorité les énergies renouvelables."},
+{q:"Exploiter les ressources dans le cadre du développement durable, c'est par exemple...",o:["Pêcher sans aucune limite","Assécher toutes les nappes","Mettre en place des quotas de pêche et des techniques d'irrigation économes en eau","Bétonner les terres agricoles"],a:2,e:"Quotas de pêche et techniques d'irrigation économes : une exploitation raisonnée dans le cadre du développement durable."},
+{q:"Le développement durable vise à...",o:["Garantir l'accès aux ressources pour les générations futures","Épuiser les ressources au plus vite","Interdire toute activité humaine","Réserver les ressources aux seuls pays riches"],a:0,e:"Le développement durable garantit l'accès aux ressources pour les générations futures."},
+{q:"Le pétrole, le charbon et le gaz naturel sont des...",o:["Énergies renouvelables","Énergies inépuisables","Ressources gratuites","Combustibles fossiles non renouvelables"],a:3,e:"Charbon, pétrole, gaz naturel : des combustibles fossiles, non renouvelables à l'échelle humaine."},
+{q:"Une énergie renouvelable est une énergie...",o:["Qui s'épuise en quelques années","Issue du pétrole","Qui se renouvelle à l'échelle humaine, comme le Soleil ou le vent","Qui n'existe pas encore"],a:2,e:"Soleil, vent, eau : des énergies renouvelables, inépuisables à l'échelle humaine."},
+{q:"Surexploiter une ressource non renouvelable conduit à...",o:["Son épuisement","Sa multiplication","Sa purification","Son renouvellement immédiat"],a:0,e:"La surexploitation épuise les ressources non renouvelables."}
+];
+
+const Q28 = [
+{q:"Pendant un effort physique, le système cardio-vasculaire est sollicité pour...",o:["Envoyer davantage de sang aux muscles actifs","Arrêter la circulation","Refroidir le sang","Diminuer le rythme cardiaque"],a:0,e:"Le système cardio-vasculaire envoie davantage de sang aux muscles actifs pendant l'effort."},
+{q:"Les nutriments et le dioxygène du sang sont nécessaires à...",o:["La digestion uniquement","La production d'anticorps","Le stockage des graisses","La transformation d'énergie dans le muscle, qui réalise un mouvement"],a:3,e:"Nutriments et dioxygène permettent la transformation d'énergie dans le muscle, qui réalise un mouvement."},
+{q:"L'augmentation des besoins énergétiques des muscles est compensée par...",o:["L'arrêt de la respiration","Une augmentation de la ventilation, qui apporte du dioxygène au sang, et une libération plus importante de glucose","La diminution du rythme cardiaque","La fermeture des capillaires"],a:1,e:"Ventilation accrue et libération de glucose compensent l'augmentation des besoins des muscles."},
+{q:"Les échanges entre le sang et le muscle se réalisent...",o:["Dans le cœur","Dans les poumons","Au niveau de nombreux capillaires sanguins","Dans les os"],a:2,e:"Le sang circule en passant par de nombreux capillaires, où les échanges avec le muscle se réalisent."},
+{q:"L'énergie convertie dans le muscle permet...",o:["Sa contraction, ce qui entraîne un mouvement du squelette","Sa disparition","L'arrêt du cœur","La production de sang"],a:0,e:"L'énergie convertie permet la contraction du muscle, donc un mouvement du squelette."},
+{q:"Pendant l'effort, une partie de l'énergie musculaire est transformée en chaleur, ce qui explique...",o:["La baisse de la température du corps","L'augmentation de la température du corps","L'arrêt de la sueur","Le refroidissement des muscles"],a:1,e:"Une partie de l'énergie est transformée en chaleur : la température du corps augmente."},
+{q:"L'activité physique est essentielle pour être en bonne santé et...",o:["L'entraînement n'y change rien","Le repos total est préférable","Le dopage est recommandé","L'entraînement améliore les performances"],a:3,e:"L'activité physique est essentielle à la santé et l'entraînement améliore les performances."},
+{q:"Pour éviter les blessures, il convient de...",o:["Se doper avant chaque match","S'entraîner sans échauffement","Suivre une pratique raisonnée de l'activité physique","Ignorer toute douleur persistante"],a:2,e:"Il convient de suivre une pratique raisonnée afin d'éviter les blessures."},
+{q:"Le dopage...",o:["Améliore la santé","Favorise les blessures et les maladies cardio-vasculaires","Est sans danger","Est autorisé en compétition"],a:1,e:"Le dopage favorise les blessures et les maladies cardio-vasculaires."},
+{q:"Pendant l'effort, le glucose libéré en plus grande quantité dans le sang sert de...",o:["Carburant énergétique pour les muscles en activité","Déchet à éliminer","Poison pour le cœur","Réserve d'eau"],a:0,e:"Le glucose libéré dans le sang est le carburant énergétique des muscles en activité."}
+];
+
+const Q29 = [
+{q:"L'alimentation doit être suffisamment variée et équilibrée pour apporter...",o:["Uniquement de l'eau","Tous les éléments énergétiques, de l'eau et des vitamines","Seulement du sucre","Seulement des graisses"],a:1,e:"L'alimentation apporte tous les éléments énergétiques, de l'eau et des vitamines."},
+{q:"Tout au long du tube digestif, les aliments subissent...",o:["Des actions mécaniques et chimiques qui produisent des nutriments absorbables","Aucune transformation","Une congélation","Une simple coloration"],a:0,e:"Les aliments subissent des actions mécaniques et chimiques qui produisent des nutriments absorbables."},
+{q:"Les nutriments issus de la digestion passent dans le sang...",o:["Au niveau de l'estomac","Au niveau du gros intestin","Au niveau de l'intestin grêle","Au niveau de la bouche"],a:2,e:"Les nutriments passent dans le sang au niveau de l'intestin grêle."},
+{q:"L'intestin grêle présente de nombreuses villosités intestinales très vascularisées qui...",o:["Bloque le passage des nutriments","Constitue une très grande surface d'échange facilitant l'absorption des nutriments vers le sang","Produit des enzymes uniquement","Stocke les aliments"],a:1,e:"Les villosités forment une très grande surface d'échange qui facilite l'absorption intestinale."},
+{q:"L'absorption intestinale, c'est...",o:["Le broyage par les dents","L'élimination des selles","La production de salive","Le passage des nutriments de l'intestin vers le sang"],a:3,e:"L'absorption intestinale est le passage des nutriments vers le sang."},
+{q:"Les nutriments sont indispensables...",o:["Au bon fonctionnement de l'organisme","Uniquement à la croissance des cheveux","Seulement pendant l'enfance","À rien du tout"],a:0,e:"Les nutriments sont indispensables au bon fonctionnement de l'organisme."},
+{q:"Une alimentation déséquilibrée est dangereuse car elle favorise...",o:["Une meilleure santé","La disparition des microbes","L'apparition de maladies nutritionnelles comme les maladies cardio-vasculaires","Une énergie illimitée"],a:2,e:"Une alimentation déséquilibrée favorise les maladies nutritionnelles, comme les maladies cardio-vasculaires."},
+{q:"La digestion chimique se distingue de la digestion mécanique car elle...",o:["Refroidit les aliments","Ne concerne que l'eau","S'arrête dans la bouche","Découpe les grosses molécules alimentaires grâce aux enzymes"],a:3,e:"La digestion chimique découpe les aliments grâce aux enzymes, en plus du broyage mécanique."},
+{q:"Après l'absorption, les nutriments sont distribués...",o:["Nulle part","Par le sang à toutes les cellules de l'organisme","Uniquement au cerveau","Uniquement aux muscles"],a:1,e:"Le sang distribue les nutriments à toutes les cellules de l'organisme."},
+{q:"Un repas équilibré apporte en bonnes proportions...",o:["Uniquement des frites","Uniquement des sodas","Des nutriments variés : glucides, lipides, protéines, eau, vitamines et sels minéraux","Seulement du sel"],a:2,e:"L'équilibre alimentaire repose sur la variété : glucides, lipides, protéines, eau, vitamines et sels minéraux."}
+];
+
+const Q30 = [
+{q:"Sans atmosphère, la température moyenne théorique de la Terre serait de...",o:["Moins 18 degrés","Plus 15 degrés","Plus 30 degrés","Zéro degré"],a:0,e:"La position de la Terre lui confère une température moyenne théorique de moins 18 degrés."},
+{q:"Grâce aux gaz à effet de serre, la température moyenne réelle est de...",o:["Moins 18 degrés","Plus 15 degrés : à cette température, l'eau est liquide","Moins 50 degrés","Plus 100 degrés"],a:1,e:"Grâce aux gaz à effet de serre, la température réelle est de plus 15 degrés : l'eau y est liquide."},
+{q:"Les conditions qui permettent la vie sur Terre sont...",o:["L'absence d'eau","Le vide spatial","La présence d'eau liquide, une atmosphère et une température compatible avec la vie","Une température de moins 100 degrés"],a:2,e:"Eau liquide, atmosphère et température compatible : les conditions de la vie sur Terre."},
+{q:"Les gaz à effet de serre de l'atmosphère sont par exemple...",o:["Le dioxyde de carbone, le méthane et la vapeur d'eau","L'oxygène uniquement","L'azote uniquement","L'hélium"],a:0,e:"Dioxyde de carbone, méthane, vapeur d'eau : des gaz à effet de serre naturels."},
+{q:"Depuis la révolution industrielle, on observe...",o:["Une baisse des émissions de CO2","Une augmentation massive des émissions de dioxyde de carbone liées aux activités humaines","La disparition du CO2","Aucun changement"],a:1,e:"On observe une augmentation massive des émissions de CO2 liées aux activités humaines (industries, transports)."},
+{q:"Ces émissions augmentent l'effet de serre naturel, ce qui entraîne...",o:["Un refroidissement climatique","Une ère glaciaire immédiate","Aucun effet sur le climat","Un réchauffement climatique"],a:3,e:"Ces émissions augmentent l'effet de serre naturel, d'où un réchauffement climatique."},
+{q:"Un signe observable du réchauffement climatique est...",o:["La fonte des glaciers et la montée des eaux","Le refroidissement des océans","L'avancée des glaces","La baisse du niveau des mers"],a:0,e:"Hausse de la température moyenne, fonte des glaciers, montée des eaux : des signes du réchauffement."},
+{q:"En montagne, le réchauffement modifie le peuplement : on observe...",o:["La disparition de toute vie","Le retour des dinosaures","Une migration des espèces vers des zones d'altitude plus élevées","Aucun changement"],a:2,e:"En montagne, les espèces migrent vers des zones d'altitude plus élevées."},
+{q:"Pour atténuer le réchauffement climatique, il faut...",o:["Augmenter les émissions","Ne rien changer","Supprimer l'atmosphère","Réduire les émissions mondiales de gaz à effet de serre"],a:3,e:"Pour atténuer le réchauffement, il faut réduire les émissions mondiales de gaz à effet de serre."},
+{q:"Pour s'adapter au réchauffement, il faut...",o:["Ignorer l'avenir","Prévoir l'évolution du climat et ses impacts sur les écosystèmes et les populations","Interdire la science","Construire au bord de l'eau"],a:1,e:"Il faut prévoir l'évolution du climat et ses impacts sur les écosystèmes et les populations humaines."}
+];
+
+const Q31 = [
+{q:"Les aliments sont composés de...",o:["Uniquement d'eau","Uniquement de sucre","Glucides, lipides, protéines, eau et sels minéraux","Uniquement de vitamines"],a:2,e:"Les aliments sont composés de glucides, de lipides, de protéines, ainsi que d'eau et de sels minéraux."},
+{q:"Ces éléments nutritifs permettent...",o:["La croissance de l'organisme et apportent de l'énergie pour son fonctionnement","Uniquement de dormir","De ne plus boire","De se passer d'activité physique"],a:0,e:"Ces éléments permettent la croissance de l'organisme et apportent de l'énergie pour son fonctionnement."},
+{q:"Les besoins de l'organisme varient en fonction...",o:["De la couleur des yeux","Du sexe, de l'âge et de l'activité physique des individus","De la pointure","Du prénom"],a:1,e:"Les besoins varient en fonction du sexe, de l'âge et de l'activité physique."},
+{q:"Une alimentation équilibrée, c'est une alimentation...",o:["Uniquement carnée","Sans aucun plaisir","Riche en sel et en sucre","Variée, sans excès de sucre, de graisse ou de sel"],a:3,e:"Une alimentation équilibrée est variée, sans excès de sucre, de graisse ou de sel."},
+{q:"Pour se maintenir en bonne santé, il faut aussi...",o:["Pratiquer une activité physique régulière","Rester immobile toute la journée","Dormir en permanence","Éviter toute sortie"],a:0,e:"Il faut pratiquer une activité physique régulière et adapter l'énergie des aliments à nos besoins."},
+{q:"L'énergie apportée par les aliments se mesure en...",o:["Litres","Mètres","Kilocalories (Kcal) ou KiloJoules (KJ)","Degrés"],a:2,e:"L'énergie des aliments se mesure en Kilocalories (Kcal) ou KiloJoules (KJ)."},
+{q:"La transformation de la farine en pain repose sur...",o:["La cuisson uniquement","La fermentation réalisée par les levures, qui fait gonfler la pâte avant la cuisson","L'ajout d'eau glacée","Le pétrissage sans micro-organismes"],a:1,e:"La fermentation réalisée par les levures fait gonfler la pâte : c'est une transformation biologique."},
+{q:"La transformation du lait en yaourt est permise par...",o:["Des micro-organismes qui changent son état : c'est une transformation biologique","Un simple refroidissement","L'ajout de sucre uniquement","Un filtrage mécanique"],a:0,e:"Des micro-organismes permettent de changer l'état du lait : on parle de transformation biologique."},
+{q:"Ces transformations biologiques sont influencées par...",o:["La couleur du récipient","La musique d'ambiance","Le jour de la semaine","Des paramètres physiques comme la température"],a:3,e:"Ces transformations sont influencées par des paramètres physiques comme la température."},
+{q:"Un aliment mal conservé présente un risque sanitaire car...",o:["Il perd son goût uniquement","Il devient plus nutritif","Les micro-organismes pathogènes peuvent s'y multiplier de façon importante","Il ne change jamais"],a:2,e:"Un aliment mal conservé présente un risque sanitaire lorsque les micro-organismes pathogènes s'y multiplient."}
+];
+
+const Q32 = [
+{q:"La classification utilitaire classe les êtres vivants selon...",o:["Des critères déterminés par les besoins de l'être humain (comestible, nuisible...)","Leur degré de parenté","Leurs attributs partagés","Leur ADN"],a:0,e:"En classification utilitaire, les critères sont déterminés par les besoins de l'être humain."},
+{q:"La classification phylogénétique utilise...",o:["Les goûts alimentaires","Les attributs partagés entre espèces pour les regrouper selon leur degré de parenté","La taille des individus","La couleur des yeux"],a:1,e:"Elle utilise les attributs partagés pour regrouper les espèces selon leur degré de parenté."},
+{q:"Un caractère partagé entre plusieurs espèces...",o:["A été transmis par un ancêtre commun","Est apparu par hasard sans lien","Prouve qu'elles vivent ensemble","N'a aucune signification"],a:0,e:"Un caractère partagé a été transmis par un ancêtre commun."},
+{q:"Plus une espèce partage de caractères avec une autre...",o:["Moins elles sont parentes","Moins elles se ressemblent","Plus elles sont proches parentes","Plus elles sont éloignées"],a:2,e:"Plus une espèce partage de caractères avec une autre, plus elles sont proches parentes."},
+{q:"Les liens de parenté peuvent être représentés par...",o:["Des tableaux de chasse","Des cartes routières","Des calendriers","Des groupes emboîtés ou des arbres de parenté"],a:3,e:"Ces liens peuvent être représentés par des groupes emboîtés ou des arbres de parenté."},
+{q:"Tous les êtres vivants, unicellulaires ou pluricellulaires, partagent le même caractère :...",o:["Ils volent tous","Ils sont tous composés d'au moins une cellule","Ils ont tous un squelette","Ils vivent tous dans l'eau"],a:1,e:"Tous les êtres vivants sont composés d'au moins une cellule."},
+{q:"La cellule est composée d'au moins...",o:["Une membrane et d'un cytoplasme","Un squelette et des poils","Une coquille et des ailes","Un noyau uniquement"],a:0,e:"La cellule est composée d'au moins une membrane et d'un cytoplasme."},
+{q:"Certaines cellules contiennent en plus...",o:["Des pattes","Des écailles","Un noyau","Des plumes"],a:2,e:"Certaines cellules contiennent en plus un noyau."},
+{q:"Les plus anciennes formes de vie étaient...",o:["Des dinosaures","Des bactéries constituées d'une seule cellule sans noyau","Des mammouths","Des oiseaux"],a:1,e:"Les plus anciennes formes de vie étaient des bactéries, d'une seule cellule sans noyau."},
+{q:"Le fait que tous les êtres vivants soient composés de cellules est...",o:["Sans intérêt","La preuve qu'ils sont tous identiques","Un hasard sans signification","Un argument en faveur d'un lien de parenté entre tous les êtres vivants"],a:3,e:"C'est un argument en faveur d'un lien de parenté entre tous les êtres vivants."}
+];
+
+const Q33 = [
+{q:"Pour décrire la biodiversité à l'échelle des espèces, les scientifiques...",o:["Comptent sans observer","Observent les caractères des individus et construisent des clés de détermination","Devinent au hasard","N'utilisent que des photos floues"],a:1,e:"Ils observent les caractères et construisent des clés de détermination pour identifier espèces et groupes."},
+{q:"Des individus appartiennent à la même espèce s'ils...",o:["Vivent sur le même continent","Ont la même taille","Partagent les mêmes attributs, peuvent se reproduire entre eux et donner une descendance fertile","Mangent la même chose"],a:2,e:"Une espèce regroupe des individus qui partagent les mêmes attributs, se reproduisent entre eux et donnent une descendance fertile."},
+{q:"Au sein d'une même espèce, les individus sont tous différents : on parle de...",o:["Diversité intraspécifique","Uniformité totale","Clonage naturel","Absence de variation"],a:0,e:"Au sein d'une même espèce, les individus sont tous différents : c'est la diversité intraspécifique."},
+{q:"En étudiant les fossiles, les scientifiques peuvent...",o:["Prédire l'avenir à coup sûr","Ressusciter les espèces","Lire dans les étoiles","Interpréter la forme que pouvaient avoir les individus d'une espèce disparue"],a:3,e:"Les fossiles permettent d'interpréter la forme des individus d'une espèce disparue."},
+{q:"Ces fossiles indiquent que...",o:["La biodiversité n'a jamais changé","Les espèces sont éternelles","La biodiversité a changé au cours du temps","Les roches sont vivantes"],a:2,e:"Ces fossiles indiquent que la biodiversité a changé au cours du temps."},
+{q:"Grâce au principe d'actualisme, les scientifiques peuvent...",o:["Reconstituer le paléo-environnement où vivaient ces espèces ainsi que leurs interactions","Remonter le temps physiquement","Modifier le passé","Créer de nouvelles espèces"],a:0,e:"Ils peuvent reconstituer le paléo-environnement et les interactions des espèces disparues."},
+{q:"Lors des grandes crises biologiques...",o:["Aucune espèce ne disparaît","Une grande partie des espèces et des groupes a disparu rapidement à l'échelle des temps géologiques","La biodiversité augmente aussitôt","Les fossiles disparaissent"],a:1,e:"Lors des crises biologiques, une grande partie des espèces et groupes a disparu rapidement."},
+{q:"Après une crise, une diversification s'opère...",o:["À partir de rien","Sans aucune espèce restante","En supprimant les milieux libres","À partir des espèces et groupes restants, car de nombreux milieux sont laissés libres"],a:3,e:"Après une crise, la diversification repart des espèces restantes, de nombreux milieux étant libérés."},
+{q:"L'échelle des temps géologiques, divisée en ères et en périodes, est construite grâce...",o:["Aux événements biologiques et géologiques majeurs de l'histoire de la Terre","Au hasard","Aux marées","Aux saisons actuelles"],a:0,e:"Les événements majeurs de l'histoire de la Terre permettent de réaliser l'échelle des temps géologiques."},
+{q:"Une clé de détermination sert à...",o:["Fermer les laboratoires","Compter les étoiles","Identifier les espèces ou les groupes auxquels les individus appartiennent","Mesurer la température"],a:2,e:"Les clés de détermination servent à identifier les espèces ou leurs groupes."}
+];
+
+const Q34 = [
+{q:"Dans une fleur, le pistil est...",o:["La partie femelle : il contient des cellules reproductrices dans les ovules","La partie mâle","Un pétale coloré","Une feuille"],a:0,e:"Le pistil est la partie femelle : il contient des cellules reproductrices dans les ovules."},
+{q:"Les étamines sont...",o:["Les organes femelles","Les pétales","Les sépales","Les organes mâles : elles produisent des cellules reproductrices dans le pollen"],a:3,e:"Les étamines sont les organes mâles : elles produisent des cellules reproductrices dans le pollen."},
+{q:"La pollinisation, c'est...",o:["La chute des pétales","La germination de la graine","Le transport des grains de pollen sur le pistil","La formation des racines"],a:2,e:"La pollinisation est le transport des grains de pollen sur le pistil."},
+{q:"Après la fécondation des ovules, le pistil se transforme en...",o:["Racine","Fruit, tandis que les ovules deviennent des graines","Nouvelle fleur","Feuille"],a:1,e:"Le pistil se transforme en fruit et les ovules en graines."},
+{q:"Une graine contient...",o:["L'embryon d'une future plante","Du pollen","Un fruit entier","Une fleur miniature"],a:0,e:"Une graine contient l'embryon d'une future plante."},
+{q:"Beaucoup de fleurs attirent les insectes pollinisateurs par...",o:["Des épines","Différents signaux : grands pétales colorés, molécules odorantes","Leur verdeur","Leurs racines"],a:1,e:"Les fleurs attirent les insectes par différents signaux : pétales colorés, molécules odorantes."},
+{q:"Lors de la visite d'une autre fleur, l'insecte couvert de pollen...",o:["Mange le pistil","Détruit les ovules","S'envole sans rien faire","Dépose ce pollen sur le pistil"],a:3,e:"L'insecte se couvre de pollen puis le dépose sur le pistil d'une autre fleur."},
+{q:"On parle de coopération entre plantes et insectes car...",o:["Un seul en profite","Aucun n'en profite","Chaque partenaire en tire des bénéfices","Les insectes sont forcés"],a:2,e:"Chaque partenaire en tire des bénéfices : nourriture pour l'insecte, fécondation pour la plante."},
+{q:"La disparition des pollinisateurs serait une catastrophe pour notre alimentation car...",o:["De nombreuses plantes ne pourraient plus produire les fruits ni les graines dont nous nous nourrissons","Les fleurs deviendraient plus belles","Les insectes sont inutiles","Le pain pousserait mieux"],a:0,e:"Sans pollinisateurs, de nombreuses plantes ne produiraient plus fruits ni graines."},
+{q:"Les insectes pollinisateurs sont mis en péril par...",o:["Les pluies douces","L'utilisation des pesticides ou l'introduction d'espèces prédatrices invasives","Les fleurs colorées","Le vent léger"],a:1,e:"Pesticides et espèces prédatrices invasives mettent en péril les pollinisateurs."}
+];
+
+const Q35 = [
+{q:"La puberté marque...",o:["La fin de la vie","Le passage de l'enfance à l'âge adulte","La vieillesse","La naissance"],a:1,e:"La puberté marque le passage de l'enfance à l'âge adulte."},
+{q:"À la puberté, les organes reproducteurs...",o:["Se développent et commencent à fonctionner","Disparaissent","Ne changent pas","S'arrêtent définitivement"],a:0,e:"Les organes reproducteurs se développent et commencent à fonctionner."},
+{q:"Chez les femmes, les ovaires...",o:["Fabriquent des spermatozoïdes","Ne servent à rien","Produisent du sang","Libèrent des ovules"],a:3,e:"Chez les femmes, les ovaires libèrent des ovules."},
+{q:"Chez les hommes, les testicules...",o:["Libèrent des ovules","Produisent des hormones digestives","Fabriquent des spermatozoïdes","Filtrent le sang"],a:2,e:"Chez les hommes, les testicules fabriquent des spermatozoïdes."},
+{q:"À la puberté, on observe...",o:["La mise en place des caractères sexuels secondaires, une croissance rapide et des bouleversements de l'humeur","Aucun changement","Une diminution de la taille","La perte de la mémoire"],a:0,e:"Caractères sexuels secondaires, croissance rapide, premières règles ou éjaculations, bouleversements de l'humeur."},
+{q:"Chez l'être humain, la sexualité...",o:["Ne concerne que la reproduction","Est identique chez tous les animaux","Prend en compte des aspects biologiques, mais aussi émotionnels, juridiques et sociaux","N'existe pas"],a:2,e:"La sexualité humaine prend en compte des aspects biologiques, émotionnels, juridiques et sociaux."},
+{q:"La fécondation correspond à...",o:["La division d'un ovule seul","La fusion d'un ovule avec un spermatozoïde","La production des règles","La formation du placenta"],a:1,e:"La fécondation correspond à la fusion d'un ovule avec un spermatozoïde ; elle est interne."},
+{q:"Après la fécondation, la cellule-œuf...",o:["Ne se divise jamais","Reste dans la trompe","Est éliminée","Se divise de nombreuses fois et l'embryon s'implante dans l'utérus"],a:3,e:"La cellule-œuf se divise de nombreuses fois, donnant un embryon qui s'implante dans l'utérus."},
+{q:"Le développement de l'enfant est dit vivipare car...",o:["Il a lieu dans un œuf pondu","Il grandit dans l'utérus de la mère, à l'intérieur de la poche amniotique","Il a lieu dans l'eau","Il ne dure que quelques jours"],a:1,e:"L'embryon puis le fœtus grandit dans l'utérus, dans la poche amniotique : développement vivipare."},
+{q:"Les échanges entre la mère et l'enfant se font...",o:["Au niveau du placenta, relié au fœtus par le cordon ombilical","Directement sans organe","Dans les poumons du fœtus","Dans l'estomac"],a:0,e:"Les échanges se font au niveau du placenta, relié au fœtus par le cordon ombilical."}
+];
+
+const Q36 = [
+{q:"Un écosystème est constitué de...",o:["L'ensemble des êtres vivants, de leur milieu de vie et de leurs interactions","Uniquement des animaux","Uniquement des plantes","Uniquement du sol"],a:0,e:"Un écosystème réunit les êtres vivants, leur milieu de vie et toutes leurs interactions."},
+{q:"Le peuplement d'un écosystème dépend de paramètres physiques du milieu comme...",o:["La couleur du ciel","L'humidité, l'ensoleillement ou la température","Le bruit ambiant","La vitesse du vent uniquement"],a:1,e:"Humidité, ensoleillement, température : des paramètres physiques qui conditionnent le peuplement."},
+{q:"Au cours des saisons, l'occupation du milieu par les êtres vivants...",o:["Ne change jamais","Disparaît totalement","Varie au cours de l'année, car les conditions de température et d'humidité varient","Devient identique partout"],a:2,e:"Les écosystèmes changent au cours des saisons, d'où une occupation du milieu variable."},
+{q:"Lorsque les conditions deviennent difficiles pour la vie, on parle de...",o:["Belle saison","Saison des amours","Saison sèche utile","Mauvaise saison"],a:3,e:"Quand les conditions deviennent difficiles, on parle de mauvaise saison."},
+{q:"Pour passer la mauvaise saison, certains organismes...",o:["Meurent tous","Partent, modifient leur comportement ou survivent grâce à des formes de résistance","Arrêtent de respirer","Deviennent immortels"],a:1,e:"Départ, changement de comportement ou formes de résistance : différentes stratégies pour passer la mauvaise saison."},
+{q:"Les feux ou les chablis (chutes d'arbres) sont...",o:["Des perturbations de l'écosystème qui modifient fortement les conditions du milieu","Sans aucun effet","Bénéfiques dans tous les cas","Des phénomènes impossibles en forêt"],a:0,e:"Feux et chablis sont des perturbations qui modifient fortement les conditions du milieu."},
+{q:"Après une perturbation, les écosystèmes...",o:["Restent figés à jamais","Disparaissent toujours","Évoluent au cours du temps avec le développement de différentes espèces suivant différents stades","Ne changent plus jamais"],a:2,e:"Après une perturbation, l'écosystème évolue avec le développement de différentes espèces."},
+{q:"Si les perturbations sont trop fréquentes...",o:["La biodiversité peut diminuer de manière irréversible","La biodiversité augmente toujours","Rien ne change","Les espèces deviennent invincibles"],a:0,e:"Des perturbations trop fréquentes peuvent diminuer la biodiversité de manière irréversible."},
+{q:"Concernant les stratégies pour passer la mauvaise saison, il existe...",o:["Une seule stratégie pour l'hiver","Aucune adaptation","Deux saisons seulement","Différentes stratégies dans le monde vivant"],a:3,e:"Il existe différentes stratégies dans le monde vivant pour passer la mauvaise saison."},
+{q:"L'espèce humaine dans un écosystème...",o:["N'en fait jamais partie","En fait partie, comme les autres êtres vivants","Le détruit forcément","N'interagit avec rien"],a:1,e:"Les écosystèmes comprennent l'ensemble des êtres vivants, dont l'espèce humaine."}
+];
+
+const Q37 = [
+{q:"Les végétaux produisent de la matière organique à partir de...",o:["D'autres animaux","De plastique","De sels minéraux, de dioxyde de carbone, d'eau et d'énergie sous forme de lumière","D'essence"],a:2,e:"Les végétaux produisent de la matière organique à partir de sels minéraux, CO2, eau et lumière."},
+{q:"Les végétaux sont à la base des chaînes alimentaires : on dit que ce sont...",o:["Des producteurs primaires","Des consommateurs","Des décomposeurs","Des prédateurs"],a:0,e:"Les végétaux, premier maillon des chaînes alimentaires, sont des producteurs primaires."},
+{q:"Les organismes qui se nourrissent de matière organique produite par un autre être vivant sont...",o:["Des producteurs","Des consommateurs","Des minéraux","Des gaz"],a:1,e:"Ceux qui se nourrissent de la matière d'un autre être vivant sont des consommateurs."},
+{q:"Après leur mort, la matière organique des êtres vivants est...",o:["Dégradée dans le sol","Envoyée dans l'espace","Transformée en or","Conservée intacte"],a:0,e:"Après la mort, la matière organique est dégradée dans le sol."},
+{q:"Cette décomposition est réalisée par des décomposeurs, en particulier...",o:["Les oiseaux","Les poissons","Les mammifères","De nombreux micro-organismes comme les champignons et les bactéries"],a:3,e:"La décomposition est réalisée par des décomposeurs, notamment champignons et bactéries."},
+{q:"Les décomposeurs permettent...",o:["D'appauvrir le sol","De polluer l'eau","D'enrichir le sol en matière minérale, indispensable aux végétaux","De supprimer les plantes"],a:2,e:"Les décomposeurs enrichissent le sol en matière minérale, indispensable aux végétaux."},
+{q:"La matière minérale du sol est réutilisée par...",o:["Les animaux","Les végétaux pour produire une nouvelle matière organique : c'est le cycle de la matière","Les roches uniquement","Personne"],a:1,e:"Les végétaux réutilisent la matière minérale : c'est le cycle de la matière."},
+{q:"Dans le cycle de la matière, rien ne se perd car...",o:["La matière disparaît totalement","Le sol est infini","Les plantes n'ont besoin de rien","La matière organique morte est recyclée en matière minérale, puis en nouvelle matière organique"],a:3,e:"La matière organique est recyclée en matière minérale, puis en nouvelle matière organique."},
+{q:"Le premier maillon d'une chaîne alimentaire est...",o:["Un végétal producteur primaire","Un carnivore","Un décomposeur","Un herbivore"],a:0,e:"Les végétaux producteurs primaires constituent le premier maillon des chaînes alimentaires."},
+{q:"Un champignon qui dégrade du bois mort joue le rôle de...",o:["Producteur primaire","Décomposeur","Consommateur herbivore","Prédateur"],a:1,e:"En dégradant le bois mort, le champignon agit comme décomposeur."}
+];
+
+const Q38 = [
+{q:"Pour satisfaire ses besoins, l'être humain exploite les ressources naturelles, ce qui peut entraîner...",o:["L'épuisement des ressources, la destruction des écosystèmes et la pollution","Aucune conséquence","Uniquement des bienfaits","La multiplication des ressources"],a:0,e:"Cette exploitation peut causer épuisement des ressources, destruction des écosystèmes et pollution."},
+{q:"Le développement durable, c'est...",o:["Exploiter sans limite","Consommer toujours plus","Une exploitation raisonnée des ressources afin de les préserver pour les générations futures","Interdire toute ressource"],a:2,e:"Le développement durable est une exploitation raisonnée qui préserve les ressources pour l'avenir."},
+{q:"Une action individuelle pour le développement durable est...",o:["Gaspiller l'énergie","La réduction et le recyclage des déchets","Jeter sans trier","Acheter toujours neuf"],a:1,e:"Réduction et recyclage des déchets : des actions individuelles de développement durable."},
+{q:"Réduire sa consommation d'objets neufs permet de...",o:["Augmenter les déchets","Gaspiller plus","Polluer davantage","Préserver les ressources"],a:3,e:"Réduire la consommation d'objets neufs préserve les ressources."},
+{q:"Pour favoriser la biodiversité à l'échelle locale, il faut d'abord...",o:["Identifier les conditions favorables à la vie et à la reproduction (abri, nourriture)","Bétonner son jardin","Utiliser des pesticides","Supprimer les haies"],a:0,e:"Il faut identifier les conditions favorables à la vie et à la reproduction : abri, nourriture."},
+{q:"On peut concevoir et construire des objets pour favoriser la biodiversité comme...",o:["Des parkings","Des nichoirs ou des hôtels à insectes","Des murs de béton","Des lampadaires puissants"],a:1,e:"Nichoirs et hôtels à insectes favorisent la biodiversité locale."},
+{q:"Un hôtel à insectes sert à...",o:["Éliminer les insectes","Nourrir les oiseaux uniquement","Offrir un abri et un lieu de reproduction aux insectes","Décorer sans aucune utilité"],a:2,e:"Il offre abri et lieu de reproduction aux insectes."},
+{q:"Trier et recycler ses déchets...",o:["Participe au développement durable en économisant les ressources et l'énergie","Ne sert à rien","Aggrave la pollution","Coûte plus cher à la planète"],a:0,e:"Le tri et le recyclage économisent ressources et énergie."},
+{q:"Détruire les écosystèmes pour exploiter une ressource...",o:["Est sans conséquence","Profite à la biodiversité","Est obligatoire","Met en danger les espèces et la société qui dépendent de ces milieux"],a:3,e:"L'exploitation a des conséquences pour l'environnement et pour la société."},
+{q:"Chacun, à son niveau, peut agir...",o:["Uniquement les scientifiques","Pour favoriser la biodiversité et préserver l'environnement au quotidien","Personne ne peut rien faire","Seuls les gouvernements"],a:1,e:"Des actions individuelles peuvent favoriser la biodiversité et le développement durable."}
+];
+
 /* ================= CATALOGUE ================= */
 const QUIZZES = [
   { id: "eb01", n: 1, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "La dynamique terrestre et la tectonique des plaques", questions: Q01 },
-  { id: "eb02", n: 2, cycle: 4, level: "5e", theme: "La planète Terre et l'action humaine", title: "Météo, climat et réchauffement planétaire", questions: Q02 },
+  { id: "eb02", n: 2, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "Météo, climat et réchauffement planétaire", questions: Q02 },
   { id: "eb03", n: 3, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "Gestion des risques naturels", questions: Q03 },
-  { id: "eb04", n: 4, cycle: 4, level: "3e", theme: "La planète Terre et l'action humaine", title: "Gestion des ressources terrestres", questions: Q04 },
+  { id: "eb04", n: 4, cycle: 4, level: "5e", theme: "La planète Terre et l'action humaine", title: "Gestion des ressources terrestres", questions: Q04 },
   { id: "eb05", n: 5, cycle: 4, level: "5e", theme: "Le vivant et son évolution", title: "La nutrition des organismes", questions: Q05 },
   { id: "eb06", n: 6, cycle: 4, level: "4e", theme: "Le vivant et son évolution", title: "La reproduction sexuée des êtres vivants", questions: Q06 },
   { id: "eb07", n: 7, cycle: 4, level: "3e", theme: "Le vivant et son évolution", title: "Génétique humaine et hérédité", questions: Q07 },
@@ -422,7 +721,30 @@ const QUIZZES = [
   { id: "eb12", n: 12, cycle: 4, level: "4e", theme: "Le corps humain et la santé", title: "La reproduction humaine", questions: Q12 },
   { id: "eb13", n: 13, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Cellule, pollinisation et recyclage du sol", questions: Q13 },
   { id: "eb14", n: 14, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Classification du vivant et parentés", questions: Q14 },
-  { id: "eb15", n: 15, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Micro-organismes et fermentations", questions: Q15 }
+  { id: "eb15", n: 15, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Micro-organismes et fermentations", questions: Q15 },
+  { id: "eb16", n: 16, cycle: 4, level: "3e", theme: "Le corps humain et la santé", title: "Le monde microbien et notre organisme", questions: Q16 },
+  { id: "eb17", n: 17, cycle: 4, level: "3e", theme: "Le vivant et son évolution", title: "Stabilité et diversité génétique", questions: Q17 },
+  { id: "eb18", n: 18, cycle: 4, level: "3e", theme: "Le vivant et son évolution", title: "Parenté et évolution", questions: Q18 },
+  { id: "eb19", n: 19, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "Phénomènes géologiques et risques naturels", questions: Q19 },
+  { id: "eb20", n: 20, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "Météorologie et climats", questions: Q20 },
+  { id: "eb21", n: 21, cycle: 4, level: "4e", theme: "Le vivant et son évolution", title: "Reproduction et dynamique des populations", questions: Q21 },
+  { id: "eb22", n: 22, cycle: 4, level: "4e", theme: "Le corps humain et la santé", title: "Reproduction et sexualité", questions: Q22 },
+  { id: "eb23", n: 23, cycle: 4, level: "4e", theme: "Le corps humain et la santé", title: "Le fonctionnement du système nerveux", questions: Q23 },
+  { id: "eb24", n: 24, cycle: 4, level: "5e", theme: "Le vivant et son évolution", title: "Nutrition chez les végétaux", questions: Q24 },
+  { id: "eb25", n: 25, cycle: 4, level: "5e", theme: "Le vivant et son évolution", title: "Nutrition chez les animaux", questions: Q25 },
+  { id: "eb26", n: 26, cycle: 4, level: "5e", theme: "La planète Terre et l'action humaine", title: "Impacts des activités humaines sur les écosystèmes", questions: Q26 },
+  { id: "eb27", n: 27, cycle: 4, level: "5e", theme: "La planète Terre et l'action humaine", title: "Enjeux de l'exploitation des ressources naturelles", questions: Q27 },
+  { id: "eb28", n: 28, cycle: 4, level: "5e", theme: "Le corps humain et la santé", title: "Activité physique : efforts et santé", questions: Q28 },
+  { id: "eb29", n: 29, cycle: 4, level: "5e", theme: "Le corps humain et la santé", title: "Alimentation et digestion", questions: Q29 },
+  { id: "eb30", n: 30, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Conditions de vie sur Terre et réchauffement climatique", questions: Q30 },
+  { id: "eb31", n: 31, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Alimentation et santé", questions: Q31 },
+  { id: "eb32", n: 32, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Unité du vivant et classification", questions: Q32 },
+  { id: "eb33", n: 33, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Biodiversité actuelle et passée", questions: Q33 },
+  { id: "eb34", n: 34, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Reproduction des plantes à fleurs", questions: Q34 },
+  { id: "eb35", n: 35, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Reproduction et sexualité humaine", questions: Q35 },
+  { id: "eb36", n: 36, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Fonctionnement et dynamique des écosystèmes", questions: Q36 },
+  { id: "eb37", n: 37, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Place des êtres vivants dans le cycle de la matière", questions: Q37 },
+  { id: "eb38", n: 38, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Conséquences des actions humaines sur l'environnement", questions: Q38 }
 ];
 
 /* ================= OUTILS PARTAGÉS ================= */
@@ -743,7 +1065,7 @@ function startQuiz(id) {
 function route() {
   const p = new URLSearchParams(location.search);
   const h = location.hash.replace("#", "");
-  const qid = p.get("quiz") || (["eb01","eb02","eb03","eb04","eb05","eb06","eb07","eb08","eb09","eb10","eb11","eb12","eb13","eb14","eb15"].indexOf(h) >= 0 ? h : null);
+  const qid = p.get("quiz") || (["eb01","eb02","eb03","eb04","eb05","eb06","eb07","eb08","eb09","eb10","eb11","eb12","eb13","eb14","eb15","eb16","eb17","eb18","eb19","eb20","eb21","eb22","eb23","eb24","eb25","eb26","eb27","eb28","eb29","eb30","eb31","eb32","eb33","eb34","eb35","eb36","eb37","eb38"].indexOf(h) >= 0 ? h : null);
   if (p.get("prof") === "1") { renderHome(); openTeacherLogin(); return; }
   if (p.get("depot") === "1") { renderDepot(); return; }
   if (qid && byId(qid) && byId(qid).questions.length) { startQuiz(qid); return; }
@@ -837,8 +1159,16 @@ function resultKey(o) {
   if (o.n && o.p) return quiz + "|" + normName(o.p) + "|" + normName(o.n) + "|" + normClass(o.c);
   return quiz + "|" + normName(o.s || "") + "||" + normClass(o.c);
 }
+/* Deux dépôts sont identiques s'ils concernent le même élève/quiz avec les mêmes réponses et la même date */
+function sameDeposit(a, b) {
+  try {
+    return (a.t || "") === (b.t || "") && JSON.stringify(a.a) === JSON.stringify(b.a) && resultKey(a) === resultKey(b);
+  } catch (e) { return false; }
+}
 /* Import d'une ligne NDJSON (v1 ou v2) avec FUSION : un nouveau dépôt du même élève
-   sur le même quiz remplace l'ancien, incrémente le compteur k et conserve l'historique. */
+   sur le même quiz remplace l'ancien, incrémente le compteur k et conserve l'historique.
+   Réimporter exactement le même dépôt (ex : re-chargement du Sheet) ne crée PAS un
+   nouveau dépôt : la ligne est conservée telle quelle (marqueur _dup). */
 function importResultLine(l, list) {
   try {
     const o = JSON.parse(l);
@@ -847,12 +1177,18 @@ function importResultLine(l, list) {
       const prevIdx = list.findIndex((r) => resultKey(r) === key);
       if (prevIdx >= 0) {
         const prev = list[prevIdx];
-        const prevScore = scoreOf(prev), newScore = scoreOf(o);
-        const hist = (prev.h || []).concat([{ t: prev.t || o.t, s: prevScore }]);
-        if (hist.length > 20) hist.shift();
-        const merged = Object.assign({}, o, { k: Math.max(prev.k || 1, 1) + 1, h: hist });
-        list[prevIdx] = merged;
-        merged._delta = newScore - prevScore;
+        if (sameDeposit(prev, o)) {
+          const kept = Object.assign({}, o, { k: Math.max(prev.k || 1, o.k || 1), h: prev.h || [] });
+          kept._dup = true; delete kept._delta;
+          list[prevIdx] = kept;
+        } else {
+          const prevScore = scoreOf(prev), newScore = scoreOf(o);
+          const hist = (prev.h || []).concat([{ t: prev.t || o.t, s: prevScore }]);
+          if (hist.length > 20) hist.shift();
+          const merged = Object.assign({}, o, { k: Math.max(prev.k || 1, 1) + 1, h: hist });
+          list[prevIdx] = merged;
+          merged._delta = newScore - prevScore; delete merged._dup;
+        }
       } else {
         list.push(Object.assign({}, o, { k: o.k || 1 }));
       }
@@ -861,7 +1197,7 @@ function importResultLine(l, list) {
 }
 function fullNameOf(r) { return (r.p && r.n) ? (r.p + " " + r.n) : (r.s || "?"); }
 
-let T = { tab: "stats", selQuiz: "all", selClass: "all", results: [] };
+let T = { tab: "stats", selQuiz: "all", selClass: "all", results: [], skipped: [] };
 
 function renderTeacher() {
   T.results = loadResults();
@@ -998,6 +1334,11 @@ function tData() {
     '<button class="btn ghost sm" data-act="pastemodal">' + IC.code + ' Coller un code élève</button>' +
     "</div>" +
     '<p class="note">Les envois directs des élèves arrivent dans la feuille Google Sheets liée à l\'application web (bouton ci-dessus). Utilisez « Charger depuis Google Sheets » pour importer les réponses dans cet espace enseignant et obtenir les statistiques.</p></div>' +
+    ((T.skipped && T.skipped.length) ? '<div class="tpanel"><h3>Lignes ignorées (' + T.skipped.length + ')</h3>' +
+    '<p class="note">Ces lignes n\'ont pas pu être importées. Vérifiez la colonne « Code NDJSON » du Google Sheet (ligne tronquée ou modifiée ?), ou importez le code recopié avec « Coller un code élève ». Mettre à jour puis redéployer le script Apps Script active la reconstruction automatique des lignes abîmées.</p>' +
+    '<div class="tblwrap"><table class="dt"><tr><th>Contenu reçu</th><th>Motif</th></tr>' +
+    T.skipped.map(function (s) { return "<tr><td><code>" + esc(s.line) + "</code></td><td>" + esc(s.reason) + "</td></tr>"; }).join("") +
+    "</table></div></div>" : "") +
     '<div class="tpanel"><h3>Réponses enregistrées (' + R.length + ')</h3>' +
     (R.length ? '<div class="actions no-print"><button class="btn sm" data-act="exportall">' + IC.dl + " Export NDJSON</button>" +
     '<button class="btn ghost sm" data-act="exportcsvdata">' + IC.dl + " Export CSV (base)</button>" +
@@ -1072,26 +1413,77 @@ function filterSel() {
   return T.results.filter((r) => (T.selQuiz === "all" || r.quiz === T.selQuiz) && (T.selClass === "all" || normClass(r.c) === T.selClass));
 }
 
+/* Découpe un flux NDJSON en objets {line, o} exploitables.
+   Tolérant : BOM, lignes vides, espaces, texte parasite autour de l'objet,
+   et objets JSON répartis sur plusieurs lignes (accolades équilibrées).
+   Retourne { ok: [...], bad: [{line, reason}] } : AUCUNE ligne n'est perdue en silence. */
+function parseNDJSONStream(txt) {
+  const ok = [], bad = [];
+  const clean = String(txt || "").replace(/^\uFEFF/, "");
+  const pushBad = function (t, reason) { if (bad.length < 50) bad.push({ line: String(t).slice(0, 140), reason: reason }); };
+  const check = function (t) {
+    if (!t) return;
+    let cand = t;
+    if (cand[0] !== "{") {
+      const s = cand.indexOf("{"), e = cand.lastIndexOf("}");
+      if (s < 0 || e <= s) { pushBad(t, "pas de JSON"); return; }
+      cand = cand.slice(s, e + 1);
+    }
+    let o = null;
+    try { o = JSON.parse(cand); } catch (e) { pushBad(t, "JSON illisible"); return; }
+    if (!o || !o.quiz || !byId(o.quiz)) { pushBad(t, "quiz inconnu"); return; }
+    if (!Array.isArray(o.a) || o.a.length !== byId(o.quiz).questions.length) { pushBad(t, "nombre de réponses incorrect"); return; }
+    ok.push({ line: cand, o: o });
+  };
+  let buf = "";
+  clean.split(/\r?\n/).forEach(function (l) {
+    buf = buf ? buf + "\n" + l : l;
+    const t = buf.trim();
+    if (!t) { buf = ""; return; }
+    try { JSON.parse(t[0] === "{" ? t : t.slice(t.indexOf("{"), t.lastIndexOf("}") + 1)); check(buf); buf = ""; }
+    catch (e) {
+      const open = (t.match(/\{/g) || []).length, close = (t.match(/\}/g) || []).length;
+      if (open <= close) { check(buf); buf = ""; } /* illisible : on comptabilise, sinon on accumule la ligne suivante */
+    }
+  });
+  if (buf.trim()) check(buf);
+  return { ok: ok, bad: bad };
+}
+
+/* Bilan textuel d'un import : ajouts + redépôts + doublons + lignes ignorées */
+function importSummary(added, merged, dups, skipped) {
+  const parts = [];
+  if (added) parts.push(added + " ajout(s)");
+  if (merged) parts.push(merged + " redépôt(s)");
+  if (dups) parts.push(dups + " déjà à jour");
+  if (skipped) parts.push(skipped + " ligne(s) ignorée(s) — voir le détail ci-dessous");
+  return parts.join(", ") || "Aucune donnée valide trouvée.";
+}
+
 function loadFromGoogleSheets() {
   if (!SHEETS_URL) { toast("SHEETS_URL non configuré dans index.html."); return; }
   toast("Chargement depuis Google Sheets…");
   fetch(SHEETS_URL + "?json=1")
     .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
     .then(function (txt) {
+      /* Garde-fou : si la réponse ne contient aucun objet, ce n'est pas du NDJSON
+         (déploiement obsolète, accès non « Tout le monde », mauvaise URL…) */
+      if (txt.indexOf("{") < 0) { toast("Google Sheets n'a renvoyé aucune donnée. Vérifie le déploiement (accès « Tout le monde ») et SHEETS_URL."); return; }
+      const parsed = parseNDJSONStream(txt);
       const list = loadResults();
-      let added = 0, merged = 0;
-      txt.split(/\r?\n/).forEach(function (l) {
-        if (!l.trim()) return;
-        const o = (function () { try { return JSON.parse(l.trim()); } catch (e) { return null; } })();
-        const key = (function () { try { return resultKey(o); } catch (e) { return null; } })();
-        const prevIdx = key ? list.findIndex(function (r) { return resultKey(r) === key; }) : -1;
+      let added = 0, merged = 0, dups = 0;
+      parsed.ok.forEach(function (it) {
+        let prevIdx = -1;
+        try { const k = resultKey(it.o); prevIdx = list.findIndex(function (r) { try { return resultKey(r) === k; } catch (e) { return false; } }); } catch (e) {}
         const prevLen = list.length;
-        importResultLine(l.trim(), list);
+        importResultLine(it.line, list);
         if (list.length > prevLen) added++;
-        else if (prevIdx >= 0) merged++;
+        else if (prevIdx >= 0) { if (list[prevIdx]._dup) dups++; else merged++; }
       });
-      if (added || merged) { T.results = list; saveResults(list); renderTPanel(); toast((added ? added + " ajout(s)" : "") + (merged ? (added ? " + " : "") + merged + " redépôt(s)" : "") + " depuis Google Sheets."); }
-      else toast("Aucune nouvelle réponse depuis Google Sheets.");
+      T.skipped = parsed.bad;
+      if (added || merged) { T.results = list; saveResults(list); }
+      renderTPanel();
+      toast(importSummary(added, merged, dups, parsed.bad.length) + " depuis Google Sheets.");
     })
     .catch(function () { toast("Impossible de charger Google Sheets (vérifie SHEETS_URL)."); });
 }
@@ -1099,28 +1491,27 @@ function loadFromGoogleSheets() {
 function importFiles(files) {
   if (!files || !files.length) return;
   const list = loadResults();
-  const beforeKeys = list.map(resultKey);
-  let done = 0, added = 0, merged = 0;
+  let done = 0, added = 0, merged = 0, dups = 0;
+  const allBad = [];
   Array.prototype.forEach.call(files, function (f) {
     const fr = new FileReader();
     fr.onload = function () {
-      String(fr.result).split(/\r?\n/).forEach(function (l) {
-        if (!l.trim()) return;
-        const o = (function () { try { return JSON.parse(l.trim()); } catch (e) { return null; } })();
-        if (!o) return;
-        const key = (function () { try { return resultKey(o); } catch (e) { return null; } })();
-        const prevIdx = key ? list.findIndex((r) => resultKey(r) === key) : -1;
+      const parsed = parseNDJSONStream(String(fr.result));
+      parsed.bad.forEach(function (b) { if (allBad.length < 50) allBad.push(b); });
+      parsed.ok.forEach(function (it) {
+        let prevIdx = -1;
+        try { const k = resultKey(it.o); prevIdx = list.findIndex((r) => { try { return resultKey(r) === k; } catch (e) { return false; } }); } catch (e) {}
         const prevLen = list.length;
-        importResultLine(l.trim(), list); // la fusion gère k, h (historique) et _delta
-        if (list.length > prevLen) { added++; if (o && o.quiz) depotSession.push(o); }
-        else if (prevIdx >= 0) { merged++; if (o && o.quiz) depotSession.push(o); }
+        importResultLine(it.line, list); // la fusion gère k, h (historique) et _delta
+        if (list.length > prevLen) { added++; if (it.o && it.o.quiz) depotSession.push(it.o); }
+        else if (prevIdx >= 0) { if (list[prevIdx]._dup) dups++; else { merged++; if (it.o && it.o.quiz) depotSession.push(it.o); } }
       });
       done++;
       if (done === files.length) {
         saveResults(list);
         T.results = list;
-        const msg = (added ? added + " nouvelle(s) réponse(s)" : "") + (merged ? (added ? " + " : "") + merged + " redépôt(s) (compteur mis à jour)" : "");
-        toast(msg || "Aucune donnée valide trouvée.");
+        if (allBad.length) T.skipped = allBad;
+        toast(importSummary(added, merged, dups, allBad.length) + ".");
         const ok = document.getElementById("drop-ok");
         if (ok && (added || merged)) { ok.style.display = "block"; ok.innerHTML = IC.check + " Dépôt enregistré — merci !"; }
         const depBox = document.querySelector(".depbox");
@@ -1146,21 +1537,19 @@ function openPasteModal() {
     if (!el) return;
     if (el.getAttribute("data-act") === "pimport") {
       const list = T.results.length ? T.results.slice() : loadResults();
-      const beforeKeys = list.map(resultKey);
-      let added = 0, merged = 0;
-      ta.value.split(/\r?\n/).forEach(function (l) {
-        if (!l.trim()) return;
-        const o = (function () { try { return JSON.parse(l.trim()); } catch (e) { return null; } })();
-        if (!o) return;
-        const key = (function () { try { return resultKey(o); } catch (e) { return null; } })();
-        const prevIdx = key ? list.findIndex((r) => resultKey(r) === key) : -1;
+      const parsed = parseNDJSONStream(ta.value);
+      let added = 0, merged = 0, dups = 0;
+      parsed.ok.forEach(function (it) {
+        let prevIdx = -1;
+        try { const k = resultKey(it.o); prevIdx = list.findIndex((r) => { try { return resultKey(r) === k; } catch (e) { return false; } }); } catch (e) {}
         const prevLen = list.length;
-        importResultLine(l.trim(), list); // la fusion gère k, h (historique) et _delta
+        importResultLine(it.line, list); // la fusion gère k, h (historique) et _delta
         if (list.length > prevLen) added++;
-        else if (prevIdx >= 0) merged++;
+        else if (prevIdx >= 0) { if (list[prevIdx]._dup) dups++; else merged++; }
       });
-      if (added || merged) { T.results = list; saveResults(list); renderTPanel(); ov.remove(); toast((added ? added + " ajout(s)" : "") + (merged ? (added ? " + " : "") + merged + " redépôt(s)" : "") + "."); }
-      else { toast("Code invalide ou déjà enregistré."); }
+      if (added || merged) { T.results = list; saveResults(list); renderTPanel(); ov.remove(); toast(importSummary(added, merged, dups, parsed.bad.length) + "."); }
+      else if (dups && !parsed.bad.length) { ov.remove(); toast("Code déjà enregistré (aucun changement)."); }
+      else { T.skipped = parsed.bad; renderTPanel(); toast("Code invalide ou déjà enregistré."); }
     }
     if (el.getAttribute("data-act") === "pcancel") ov.remove();
   });
