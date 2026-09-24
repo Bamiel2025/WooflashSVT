@@ -721,6 +721,19 @@ const Q38 = [
 {q:"Chacun, à son niveau, peut agir...",o:["Uniquement les scientifiques","Pour favoriser la biodiversité et préserver l'environnement au quotidien","Personne ne peut rien faire","Seuls les gouvernements"],a:1,e:"Des actions individuelles peuvent favoriser la biodiversité et le développement durable."}
 ];
 
+const Q39 = [
+{q:"Notre intestin héberge un grand nombre de micro-organismes qui...",o:["Contribuent à son bon fonctionnement","Détruisent systématiquement nos cellules","Empêchent toute digestion","Ne servent strictement à rien"],a:0,e:"Notre organisme héberge de nombreux micro-organismes, particulièrement dans l'intestin, qui contribuent à son bon fonctionnement."},
+{q:"La contamination, c'est...",o:["La vaccination contre un virus","L'entrée de micro-organismes dans le corps, par exemple par une peau abîmée","La guérison d'une maladie","La digestion des aliments"],a:1,e:"La contamination est l'entrée des micro-organismes dans le corps lorsque nos barrières protectrices, comme la peau, sont abîmées."},
+{q:"L'infection, c'est lorsque les micro-organismes...",o:["Restent sur la peau sans entrer","Sont éliminés par l'eau","Provoquent une maladie en se multipliant dans le corps","Deviennent des vaccins"],a:2,e:"Bactéries ou virus peuvent provoquer des maladies en se multipliant dans le corps : c'est l'infection."},
+{q:"La phagocytose est...",o:["La production d'anticorps par les lymphocytes B","La destruction des lymphocytes T","La vaccination","Une première réponse rapide : des cellules englobent et détruisent les microbes"],a:3,e:"Contre une infection, une première réponse rapide se met en place : la phagocytose."},
+{q:"Quelle est la bonne comparaison de taille entre une cellule humaine, une bactérie et un virus ?",o:["Un virus est plus grand qu'une bactérie","Une cellule humaine est plus grande qu'une bactérie, elle-même plus grande qu'un virus","Une bactérie est plus grande qu'une cellule humaine","Une cellule et un virus ont exactement la même taille"],a:1,e:"Une cellule humaine (environ 30 µm) est plus grande qu'une bactérie (environ 1 à 5 µm), elle-même bien plus grande qu'un virus (environ 0,1 µm)."},
+{q:"La peau constitue une barrière naturelle contre les micro-organismes car...",o:["Elle est toujours humide","Elle ne protège que les doigts","Elle forme une barrière physique continue qui empêche la pénétration des microbes","Elle détruit les microbes par sa chaleur"],a:2,e:"La peau sèche et intacte empêche la pénétration des micro-organismes : c'est la première barrière naturelle de l'organisme."},
+{q:"Les muqueuses (nez, bronches, intestin) sont des barrières naturelles car...",o:["Elles sont recouvertes de mucus qui accroche les microbes, évacués ensuite (cils vibratiles, mouvements des aliments)","Elles sont dépourvues de cellules","Elles produisent uniquement des globules rouges","Elles suppriment tout échange avec le milieu extérieur"],a:0,e:"Le mucus des muqueuses piège les microbes, qui sont ensuite éliminés par les cils vibratiles ou le passage des aliments."},
+{q:"En histoire des sciences, Édouard Jenner et Louis Pasteur ont...",o:["Tous deux découvert les antibiotiques","Jenner inventé la vaccination contre la variole et Pasteur montré le rôle des micro-organismes, ouvrant la voie à l'asepsie et à l'antisepsie","Inventé le même vaccin en même temps","Eu aucun lien avec la lutte contre les infections"],a:1,e:"Jenner a inventé la vaccination contre la variole (1796) ; Pasteur a montré le rôle des micro-organismes, fondant l'asepsie et l'antisepsie."},
+{q:"Parmi ces mesures, laquelle limite la contamination lors d'une plaie ?",o:["L'usage d'un antiseptique et une bonne hygiène","L'arrêt de la vaccination","L'absence de lavage des mains","Le partage des pansements"],a:0,e:"Hygiène, usage d'antiseptique, port du préservatif : des mesures individuelles luttent contre la contamination et l'infection."},
+{q:"Toutes ces mesures (hygiène, vaccination...) s'inscrivent dans...",o:["Un traitement individuel uniquement curatif","Une interdiction des médicaments","Une démarche globale de prévention et de lutte contre les épidémies","Une action sans rapport avec la santé publique"],a:2,e:"Toutes ces mesures s'inscrivent dans une démarche globale de politique de prévention et de lutte contre les épidémies."}
+];
+
 /* ================= CATALOGUE ================= */
 const QUIZZES = [
   { id: "eb01", n: 1, cycle: 4, level: "4e", theme: "La planète Terre et l'action humaine", title: "La dynamique terrestre et la tectonique des plaques", questions: Q01 },
@@ -760,7 +773,8 @@ const QUIZZES = [
   { id: "eb35", n: 35, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Reproduction et sexualité humaine", questions: Q35 },
   { id: "eb36", n: 36, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Fonctionnement et dynamique des écosystèmes", questions: Q36 },
   { id: "eb37", n: 37, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Place des êtres vivants dans le cycle de la matière", questions: Q37 },
-  { id: "eb38", n: 38, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Conséquences des actions humaines sur l'environnement", questions: Q38 }
+  { id: "eb38", n: 38, cycle: 3, level: "6e", theme: "Le vivant et son environnement", title: "Conséquences des actions humaines sur l'environnement", questions: Q38 },
+  { id: "eb39", n: 39, cycle: 4, level: "3e", theme: "Le corps humain et la santé", title: "Les éléments d'une défense rapide", questions: Q39 }
 ];
 
 /* ================= OUTILS PARTAGÉS ================= */
@@ -1081,7 +1095,7 @@ function startQuiz(id) {
 function route() {
   const p = new URLSearchParams(location.search);
   const h = location.hash.replace("#", "");
-  const qid = p.get("quiz") || (["eb01","eb02","eb03","eb04","eb05","eb06","eb07","eb08","eb09","eb10","eb11","eb12","eb13","eb14","eb15","eb16","eb17","eb18","eb19","eb20","eb21","eb22","eb23","eb24","eb25","eb26","eb27","eb28","eb29","eb30","eb31","eb32","eb33","eb34","eb35","eb36","eb37","eb38"].indexOf(h) >= 0 ? h : null);
+  const qid = p.get("quiz") || (["eb01","eb02","eb03","eb04","eb05","eb06","eb07","eb08","eb09","eb10","eb11","eb12","eb13","eb14","eb15","eb16","eb17","eb18","eb19","eb20","eb21","eb22","eb23","eb24","eb25","eb26","eb27","eb28","eb29","eb30","eb31","eb32","eb33","eb34","eb35","eb36","eb37","eb38","eb39"].indexOf(h) >= 0 ? h : null);
   if (p.get("prof") === "1") { renderHome(); openTeacherLogin(); return; }
   if (p.get("depot") === "1") { renderDepot(); return; }
   if (qid && byId(qid) && byId(qid).questions.length) { startQuiz(qid); return; }
