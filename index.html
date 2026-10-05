@@ -224,6 +224,9 @@ table.dt tr:last-child td{border-bottom:none}
 const TEACHER_CODE = "quizzsvt2027";
 const TEACHER_EMAIL = "";
 const SHOW_CORRECTION = true;
+/* Version du fichier index.html : affichée dans l'espace enseignant pour
+   vérifier que la page chargée est bien la dernière (cache / GitHub Pages). */
+const APP_VERSION = "2026-10-05";
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbz2BsvbdMIxwmc2UOKRSPrsO3YQ2OwGUznpyL6alDkx9h8J9gLNLLd-BSqaAhv172izWA/exec";
 /* ================= QUESTIONS — 10 QCM par ebook ================= */
 /* q: question · o: propositions · a: index de la bonne réponse · e: explication */
@@ -849,7 +852,7 @@ function runStudentApp(root, quiz, opts) {
   opts = Object.assign({ correction: true, askName: true, mail: "", standalone: false }, opts || {});
   const M = quiz.questions;
   const KEY = "svtq_p_" + quiz.id;
-  let first = "", last = "", cls = "";
+  let first = "", last = "", cls = "", clsLabels = [];
   let ord = M.map((m) => shuffle(m.o.map((_, i) => i))); // ordre affiché (mélangé), distinct par question
   let ans = M.map(() => null); // réponse en index ORIGINEL
   let idx = 0, phase = "start", score = 0, line = "", sent = false, sending = false, sendFailed = false, saved = null, prevTry = null;
@@ -878,6 +881,8 @@ function runStudentApp(root, quiz, opts) {
 
   function vStart() {
     const prev = findPrevTry();
+    clsLabels = knownClassLabels();
+    const clsOptions = clsLabels.map((c) => '<option value="' + esc(c) + '"></option>').join("");
     const prevInfo = prev ? '<p class="note">Dépôt(s) précédent(s) pour ce quiz : <b>' + (prev.k || 1) + '</b> — dernier score ' + scoreOf(prev) + "/" + M.length + ". Un nouveau dépôt remplacera le précédent.</p>" : "";
     return '<div class="quizpage">' +
       '<div class="qhead"><span class="qnum">' + esc(quiz.level) + " · " + (quiz.cycle === 3 ? "Cycle 3" : "Cycle 4") + '</span><span class="qnum">Quiz ' + quiz.n + "</span></div>" +
@@ -891,9 +896,12 @@ function runStudentApp(root, quiz, opts) {
       '<div class="formcard">' +
       '<div class="field"><label for="s-first">Ton prénom</label><input id="s-first" autocomplete="given-name" placeholder="ex : Léa" maxlength="40"></div>' +
       '<div class="field"><label for="s-last">Ton nom</label><input id="s-last" autocomplete="family-name" placeholder="ex : Martin" maxlength="40"></div>' +
-      '<div class="field"><label for="s-cls">Ta classe</label><input id="s-cls" autocomplete="off" placeholder="ex : 3eB" maxlength="24"></div>' +
+      '<div class="field"><label for="s-cls">Ta classe</label>' +
+      '<input id="s-cls" list="s-cls-list" autocomplete="off" placeholder="ex : 3e6" maxlength="24">' +
+      '<datalist id="s-cls-list">' + clsOptions + "</datalist>" +
+      '<p class="hint" id="s-cls-hint" style="display:none"></p></div>' +
       prevInfo +
-      '<p class="hint">Ton professeur identifiera tes réponses grâce à ton prénom, ton nom et ta classe : vérifie bien l\'orthographe.</p>' +
+      '<p class="hint">Ton professeur identifiera tes réponses grâce à ton prénom, ton nom et ta classe : choisis ta classe dans la liste si elle apparaît, sinon écris-la comme au tableau (ex : 3e6).</p>' +
       '<div class="actions">' +
       '<button class="btn" data-act="begin">' + IC.play + " Commencer le quiz</button>" +
       (saved ? '<button class="btn ghost" data-act="resume">' + IC.redo + " Reprendre où j'en étais</button>" : "") +
@@ -997,10 +1005,14 @@ function runStudentApp(root, quiz, opts) {
         const act = el.getAttribute("data-act");
         if (act === "begin") {
           const fi = root.querySelector("#s-first"), la = root.querySelector("#s-last"), cl = root.querySelector("#s-cls");
-          first = (fi.value || "").trim(); last = (la.value || "").trim(); cls = (cl.value || "").trim();
+          first = (fi.value || "").trim(); last = (la.value || "").trim();
+          const rawCls = (cl.value || "").trim();
+          cls = tidyClass(rawCls, clsLabels);
           if (first.length < 2) { toast("Indique ton prénom."); fi.focus(); return; }
           if (last.length < 2) { toast("Indique ton nom."); la.focus(); return; }
           if (!cls) { toast("Indique ta classe."); cl.focus(); return; }
+          rememberClass(cls);
+          if (cls !== rawCls) toast("Classe enregistrée : " + cls);
           prevTry = findPrevTry();
           begin(); phase = "run"; persist(); render();
         } else if (act === "resume" && saved) {
@@ -1040,6 +1052,13 @@ function runStudentApp(root, quiz, opts) {
     if (phase === "start") {
       const fi = root.querySelector("#s-first"), la = root.querySelector("#s-last"), cl = root.querySelector("#s-cls");
       [fi, la, cl].forEach(function (i) { i.addEventListener("keydown", function (e) { if (e.key === "Enter") root.querySelector('[data-act="begin"]').click(); }); });
+      const hint = root.querySelector("#s-cls-hint");
+      cl.addEventListener("input", function () {
+        const v = (cl.value || "").trim();
+        const known = v ? matchKnownClass(v, clsLabels) : "";
+        if (known && known !== v) { hint.textContent = "Classe reconnue : " + known; hint.style.display = ""; }
+        else { hint.textContent = ""; hint.style.display = "none"; }
+      });
       fi.focus();
     }
   }
@@ -1181,7 +1200,36 @@ function importResultLine(l, list) {
   } catch (e) {}
 }
 function scoreOf(r) { const qz = byId(r.quiz); return r.a.reduce((acc, v, i) => acc + (v === qz.questions[i].a ? 1 : 0), 0); }
-function normClass(c) { return String(c || "").trim().toUpperCase().replace(/\s+/g, " "); }
+/* Nom de classe normalisé = CLÉ DE REGROUPEMENT (onglet Résultats, filtres,
+   doublons). Fait converger toutes les écritures d'une même classe :
+   « 3e6 », « 3eme6 », « 3*6 », « 3°6 », « 3ème 6 », « 3-6 » → « 36 ».
+   Indifférent à la casse, aux accents, aux espaces/ponctuation, au symbole
+   d'exposant (°, étoile, circonflexe) et à l'abréviation du niveau
+   (e/eme/ème, 1ere/1re, 2nde/2d, terminale/tle, mots complets…). Doit
+   rester IDENTIQUE à normClass() de apps-script.gs. */
+function normClass(c) {
+  let s = String(c == null ? "" : c);
+  if (s.normalize) s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  s = s.toUpperCase();
+  s = s.replace(/\bSIXIEMES?(?![A-Z])/g, "6")
+    .replace(/\bCINQUIEMES?(?![A-Z])/g, "5")
+    .replace(/\bQUATRIEMES?(?![A-Z])/g, "4")
+    .replace(/\bTROISIEMES?(?![A-Z])/g, "3")
+    .replace(/\bDEUXIEMES?(?![A-Z])/g, "2")
+    .replace(/\bPREMIERES?(?![A-Z])/g, "1")
+    .replace(/\bSECONDES?(?![A-Z])/g, "2")
+    .replace(/\bTERMINALES?(?![A-Z])/g, "T")
+    .replace(/\bTLES?(?![A-Z])/g, "T");
+  s = s.replace(/[\u00b0*\u02c6\u00ba\u00aa`\u00b4]/g, "E");
+  s = s.replace(/[^A-Z0-9]/g, "");
+  let prev;
+  do {
+    prev = s;
+    s = s.replace(/([0-9])(ERE|EME|ER|RE|EM|E)(?=[0-9A-Z]|$)/g, "$1")
+      .replace(/([12])(NDE|DE|D)(?=[0-9A-Z]|$)/g, "$1");
+  } while (s !== prev);
+  return s;
+}
 function normName(s) { return String(s || "").trim().toLowerCase().replace(/\s+/g, " ").normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
 /* Identité d'un dépôt : élève (prénom/nom v2, ou s v1) + quiz. Retourne une clé normalisée. */
 function resultKey(o) {
@@ -1227,6 +1275,81 @@ function importResultLine(l, list) {
 }
 function fullNameOf(r) { return (r.p && r.n) ? (r.p + " " + r.n) : (r.s || "?"); }
 
+/* Comparateur d'écritures d'une même classe : la plus fréquente d'abord,
+   puis la plus simple (peu de symboles), puis la plus courte. */
+function compareLabels(counts) {
+  return function (a, b) {
+    const ca = counts ? counts[a] || 0 : 0, cb = counts ? counts[b] || 0 : 0;
+    if (ca !== cb) return cb - ca;
+    const sa = String(a).replace(/[A-Za-z0-9\u00C0-\u024F]/g, "").length;
+    const sb = String(b).replace(/[A-Za-z0-9\u00C0-\u024F]/g, "").length;
+    if (sa !== sb) return sa - sb;
+    if (a.length !== b.length) return a.length - b.length;
+    return String(a).localeCompare(String(b));
+  };
+}
+/* Libellé affiché d'un groupe de classes : l'écriture la plus fréquente
+   parmi les élèves (la clé normalisée, elle, n'est jamais affichée). */
+function classLabelOf(rs) {
+  const counts = {};
+  rs.forEach(function (r) { const v = String(r.c || "").trim(); if (v) counts[v] = (counts[v] || 0) + 1; });
+  const ks = Object.keys(counts);
+  if (!ks.length) return "?";
+  return ks.sort(compareLabels(counts))[0];
+}
+/* Regroupe les dépôts par classe normalisée : [{ k, label, rs }] trié. */
+function groupClasses(rs) {
+  const by = {};
+  rs.forEach(function (r) { const k = normClass(r.c); (by[k] = by[k] || []).push(r); });
+  return Object.keys(by).sort().map(function (k) { return { k: k, label: classLabelOf(by[k]), rs: by[k] }; });
+}
+/* Libellés harmonisés par classe normalisée : { clé -> libellé affiché }. */
+function classLabelsMap(rs) {
+  const m = {};
+  groupClasses(rs).forEach(function (g) { m[g.k] = g.label; });
+  return m;
+}
+/* Cellule « classe » d'un tableau : l'écriture harmonisée, l'écriture d'origine
+   restant visible au survol. */
+function classCell(r, labels) {
+  const raw = String(r.c || "").trim();
+  const label = (labels && labels[normClass(r.c)]) || raw || "?";
+  const title = raw && raw !== label ? ' title="écrit par l\'élève : ' + esc(raw) + '"' : "";
+  return "<td" + title + ">" + esc(label) + "</td>";
+}
+/* Écritures de classe déjà connues sur ce navigateur (saisies précédentes +
+   classes importées) : servent de suggestions et d'harmonisation à la saisie.
+   Une seule écriture est proposée par classe normalisée (la plus simple). */
+const CLS_LS = "svtq_classes_v1";
+function knownClassLabels() {
+  const by = {};
+  const add = (v) => { const s = String(v || "").trim(); if (s) { const k = normClass(s); if (k) (by[k] = by[k] || []).push(s); } };
+  try { (JSON.parse(localStorage.getItem(CLS_LS) || "[]") || []).forEach(add); } catch (e) {}
+  try { loadResults().forEach((r) => add(r.c)); } catch (e) {}
+  return Object.keys(by).map((k) => by[k].sort(compareLabels(null))[0]).sort();
+}
+/* Renvoie l'écriture connue désignée par v (même classe normalisée), ou "". */
+function matchKnownClass(v, labels) {
+  const k = normClass(v);
+  if (!k) return "";
+  const ls = (labels || knownClassLabels()).filter(function (l) { return normClass(l) === k; });
+  if (!ls.length) return "";
+  return ls.sort(compareLabels(null))[0];
+}
+/* Classe saisie par l'élève : harmonisée sur l'écriture connue si elle existe. */
+function tidyClass(v, labels) {
+  const s = String(v || "").replace(/\s+/g, " ").trim();
+  return matchKnownClass(s, labels) || s;
+}
+function rememberClass(v) {
+  const s = String(v || "").trim();
+  if (!s) return;
+  try {
+    const arr = JSON.parse(localStorage.getItem(CLS_LS) || "[]");
+    if (arr.indexOf(s) < 0) { arr.push(s); localStorage.setItem(CLS_LS, JSON.stringify(arr.slice(-300))); }
+  } catch (e) {}
+}
+
 let T = { tab: "stats", selQuiz: "all", selClass: "all", results: [], skipped: [] };
 
 function renderTeacher() {
@@ -1234,7 +1357,7 @@ function renderTeacher() {
   const app = $("#app");
   const tab = (id, label) => '<button class="tab ' + (T.tab === id ? "on" : "") + '" data-act="tab" data-val="' + id + '">' + label + "</button>";
   app.innerHTML = '<div class="wrap">' +
-    '<div class="thead"><h2>Espace enseignant</h2><div class="sp">' +
+    '<div class="thead"><h2>Espace enseignant <span class="qnum" title="Version du fichier index.html chargé par ce navigateur">v' + APP_VERSION + '</span></h2><div class="sp">' +
     '<button class="btn ghost sm" data-act="home">' + IC.home + ' Accueil</button>' +
     '<button class="btn ghost sm" data-act="lock">' + IC.key + " Verrouiller</button></div></div>" +
     '<div class="tabs">' + tab("stats", IC.chart + " Résultats") + tab("keys", IC.book + " Corrigés") + tab("links", IC.link + " Liens &amp; export HTML") + tab("data", IC.db + " Données") + "</div>" +
@@ -1254,10 +1377,12 @@ function renderTPanel() {
 function tStats() {
   const R = T.results;
   const quizzes = QUIZZES.filter((q) => q.questions.length);
-  const classes = [...new Set(R.map((r) => normClass(r.c)))].sort();
+  const groups = groupClasses(R);
+  const labels = {};
+  groups.forEach(function (g) { labels[g.k] = g.label; });
   const sel = R.filter((r) => (T.selQuiz === "all" || r.quiz === T.selQuiz) && (T.selClass === "all" || normClass(r.c) === T.selClass));
   const qsel = '<select data-act="selquiz"><option value="all">Tous les quiz</option>' + quizzes.map((q) => '<option value="' + q.id + '"' + (T.selQuiz === q.id ? " selected" : "") + ">Quiz " + q.n + " — " + esc(q.title) + "</option>").join("") + "</select>";
-  const csel = '<select data-act="selclass"><option value="all">Toutes les classes</option>' + classes.map((c) => '<option value="' + esc(c) + '"' + (T.selClass === c ? " selected" : "") + ">" + esc(c) + "</option>").join("") + "</select>";
+  const csel = '<select data-act="selclass"><option value="all">Toutes les classes</option>' + groups.map((g) => '<option value="' + esc(g.k) + '"' + (T.selClass === g.k ? " selected" : "") + ">" + esc(g.label) + "</option>").join("") + "</select>";
   let head = '<div class="controls no-print">' + qsel + csel +
     '<button class="btn ghost sm" data-act="exportcsv">' + IC.dl + " Export CSV</button>" +
     '<button class="btn ghost sm" data-act="print">' + IC.print + " Imprimer</button></div>";
@@ -1269,11 +1394,11 @@ function tStats() {
   const stats = '<div class="statgrid">' +
     '<div class="stat"><div class="v">' + sel.length + '</div><div class="l">réponse(s) d\'élève(s)</div></div>' +
     '<div class="stat"><div class="v">' + avgPct + '%</div><div class="l">réussite moyenne</div></div>' +
-    '<div class="stat"><div class="v">' + classes.length + '</div><div class="l">classe(s)</div></div></div>';
+    '<div class="stat"><div class="v">' + groups.length + '</div><div class="l">classe(s)</div></div></div>';
   const gCounts = levelCounts(sel);
   const groupsPanel = '<div class="tpanel"><h3>Groupes de niveau (filtres appliqués)</h3><div class="piebox">' + pieSVG(gCounts, 150) + pieLegend(gCounts, sel.length) + '</div>' +
     '<h3 style="margin-top:16px">Répartition des scores</h3>' + scoreHisto(sel) + '</div>';
-  const clsPanels = classPanels(sel);
+  const clsPanels = classPanels(sel, labels);
   let perQuiz = "";
   if (T.selQuiz === "all") {
     const rows = quizzes.map((q) => {
@@ -1308,7 +1433,7 @@ function tStats() {
     const d = r.t ? new Date(r.t) : null;
     const k = r.k || 1;
     const kBadge = k > 1 ? ' <span class="badge2">' + k + " dépôt" + (k > 1 ? "s" : "") + "</span>" : "";
-    return "<tr><td>" + esc(r.p || "") + "</td><td>" + esc(r.n || "") + "</td><td>" + esc(r.c) + "</td><td>Quiz " + qz.n + "</td>" +
+    return "<tr><td>" + esc(r.p || "") + "</td><td>" + esc(r.n || "") + "</td>" + classCell(r, labels) + "<td>Quiz " + qz.n + "</td>" +
       '<td><div class="donutcell">' + donutSVG(pct, 34, LVLCOLORS[lv]) + "<b>" + sc + "/" + qz.questions.length + "</b></div></td>" +
       '<td><span class="lvlbadge lvl' + lv + '">' + LVLNAMES[lv] + "</span></td>" +
       "<td>" + pct + "%</td><td>" + k + kBadge + "</td><td>" + (d ? d.toLocaleDateString("fr-FR") : "") + "</td></tr>";
@@ -1357,13 +1482,14 @@ function tLinks() {
 /* ---------- Onglet Données ---------- */
 function tData() {
   const R = T.results;
+  const labels = classLabelsMap(R);
   const rows = R.map(function (r, i) {
     const qz = byId(r.quiz);
     const k = r.k || 1;
     const delta = typeof r._delta === "number" ? r._delta : null;
     const dIcon = delta === null ? "" : delta > 0 ? ' <span class="delta up">+' + delta + "</span>" : delta < 0 ? ' <span class="delta dn">' + delta + "</span>" : ' <span class="delta eq">=</span>';
     const hist = (r.h && r.h.length) ? ' <span class="meta" title="Historique des dépôts">[' + r.h.map((x) => x.s + "/10").join(" → ") + ' → ' + scoreOf(r) + '/10]</span>' : "";
-    return "<tr><td>" + (i + 1) + "</td><td>" + esc(r.p || r.s || "?") + "</td><td>" + esc(r.n || "") + "</td><td>" + esc(r.c) + "</td><td>Quiz " + qz.n + "</td><td><b>" + k + "</b>" + dIcon + "</td><td>" + hist + "</td><td>" + esc((r.t || "").slice(0, 10)) + '</td><td><button class="iconbtn" data-act="del" data-val="' + i + '" title="Supprimer">' + IC.trash + "</button></td></tr>";
+    return "<tr><td>" + (i + 1) + "</td><td>" + esc(r.p || r.s || "?") + "</td><td>" + esc(r.n || "") + "</td>" + classCell(r, labels) + "<td>Quiz " + qz.n + "</td><td><b>" + k + "</b>" + dIcon + "</td><td>" + hist + "</td><td>" + esc((r.t || "").slice(0, 10)) + '</td><td><button class="iconbtn" data-act="del" data-val="' + i + '" title="Supprimer">' + IC.trash + "</button></td></tr>";
   }).join("");
   return '<div class="tpanel"><h3>Importer les réponses des élèves</h3>' +
     '<div class="drop" id="dropzone"><p><b>Glissez ici</b> les fichiers <code>.ndjson</code> reçus (ou cliquez pour choisir).<br>Vous pouvez en déposer plusieurs à la fois : les fichiers cumulent les réponses d\'une classe entière.<br>Un élève qui redépose son quiz remplace sa ligne précédente : le compteur de dépôts s\'incrémente et la progression s\'affiche.</p><input type="file" id="fileinput" accept=".ndjson,.txt,.json" multiple style="display:none"></div>' +
@@ -1388,12 +1514,13 @@ function tData() {
 /* ---------- Actions enseignant ---------- */
 function csvOf(results) {
   const head = "prenom;nom;classe;quiz;score;total;pct;depots;date;reponses";
+  const labels = classLabelsMap(results);
   const lines = results.map(function (r) {
     const qz = byId(r.quiz), sc = scoreOf(r);
     const pct = Math.round(100 * sc / qz.questions.length);
     const ans = r.a.map((v) => v == null ? "-" : (v + 1)).join(",");
     const d = r.t ? new Date(r.t).toISOString() : "";
-    return [r.p || r.s || "", r.n || "", r.c, "Quiz " + qz.n, sc, qz.questions.length, pct, r.k || 1, d, ans].map((x) => '"' + String(x).replace(/"/g, '""') + '"').join(";");
+    return [r.p || r.s || "", r.n || "", labels[normClass(r.c)] || r.c || "", "Quiz " + qz.n, sc, qz.questions.length, pct, r.k || 1, d, ans].map((x) => '"' + String(x).replace(/"/g, '""') + '"').join(";");
   });
   return head + "\n" + lines.join("\n");
 }
@@ -1513,20 +1640,24 @@ function scoreHisto(rs) {
 }
 
 /* Panneaux par classe : camembert des groupes + histogramme des élèves (triés) */
-function classPanels(sel) {
-  const byC = {};
-  sel.forEach(function (r) { const c = normClass(r.c) || "?"; (byC[c] = byC[c] || []).push(r); });
-  return Object.keys(byC).sort().map(function (c) {
-    const rs = byC[c].slice().sort(function (a, b) { return scoreOf(b) - scoreOf(a); });
+function classPanels(sel, labels) {
+  return groupClasses(sel).map(function (g) {
+    const rs = g.rs.slice().sort(function (a, b) { return scoreOf(b) - scoreOf(a); });
     const counts = levelCounts(rs);
     const avg = Math.round(100 * rs.reduce(function (s, r) { return s + scoreOf(r) / byId(r.quiz).questions.length; }, 0) / rs.length);
+    const variants = [];
+    rs.forEach(function (r) { const v = String(r.c || "").trim(); if (v && variants.indexOf(v) < 0) variants.push(v); });
+    variants.sort(compareLabels(null));
+    const merged = variants.length > 1
+      ? '<p class="note">' + variants.length + " écritures différentes regroupées : " + variants.map(esc).join(", ") + ".</p>"
+      : "";
     const bars = rs.map(function (r) {
       const qz = byId(r.quiz), sc = scoreOf(r), p = Math.round(100 * sc / qz.questions.length), lv = lvlOfPct(p);
       return '<div class="qbar"><div class="lbl"><b style="color:#0f172a">' + esc(fullNameOf(r)) + '</b><span>Quiz ' + qz.n + ' · ' + sc + '/' + qz.questions.length + '</span></div>' +
         '<div class="track"><div class="fill ' + LVLFILL[lv] + '" style="width:' + p + '%"></div></div>' +
         '<div class="pct">' + p + '% · ' + LVLNAMES[lv] + '</div></div>';
     }).join("");
-    return '<div class="tpanel"><h3>Classe ' + esc(c) + ' — ' + rs.length + ' élève(s) · moyenne ' + avg + '%</h3>' +
+    return '<div class="tpanel"><h3>Classe ' + esc((labels && labels[g.k]) || g.label) + ' — ' + rs.length + ' élève(s) · moyenne ' + avg + '%</h3>' + merged +
       '<div class="piebox">' + pieSVG(counts, 130) + pieLegend(counts, rs.length) + '</div>' +
       '<div class="qbars" style="margin-top:12px">' + bars + '</div></div>';
   }).join("");

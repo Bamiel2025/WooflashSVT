@@ -53,20 +53,65 @@ function sheetText(v) {
   return (/^[0-9]+[Ee][0-9]+$/.test(s)) ? "'" + s : s;
 }
 
+/* Nom de classe normalisé — DOIT RESTER IDENTIQUE à normClass() de index.html.
+   Fait converger toutes les écritures d'une même classe :
+   « 3e6 », « 3eme6 », « 3*6 », « 3°6 », « 3ème 6 », « 3-6 » → « 36 ».
+   Indifférent à la casse, aux accents, aux espaces/ponctuation, au symbole
+   d'exposant (°, étoile, circonflexe) et à l'abréviation du niveau
+   (e/eme/ème, 1ere/1re, 2nde/2d, terminale/tle, mots complets…). */
+function normClass(c) {
+  var s = String(c == null ? "" : c);
+  try { s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); } catch (e) {}
+  s = s.toUpperCase();
+  s = s.replace(/\bSIXIEMES?(?![A-Z])/g, "6")
+    .replace(/\bCINQUIEMES?(?![A-Z])/g, "5")
+    .replace(/\bQUATRIEMES?(?![A-Z])/g, "4")
+    .replace(/\bTROISIEMES?(?![A-Z])/g, "3")
+    .replace(/\bDEUXIEMES?(?![A-Z])/g, "2")
+    .replace(/\bPREMIERES?(?![A-Z])/g, "1")
+    .replace(/\bSECONDES?(?![A-Z])/g, "2")
+    .replace(/\bTERMINALES?(?![A-Z])/g, "T")
+    .replace(/\bTLES?(?![A-Z])/g, "T");
+  s = s.replace(/[\u00b0*\u02c6\u00ba\u00aa`\u00b4]/g, "E");
+  s = s.replace(/[^A-Z0-9]/g, "");
+  var prev;
+  do {
+    prev = s;
+    s = s.replace(/([0-9])(ERE|EME|ER|RE|EM|E)(?=[0-9A-Z]|$)/g, "$1")
+      .replace(/([12])(NDE|DE|D)(?=[0-9A-Z]|$)/g, "$1");
+  } while (s !== prev);
+  return s;
+}
+
+/* Clé d'identité d'un élève : prénom | nom | classe normalisée. */
+function identityKey(p, n, c) {
+  return (String(p || "") + "|" + String(n || "") + "|" + normClass(c)).trim().toUpperCase();
+}
+
+/* Clé lue en colonne H : les lignes écrites avant la normalisation portent la
+   classe brute — on réapplique normClass à la 3e composante pour comparer,
+   un redépôt remplace bien la ligne même si l'élève a changé d'écriture. */
+function storedKey(v) {
+  var s = String(v == null ? "" : v).trim().toUpperCase();
+  var i = s.indexOf("|"), j = s.lastIndexOf("|");
+  if (i < 0 || j <= i) return s;
+  return s.substring(0, i) + "|" + s.substring(i + 1, j) + "|" + normClass(s.substring(j + 1));
+}
+
 function handle(raw) {
   try {
 var o = JSON.parse(raw || "{}");
   var sheet = getSheet();
     var q = QUIZ_INFO[o.quiz] || { n: "?", total: 10 };
   var score = computeScore(o.a, o.quiz);
-  var key = ((o.p || "") + "|" + (o.n || "") + "|" + (o.c || "")).trim().toUpperCase();
+  var key = identityKey(o.p, o.n, o.c);
   /* un redépôt remplace la ligne précédente de l'élève */
   var data = sheet.getDataRange().getValues();
     var rowIdx = -1, maxK = 0;
     /* i = 0 : la feuille n'a pas d'en-tête par défaut — ne jamais sauter la 1re ligne.
        Une ligne d'en-tête éventuelle ne matchera aucune clé élève. */
     for (var i = 0; i < data.length; i++) {
-      if (String(data[i][7]).trim().toUpperCase() === key) { rowIdx = i + 1; maxK = Number(data[i][6]) || 1; }
+      if (storedKey(data[i][7]) === key) { rowIdx = i + 1; maxK = Number(data[i][6]) || 1; }
     }
   var k = rowIdx > 0 ? maxK + 1 : Math.max(1, Number(o.k) || 1);
   var row = [
